@@ -14,12 +14,23 @@ input,select,button{font:inherit;padding:8px 10px;border:1px solid var(--line);b
 label.c{display:flex;align-items:center;gap:6px;color:var(--mute);font-size:14px;cursor:pointer}
 button{cursor:pointer}#count{color:var(--mute);font-size:14px;margin-left:auto}
 .chips{display:flex;gap:6px;flex-wrap:wrap;width:100%}
-.chip{font-size:13px;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--mute);cursor:pointer;user-select:none}
+.chip{font-size:13px;line-height:inherit;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--mute);cursor:pointer;user-select:none}
 .chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.chip:focus-visible,#ftoggle:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.fbar,#fbody{display:contents}#ftoggle{display:none}#count{order:1}.chips{order:2}
+@media(max-width:640px){
+ .fbar{display:flex;align-items:center;gap:8px;width:100%}#ftoggle{display:block;font-weight:600;color:var(--acc);border-color:var(--acc)}
+ #ftoggle::after{content:' ▾'}.controls.open #ftoggle::after{content:' ▴'}
+ #fbody{display:none}.controls.open #fbody{display:flex;flex-wrap:wrap;gap:8px;align-items:center;width:100%;max-height:70vh;overflow:auto}
+}
 main{max-width:1200px;margin:auto;padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px}
 .card.out{opacity:.6}.top{display:flex;justify-content:space-between;gap:8px;align-items:start}
-.card h2{margin:0;font-size:17px}
+.who{display:flex;gap:10px;align-items:center;min-width:0}
+.av{flex:0 0 44px;width:44px;height:44px;border-radius:50%;background:var(--chip);color:var(--acc);display:grid;place-items:center;font-weight:600;overflow:hidden;position:relative}
+.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ttl{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:8px;min-width:0}
+.card h2{margin:0;font-size:17px}.from{color:var(--acc);font-weight:600;font-size:15px;white-space:nowrap}
 .badge{font-size:12px;padding:2px 8px;border-radius:99px;background:var(--chip);color:var(--acc);white-space:nowrap}
 .badge.out{background:#eee;color:#777}
 .stars{color:var(--star);font-size:13px;letter-spacing:1px}
@@ -38,17 +49,20 @@ footer{max-width:1200px;margin:8px auto 32px;padding:0 16px;color:var(--mute);fo
 @media(max-width:560px){h1{font-size:24px}main{grid-template-columns:1fr}}
 </style></head><body>
 <header><h1>💅 NYC Nail Artists</h1><p>Yasmeen's living directory — filter by service, neighborhood, price, or rating. Data reads live from the research sheet; edit the sheet and refresh.</p></header>
-<div class="controls"><div class="in">
+<div class="controls" id="controls"><div class="in">
+<div class="fbar"><button id="ftoggle" type="button" aria-expanded="false" aria-controls="fbody">Filters</button><span id="count"></span></div>
+<div id="fbody">
 <input id="q" type="search" placeholder="Search name, services, styles, notes…">
 <select id="hood"><option value="">All neighborhoods</option></select>
 <select id="type"><option value="">All types</option></select>
 <select id="plat"><option value="">Any booking platform</option></select>
 <label class="p">Max $<input id="max" type="number" min="0" step="5" placeholder="any"></label>
-<label class="p">★≥<input id="minr" type="number" min="0" max="5" step="0.1" placeholder="any"></label>
+<label class="p">Min rating<input id="minr" type="number" min="0" max="5" step="0.1" placeholder="any"></label>
 <select id="sort"><option value="">Sort: sheet order</option><option value="asc">Price: low → high</option><option value="desc">Price: high → low</option><option value="rate">Rating: high → low</option><option value="name">Name A–Z</option></select>
 <label class="c"><input id="hideout" type="checkbox" checked> Hide ruled-out</label>
-<button id="reset">Reset</button><span id="count"></span>
-<div class="chips" id="svcchips"></div>
+<button id="reset" type="button">Reset</button>
+<div class="chips" id="svcchips" role="group" aria-label="Services"></div>
+</div>
 </div></div>
 <div id="msg">Loading…</div><main id="list"></main>
 <footer>Tip: share a filtered view — filters sync to the URL (e.g. <code>?svc=russian&amp;hood=Chelsea</code>).</footer>
@@ -66,6 +80,7 @@ const num=s=>{const m=String(s||'').match(/\$?\s*(\d+(?:\.\d+)?)/);return m?+m[1
 const ratingNum=s=>{const m=String(s||'').match(/(\d(?:\.\d+)?)/);return m?+m[1]:null};
 const SVC_DEFS=[['Russian','russian'],['Japanese gel','japanese'],['Hard gel / BIAB','hard gel|builder|biab|structure'],['Gel-X','gel-?x'],['Acrylic','acrylic'],['Nail art','nail art|design|hand-paint']];
 let data=[],activeSvcs=new Set();const $=id=>document.getElementById(id);
+let PHOTOS={};fetch('photos.json').then(r=>r.ok?r.json():{}).then(p=>{PHOTOS=p||{};if(data.length)render()}).catch(()=>{});
 function toRows(rows){const h=rows[0].map(x=>x.trim().toLowerCase());const idx={};
  for(const[k,p]of Object.entries(KEYS)){idx[k]=h.findIndex(x=>x===p);if(idx[k]<0)idx[k]=h.findIndex(x=>x.startsWith(p))}
  return rows.slice(1).map((r,i)=>{const o={i};for(const k in idx)o[k]=idx[k]>=0?(r[idx[k]]||'').trim():'';
@@ -84,6 +99,8 @@ function syncURL(){const p=new URLSearchParams();
  if(activeSvcs.size)p.set('svc',[...activeSvcs].join(','));
  if(!$('hideout').checked)p.set('showout','1');
  history.replaceState(null,'',location.pathname+(p.toString()?'?'+p.toString():'')+location.hash)}
+const setChip=(c,on)=>{c.classList.toggle('on',on);c.setAttribute('aria-pressed',on)};
+function activeCount(){return ['q','hood','type','plat','max','minr'].filter(id=>$(id).value.trim()).length+activeSvcs.size}
 function render(){const q=$('q').value.toLowerCase().trim(),h=$('hood').value,t=$('type').value,pl=$('plat').value,
  mx=parseFloat($('max').value),mr=parseFloat($('minr').value),so=$('sort').value,hide=$('hideout').checked;
  let L=data.filter(o=>(!q||q.split(/\s+/).every(w=>o.blob.includes(w)))&&(!h||o.hoods.includes(h))&&(!t||o.type===t)&&(!pl||o.plat===pl)
@@ -93,10 +110,14 @@ function render(){const q=$('q').value.toLowerCase().trim(),h=$('hood').value,t=
  if(so=='asc')L.sort((a,b)=>P(a)-P(b));else if(so=='desc')L.sort((a,b)=>P(b)-P(a));
  else if(so=='rate')L.sort((a,b)=>(b.rate??-1)-(a.rate??-1));else if(so=='name')L.sort((a,b)=>a.name.localeCompare(b.name));
  $('count').textContent=`${L.length} of ${data.length}`;
+ const n=activeCount();$('ftoggle').textContent=n?`Filters (${n})`:'Filters';
  $('list').innerHTML=L.map(o=>{const ig=url(o.igurl)||(o.ig?'https://instagram.com/'+o.ig.replace(/^@/,''):''),bk=url(o.book);
+  const hd=o.ig.trim().replace(/^@/,'').toLowerCase(),hv=/^[a-z0-9._]+$/.test(hd)?hd:'';
   const maps=url(o.maps)||(o.addr?'https://maps.google.com/?q='+encodeURIComponent(o.name+' '+o.addr):'');
   const pr=[['Base gel',o.base],['Hard gel',o.hard],['Art',o.art]].filter(x=>x[1]).map(x=>`<b>${x[0]}</b><span>${esc(x[1])}</span>`).join('');
-  return `<article class="card${o.out?' out':''}"><div class="top"><h2>${esc(o.name)}</h2>${o.status?`<span class="badge${o.out?' out':''}">${esc(o.status)}</span>`:''}</div>
+  return `<article class="card${o.out?' out':''}"><div class="top"><div class="who">${hv?`<span class="av" aria-hidden="true">${esc(o.name.trim()[0].toUpperCase())}${PHOTOS[hv]?`<img src="${PHOTOS[hv]}" alt="" loading="lazy" onerror="this.remove()">`:''}</span>`:''}
+   <div class="ttl"><h2>${esc(o.name)}</h2>${o.price!=null?`<span class="from">from $${o.price}</span>`:''}</div></div>
+   ${o.status&&!(hide&&!o.out&&/^candidate$/i.test(o.status.trim()))?`<span class="badge${o.out?' out':''}">${esc(o.status)}</span>`:''}</div>
   ${o.rate!=null?`<div>${stars(o.rate)}${o.grate?` <span class="meta">Google</span>`:''}</div>`:''}
   <div class="meta">${esc([o.type,o.hood].filter(Boolean).join(' · '))}</div>
   ${o.svcs.length?`<div class="tags">${o.svcs.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div>`:''}
@@ -112,15 +133,16 @@ fetch(CSV_URL).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text
  if(/^\s*</.test(t))throw new Error('sheet is not public');data=toRows(parseCSV(t));
  fill('hood',data.flatMap(o=>o.hoods));fill('type',data.map(o=>o.type));fill('plat',data.map(o=>o.plat));
  const chips=$('svcchips');
- SVC_DEFS.forEach(([label])=>{const c=document.createElement('span');c.className='chip';c.textContent=label;
-  c.onclick=()=>{activeSvcs.has(label)?activeSvcs.delete(label):activeSvcs.add(label);c.classList.toggle('on');render()};chips.appendChild(c)});
+ SVC_DEFS.forEach(([label])=>{const c=document.createElement('button');c.type='button';c.className='chip';c.textContent=label;c.setAttribute('aria-pressed','false');
+  c.onclick=()=>{activeSvcs.has(label)?activeSvcs.delete(label):activeSvcs.add(label);setChip(c,activeSvcs.has(label));render()};chips.appendChild(c)});
  const qp=new URLSearchParams(location.search);
  ['q','hood','type','plat','max','minr','sort'].forEach(id=>{if(qp.get(id))$(id).value=qp.get(id)});
  if(qp.get('showout'))$('hideout').checked=false;
  (qp.get('svc')||'').split(',').forEach(s=>{const lbl=SVC_DEFS.map(d=>d[0]).find(l=>l.toLowerCase()===s.toLowerCase());
-  if(lbl){activeSvcs.add(lbl);[...chips.children].find(c=>c.textContent===lbl)?.classList.add('on')}});
+  if(lbl){activeSvcs.add(lbl);const c=[...chips.children].find(c=>c.textContent===lbl);if(c)setChip(c,true)}});
  ['q','hood','type','plat','max','minr','sort','hideout'].forEach(id=>$(id).addEventListener('input',render));
- $('reset').onclick=()=>{['q','hood','type','plat','max','minr','sort'].forEach(id=>$(id).value='');$('hideout').checked=true;activeSvcs.clear();[...chips.children].forEach(c=>c.classList.remove('on'));render()};
+ $('reset').onclick=()=>{['q','hood','type','plat','max','minr','sort'].forEach(id=>$(id).value='');$('hideout').checked=true;activeSvcs.clear();[...chips.children].forEach(c=>setChip(c,false));render()};
+ $('ftoggle').onclick=()=>{const open=$('controls').classList.toggle('open');$('ftoggle').setAttribute('aria-expanded',open)};
  render()
 }).catch(e=>{$('msg').textContent='Could not load the sheet ('+e.message+'). Make sure it is shared as "Anyone with the link can view".'});
 </script></body></html>
