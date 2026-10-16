@@ -5,7 +5,8 @@ Searchable, filterable directory of NYC nail artists, read live from a Google Sh
 - Data: Google Sheet `1yorNY5SrbFzbGx295afxff2bSLH23DHwdH58eMOI1vw`, fetched via `gviz/tq?tqx=out:csv`. The sheet must be shared "Anyone with the link can view".
 - The sheet contains directory data only. Read-only booking IDs and services live in root `booking.json`; see [the place onboarding guide](docs/adding-a-place.md).
 - Instagram photos on every card (profile embed, or curated `Photo posts` URLs).
-- Filters: text search, service chips (Russian, Japanese gel, hard gel/BIAB, Gel-X, acrylic, nail art), neighborhood, type, booking platform, max price (lowest of base/hard gel price), min rating, optional hide ruled-out toggle (off by default). Sort by price, rating, or name.
+- Filters: text search, service chips (Russian, Structured / hard gel, Gel-X, acrylic, nail art), neighborhood, type, booking platform, max price (lowest of base/hard gel price), min rating, optional hide ruled-out toggle (off by default). Sort by price, rating, or name.
+- Terminology: the Structured / hard gel chip and search synonyms cover hard gel, Japanese gel, builder/BIAB, structured, and overlay terms; see the in-page glossary.
 - Filters sync to the URL, so filtered views are shareable (e.g. `?svc=russian&hood=Chelsea`).
 - Star ratings read from the "Google rating" column (falls back to "Rating"); cards show service tags, Maps link, availability notes, and booking buttons.
 - Test with a local CSV: `index.html?csv=test.csv`.

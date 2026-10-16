@@ -14,6 +14,13 @@ input,select,button{font:inherit;padding:8px 10px;border:1px solid var(--line);b
 label.c{display:flex;align-items:center;gap:6px;color:var(--mute);font-size:14px;cursor:pointer}
 button{cursor:pointer}#count{color:var(--mute);font-size:14px;margin-left:auto}
 .chips{display:flex;gap:6px;flex-wrap:wrap;width:100%}
+.gloss{width:100%;max-width:760px;color:var(--mute);font-size:12px;order:3}
+.gloss summary{cursor:pointer}
+.gloss dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:0 10px;margin:8px 0}
+.gloss dt{font-weight:700;color:var(--ink)}
+.gloss dd{margin:0 0 8px}
+.gloss p{margin:8px 0 0}
+@media(max-width:480px){.gloss dl{grid-template-columns:1fr}}
 .chip{font-size:13px;line-height:inherit;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--mute);cursor:pointer;user-select:none}
 .chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
 .chip:focus-visible,#ftoggle:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
@@ -87,6 +94,19 @@ footer{max-width:1200px;margin:8px auto 32px;padding:0 16px;color:var(--mute);fo
 <label class="c"><input id="hideout" type="checkbox"> Hide ruled-out</label>
 <button id="reset" type="button">Reset</button>
 <div class="chips" id="svcchips" role="group" aria-label="Services"></div>
+<details class="gloss"><summary>What do these terms mean?</summary><dl>
+<dt>Gel manicure (soft gel):</dt><dd>thin gel colour cured under a UV/LED lamp. Soaks off in acetone; lasts about 2–3 weeks.</dd>
+<dt>Structured manicure:</dt><dd>a shaped layer of builder or hard gel that levels and strengthens your natural nail before colour. Salons also call it a structure, structured gel or Japanese structure manicure.</dd>
+<dt>Japanese gel:</dt><dd>gel from Japanese brands (e.g. Kokoist, Presto). Usually soft and soak-off, known for a glossy finish and fine art. Often used for structured manicures.</dd>
+<dt>Builder gel / BIAB:</dt><dd>a thicker, usually soak-off gel brushed on for strength and shape. BIAB means "builder in a bottle". Can be refilled.</dd>
+<dt>Hard gel:</dt><dd>the strongest gel. It doesn't soak off, so it's filed down or refilled. Used for overlays and extensions.</dd>
+<dt>Gel overlay:</dt><dd>any gel (soft, builder or hard) over your natural nail, with no extension.</dd>
+<dt>Russian manicure:</dt><dd>a dry manicure done with an e-file (nail drill) that cleans very close to the cuticle, so gel can sit right at the base. Often paired with hard gel.</dd>
+<dt>Gel-X / soft-gel extensions:</dt><dd>full-cover soft-gel tips attached with gel. They soak off.</dd>
+<dt>Fill / refill:</dt><dd>rebalancing grown-out builder or hard gel instead of removing it.</dd>
+<dt>Cat eye:</dt><dd>magnetic gel polish. A magnet pulls the shimmer into a band of light.</dd>
+<dt>Chrome:</dt><dd>a fine metallic powder rubbed onto cured gel for a mirror finish.</dd>
+</dl><p>Filters group hard gel, Japanese gel, builder/BIAB, structured and overlay together under "Structured / hard gel" — search for any of them to find all.</p></details>
 </div>
 </div></div>
 <section class="availability" aria-label="Check appointment availability">
@@ -116,7 +136,7 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const url=u=>{u=(u||'').trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='https://'+u;return /^https?:\/\//i.test(u)?u:''};
 const num=s=>{const m=String(s||'').match(/\$?\s*(\d+(?:\.\d+)?)/);return m?+m[1]:null};
 const ratingNum=s=>{const m=String(s||'').match(/(\d(?:\.\d+)?)/);return m?+m[1]:null};
-const SVC_DEFS=[['Russian','russian'],['Japanese gel','japanese'],['Hard gel / BIAB','hard gel|builder|biab|structure'],['Gel-X','gel-?x'],['Acrylic','acrylic'],['Nail art','nail art|design|hand-paint']];
+const SVC_DEFS=[['Russian','russian'],['Structured / hard gel','hard[ -]?gel|builder|biab|structur|japanese|overlay'],['Gel-X','gel-?x'],['Acrylic','acrylic'],['Nail art','nail art|design|hand-paint']];
 let data=[],activeSvcs=new Set(),checking=false;const $=id=>document.getElementById(id);
 let PHOTOS={},BOOKING={};fetch('photos.json').then(r=>r.ok?r.json():{}).then(p=>{PHOTOS=p||{};if(data.length)render()}).catch(()=>{});
 const bookingPromise=fetch('booking.json').then(r=>r.ok?r.json():{}).catch(()=>({}));
@@ -162,7 +182,12 @@ const setChip=(c,on)=>{c.classList.toggle('on',on);c.setAttribute('aria-pressed'
 function activeCount(){return ['q','hood','type','plat','max','minr'].filter(id=>$(id).value.trim()).length+activeSvcs.size}
 function filtered(){const q=$('q').value.toLowerCase().trim(),h=$('hood').value,t=$('type').value,pl=$('plat').value,
  mx=parseFloat($('max').value),mr=parseFloat($('minr').value),so=$('sort').value,hide=$('hideout').checked;
- let L=data.filter(o=>(!q||q.split(/\s+/).every(w=>o.blob.includes(w)))&&(!h||o.hoods.includes(h))&&(!t||o.type===t)&&(!pl||o.plat===pl)
+ const SYN=[['hard gel','hard-gel','japanese gel','japanese','builder gel','builder','biab','structured','structure','gel overlay','overlay']];
+ const queryMatches=o=>{if(!q)return true;if(q.split(/\s+/).every(w=>o.blob.includes(w)))return true;
+  for(const group of SYN){const terms=[...group].sort((a,b)=>b.length-a.length),term=terms.find(x=>q.includes(x));
+   if(term)return terms.some(x=>x!==term&&o.blob.includes(q.replace(term,x)))}
+  return false};
+ let L=data.filter(o=>queryMatches(o)&&(!h||o.hoods.includes(h))&&(!t||o.type===t)&&(!pl||o.plat===pl)
   &&(isNaN(mx)||(o.price!=null&&o.price<=mx))&&(isNaN(mr)||(o.rate!=null&&o.rate>=mr))&&(!hide||!o.out)
   &&[...activeSvcs].every(s=>o.svcs.includes(s)));
  const P=o=>o.price??(so=='asc'?Infinity:-Infinity);
@@ -269,7 +294,8 @@ fetch(CSV_URL).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text
  const qp=new URLSearchParams(location.search);
  ['q','hood','type','plat','max','minr','sort'].forEach(id=>{if(qp.get(id))$(id).value=qp.get(id)});
  if(qp.get('hideout')==='1')$('hideout').checked=true;
- (qp.get('svc')||'').split(',').forEach(s=>{const lbl=SVC_DEFS.map(d=>d[0]).find(l=>l.toLowerCase()===s.toLowerCase());
+ const svcAliases=new Map([['japanese gel','Structured / hard gel'],['hard gel / biab','Structured / hard gel']]);
+ (qp.get('svc')||'').split(',').forEach(s=>{const key=s.toLowerCase(),lbl=svcAliases.get(key)||SVC_DEFS.map(d=>d[0]).find(l=>l.toLowerCase()===key);
   if(lbl){activeSvcs.add(lbl);const c=[...chips.children].find(c=>c.textContent===lbl);if(c)setChip(c,true)}});
  ['q','hood','type','plat','max','minr','sort','hideout','availabilityService'].forEach(id=>$(id).addEventListener('input',render));
  $('reset').onclick=()=>{['q','hood','type','plat','max','minr','sort','availabilityService'].forEach(id=>$(id).value='');$('hideout').checked=false;activeSvcs.clear();[...chips.children].forEach(c=>setChip(c,false));render()};
