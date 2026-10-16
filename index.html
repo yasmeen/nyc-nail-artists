@@ -151,7 +151,7 @@ function toRows(rows){const h=rows[0].map(x=>x.trim().toLowerCase());const idx={
   o.rate=ratingNum(o.grate)||ratingNum(o.rating);
   o.hoods=o.hood?o.hood.split(/[\/,]/).map(s=>s.trim()).filter(Boolean):[];
   o.out=/ruled/i.test(o.status);
-  const sv=(o.svc+' '+o.styles+' '+o.notes).toLowerCase();
+  const sv=(o.svc+' '+o.hard+' '+o.styles+' '+o.notes).toLowerCase();
   o.svcs=SVC_DEFS.filter(([,re])=>new RegExp(re).test(sv)).map(([label])=>label);
   o.blob=Object.values(o).join(' ').toLowerCase();return o}).filter(o=>o.name)}
 function attachBooking(){const supported=new Set(['acuity','square','glossgenius','chronos']);for(const o of data){const entry=BOOKING[o.name];if(!entry)continue;o.bk=supported.has(entry.platform)?entry:null;o.ids=JSON.stringify(entry.ids);o.plat=o.plat||entry.platform;o.avservice=entry.service||'';o.verified=entry.verified||'';o.blob=Object.values(o).join(' ').toLowerCase()}}
