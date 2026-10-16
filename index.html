@@ -143,7 +143,7 @@ function tomorrowNY(){const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA'
 function bookingLink(o){const value=(o.book||'').trim();if(!value||/^(none\b|n\/a\b|dm\b|instagram\b|phone\b|call\b)/i.test(value)||(/\s/.test(value)&&!value.includes('.')))return'';return url(value)}
 function instagramLink(o){return url(o.igurl)||(o.ig?'https://instagram.com/'+o.ig.replace(/^@/,''):'')}
 function phoneLink(o){const number=(o.phone||'').replace(/[^\d+]/g,'');return /\d/.test(number)?`tel:${number}`:''}
-function manualContact(o){const bk=bookingLink(o);if(bk)return{state:'Check manually',action:bk};const phone=phoneLink(o);if(phone)return{state:'Call',action:phone};return{state:'Check Instagram',action:instagramLink(o)}}
+function manualContact(o){const bk=bookingLink(o);if(bk)return{state:'Check manually',action:bk};const phone=phoneLink(o);if(phone)return{state:'Call',action:phone};const ig=instagramLink(o);return ig?{state:'Check Instagram',action:ig}:{state:'No booking link in sheet',action:''}}
 function staleIDs(value){if(!/^\d{4}-\d{2}-\d{2}$/.test(value||''))return true;const parsed=Date.parse(value);if(!Number.isFinite(parsed)||new Date(parsed).toISOString().slice(0,10)!==value)return true;return (Date.now()-parsed)>30*24*60*60*1000}
 function availabilityState(error){return ({timeout:'Timed out',blocked:'Blocked — check manually',upstream:'Error — check manually',manual:'Check manually'})[error]||'Error — check manually'}
 function paintAvailability(items){$('availabilityResults').innerHTML=items.map(({o,state,slots=[],warning='',action})=>{const bk=bookingLink(o),ig=instagramLink(o),href=bk||ig,service=(o.avservice||'').trim();
