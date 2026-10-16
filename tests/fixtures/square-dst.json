@@ -1,0 +1,14 @@
+{
+  "availability": [
+    {
+      "start": 1793545200,
+      "end": 1793548800,
+      "available": true,
+      "segments": [
+        {
+          "employee_token": "fixture_staff"
+        }
+      ]
+    }
+  ]
+}
