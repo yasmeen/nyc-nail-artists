@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NYC Nail Artists</title>
+<style>
+:root{--bg:#faf7f5;--card:#fff;--ink:#2a2226;--mute:#7a6f74;--acc:#c2577a;--line:#eadfe3}
+*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+header{padding:24px 16px 8px;max-width:1200px;margin:auto}h1{margin:0;font-size:26px}header p{margin:4px 0 0;color:var(--mute)}
+.controls{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 16px}
+.controls .in{max-width:1200px;margin:auto;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+input,select,button{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+#q{flex:1 1 220px}label.p{display:flex;align-items:center;gap:6px;color:var(--mute);font-size:14px}label.p input{width:80px}
+button{cursor:pointer}#count{color:var(--mute);font-size:14px;margin-left:auto}
+main{max-width:1200px;margin:auto;padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.card.out{opacity:.65}.top{display:flex;justify-content:space-between;gap:8px;align-items:start}.card h2{margin:0;font-size:17px}
+.badge{font-size:12px;padding:2px 8px;border-radius:99px;background:#f3e6eb;color:var(--acc);white-space:nowrap}.badge.out{background:#eee;color:#777}
+.meta{color:var(--mute);font-size:13px}.prices{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13px}.prices b{font-weight:600;color:var(--mute)}
+.links{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}.links a{text-decoration:none;font-size:13px;padding:6px 10px;border-radius:8px;background:var(--acc);color:#fff}
+.links a.alt{background:#fff;color:var(--acc);border:1px solid var(--acc)}.note{font-size:13px}.why{font-size:13px;color:#a33}
+#msg{max-width:1200px;margin:20px auto;padding:0 16px;color:var(--mute)}
+</style></head><body>
+<header><h1>💅 NYC Nail Artists</h1><p>Live from Yasmeen's research sheet.</p></header>
+<div class="controls"><div class="in">
+<input id="q" type="search" placeholder="Search name, services, styles, notes…">
+<select id="hood"><option value="">All neighborhoods</option></select>
+<select id="type"><option value="">All types</option></select>
+<select id="status"><option value="">All statuses</option></select>
+<label class="p">Max $<input id="max" type="number" min="0" step="5" placeholder="any"></label>
+<select id="sort"><option value="">Sort: sheet order</option><option value="asc">Price: low → high</option><option value="desc">Price: high → low</option><option value="name">Name A–Z</option></select>
+<button id="reset">Reset</button><span id="count"></span>
+</div></div>
+<div id="msg">Loading…</div><main id="list"></main>
+<script>
+const SHEET_ID='1yorNY5SrbFzbGx295afxff2bSLH23DHwdH58eMOI1vw';
+const CSV_URL=new URLSearchParams(location.search).get('csv')||`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+function parseCSV(t){const r=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];
+ if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=c}
+ else if(c=='"')q=true;else if(c==','){row.push(f);f=''}else if(c=='\n'||c=='\r'){if(c=='\r'&&t[i+1]=='\n')i++;row.push(f);r.push(row);row=[];f=''}else f+=c}
+ if(f||row.length){row.push(f);r.push(row)}return r.filter(x=>x.some(v=>v.trim()))}
+const KEYS={name:'name',ig:'instagram',igurl:'instagram url',type:'type',hood:'neighborhood',addr:'address',phone:'phone',book:'booking url',plat:'booking platform',svc:'services',base:'base gel',hard:'hard gel',art:'art price',styles:'styles',rating:'rating',status:'status',why:'ruled-out',checked:'last checked',notes:'notes'};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const url=u=>{u=(u||'').trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='https://'+u;return /^https?:\/\//i.test(u)?u:''};
+const num=s=>{const m=String(s||'').match(/\$?\s*(\d+(?:\.\d+)?)/);return m?+m[1]:null};
+let data=[];const $=id=>document.getElementById(id);
+function toRows(rows){const h=rows[0].map(x=>x.trim().toLowerCase());const idx={};
+ for(const[k,p]of Object.entries(KEYS)){idx[k]=h.findIndex(x=>x===p);if(idx[k]<0)idx[k]=h.findIndex(x=>x.startsWith(p))}
+ return rows.slice(1).map((r,i)=>{const o={i};for(const k in idx)o[k]=idx[k]>=0?(r[idx[k]]||'').trim():'';
+  const ps=[num(o.base),num(o.hard)].filter(x=>x!=null);o.price=ps.length?Math.min(...ps):null;
+  o.hoods=o.hood?o.hood.split(/[\/,]/).map(s=>s.trim()).filter(Boolean):[];
+  o.out=/ruled/i.test(o.status);o.blob=Object.values(o).join(' ').toLowerCase();return o}).filter(o=>o.name)}
+function fill(id,vals){const s=$(id);[...new Set(vals)].filter(Boolean).sort().forEach(v=>s.add(new Option(v,v)))}
+function render(){const q=$('q').value.toLowerCase().trim(),h=$('hood').value,t=$('type').value,st=$('status').value,mx=parseFloat($('max').value),so=$('sort').value;
+ let L=data.filter(o=>(!q||q.split(/\s+/).every(w=>o.blob.includes(w)))&&(!h||o.hoods.includes(h))&&(!t||o.type===t)&&(!st||o.status===st)&&(isNaN(mx)||(o.price!=null&&o.price<=mx)));
+ const P=o=>o.price??(so=='asc'?Infinity:-Infinity);
+ if(so=='asc')L.sort((a,b)=>P(a)-P(b));else if(so=='desc')L.sort((a,b)=>P(b)-P(a));else if(so=='name')L.sort((a,b)=>a.name.localeCompare(b.name));
+ $('count').textContent=`${L.length} of ${data.length}`;
+ $('list').innerHTML=L.map(o=>{const ig=url(o.igurl)||(o.ig?'https://instagram.com/'+o.ig.replace(/^@/,''):''),bk=url(o.book);
+  const pr=[['Base gel',o.base],['Hard gel',o.hard],['Art',o.art]].filter(x=>x[1]).map(x=>`<b>${x[0]}</b><span>${esc(x[1])}</span>`).join('');
+  return `<article class="card${o.out?' out':''}"><div class="top"><h2>${esc(o.name)}</h2>${o.status?`<span class="badge${o.out?' out':''}">${esc(o.status)}</span>`:''}</div>
+  <div class="meta">${esc([o.type,o.hood].filter(Boolean).join(' · '))}${o.rating?' · ★ '+esc(o.rating):''}</div>
+  ${o.addr?`<div class="meta">📍 <a href="https://maps.google.com/?q=${encodeURIComponent(o.addr)}" target="_blank" rel="noopener">${esc(o.addr)}</a></div>`:''}
+  ${o.phone?`<div class="meta">📞 <a href="tel:${esc(o.phone.replace(/[^\d+]/g,''))}">${esc(o.phone)}</a></div>`:''}
+  ${o.svc?`<div class="note"><b>Services:</b> ${esc(o.svc)}</div>`:''}${pr?`<div class="prices">${pr}</div>`:''}
+  ${o.styles?`<div class="note"><b>Styles:</b> ${esc(o.styles)}</div>`:''}${o.notes?`<div class="note">${esc(o.notes)}</div>`:''}
+  ${o.out&&o.why?`<div class="why">Ruled out: ${esc(o.why)}</div>`:''}${o.checked?`<div class="meta">Last checked ${esc(o.checked)}</div>`:''}
+  <div class="links">${ig?`<a href="${esc(ig)}" target="_blank" rel="noopener">${esc(o.ig||'Instagram')}</a>`:''}${bk?`<a class="alt" href="${esc(bk)}" target="_blank" rel="noopener">Book${o.plat?' ('+esc(o.plat)+')':''}</a>`:''}</div></article>`}).join('');
+ $('msg').textContent=L.length?'':'No matches.'}
+fetch(CSV_URL).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}).then(t=>{
+ if(/^\s*</.test(t))throw new Error('sheet is not public');data=toRows(parseCSV(t));
+ fill('hood',data.flatMap(o=>o.hoods));fill('type',data.map(o=>o.type));fill('status',data.map(o=>o.status));
+ ['q','hood','type','status','max','sort'].forEach(id=>$(id).addEventListener('input',render));
+ $('reset').onclick=()=>{['q','hood','type','status','max','sort'].forEach(id=>$(id).value='');render()};render()
+}).catch(e=>{$('msg').textContent='Could not load the sheet ('+e.message+'). Make sure it is shared as "Anyone with the link can view".'});
+</script></body></html>
