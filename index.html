@@ -47,6 +47,7 @@ main{max-width:1200px;margin:auto;padding:16px;display:grid;grid-template-column
 #mapwrap{max-width:1200px;margin:14px auto;padding:0 16px}#map{height:72vh;min-height:420px;border:1px solid var(--line);border-radius:14px}
 .maplegend{color:var(--mute);font-size:13px;margin:6px 0 0}.pop{display:flex;gap:10px;align-items:center;min-width:200px}.pop img{width:44px;height:44px;border-radius:50%;object-fit:cover}.pop b{display:block;font-size:14px}.pop .meta{font-size:12px}.pop button{margin-top:6px;font-size:12px;padding:4px 10px;color:var(--acc);border-color:var(--acc)}
 .price{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fdf9fa;display:grid;gap:2px}.price.none{color:var(--mute);font-size:13px}
+.pdate{font-size:12px;color:var(--mute)}.pdate a{color:inherit}.pdate .warning{color:#a33}
 .pline{display:flex;justify-content:space-between;gap:8px;font-size:14px}.pline span{color:var(--mute)}.pline.tot{border-top:1px dashed var(--line);margin-top:4px;padding-top:4px}.pline.tot b{color:var(--acc);font-size:16px}
 .incl{color:#2f8a57}.how{font-size:12px;color:var(--mute)}.vbadge{font-size:12px;background:#2f8a57;color:#fff;border-radius:99px;padding:2px 8px;font-weight:600;align-self:center}
 #map .leaflet-tile-pane{filter:grayscale(.85) contrast(.95) brightness(1.04)}
@@ -109,7 +110,7 @@ function parseCSV(t){const r=[];let row=[],f='',q=false;for(let i=0;i<t.length;i
  if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=c}
  else if(c=='"')q=true;else if(c==','){row.push(f);f=''}else if(c=='\n'||c=='\r'){if(c=='\r'&&t[i+1]=='\n')i++;row.push(f);r.push(row);row=[];f=''}else f+=c}
  if(f||row.length){row.push(f);r.push(row)}return r.filter(x=>x.some(v=>v.trim()))}
-const KEYS={name:'name',ig:'instagram',igurl:'instagram url',type:'type',hood:'neighborhood',addr:'address',phone:'phone',book:'booking url',plat:'booking platform',svc:'services',base:'base gel',hard:'hard gel',art:'art price',styles:'styles',rating:'rating',grate:'google rating',maps:'maps url',status:'status',why:'ruled-out',checked:'last checked',avail:'availability',notes:'notes',photos:'photo posts',ids:'platform ids (json)',avservice:'availability service',avenabled:'availability enabled',verified:'ids last verified',artadd:'art add-on'};
+const KEYS={name:'name',ig:'instagram',igurl:'instagram url',type:'type',hood:'neighborhood',addr:'address',phone:'phone',book:'booking url',plat:'booking platform',svc:'services',base:'base gel',hard:'hard gel',art:'art price',styles:'styles',rating:'rating',grate:'google rating',maps:'maps url',status:'status',why:'ruled-out',checked:'last checked',avail:'availability',notes:'notes',photos:'photo posts',artadd:'art add-on',pupd:'prices updated',psrc:'price source'};
 const KEY_VALUES=Object.values(KEYS);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const url=u=>{u=(u||'').trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='https://'+u;return /^https?:\/\//i.test(u)?u:''};
@@ -117,7 +118,8 @@ const num=s=>{const m=String(s||'').match(/\$?\s*(\d+(?:\.\d+)?)/);return m?+m[1
 const ratingNum=s=>{const m=String(s||'').match(/(\d(?:\.\d+)?)/);return m?+m[1]:null};
 const SVC_DEFS=[['Russian','russian'],['Japanese gel','japanese'],['Hard gel / BIAB','hard gel|builder|biab|structure'],['Gel-X','gel-?x'],['Acrylic','acrylic'],['Nail art','nail art|design|hand-paint']];
 let data=[],activeSvcs=new Set(),checking=false;const $=id=>document.getElementById(id);
-let PHOTOS={};fetch('photos.json').then(r=>r.ok?r.json():{}).then(p=>{PHOTOS=p||{};if(data.length)render()}).catch(()=>{});
+let PHOTOS={},BOOKING={};fetch('photos.json').then(r=>r.ok?r.json():{}).then(p=>{PHOTOS=p||{};if(data.length)render()}).catch(()=>{});
+const bookingPromise=fetch('booking.json').then(r=>r.ok?r.json():{}).catch(()=>({}));
 function valueOf(o){const m=o.price,t=(o.art||'').toLowerCase(),col=(o.artadd||'').replace(/[$,\s]/g,'');let add=null,incl=false,how='';
  if(col!==''&&!isNaN(+col)){add=+col;incl=add===0;how=incl?'art included (per sheet)':`+$${add} art (per sheet)`}
  else if(/not\s+incl/.test(t))how='art costs extra — price not listed';
@@ -137,6 +139,15 @@ function toRows(rows){const h=rows[0].map(x=>x.trim().toLowerCase());const idx={
   const sv=(o.svc+' '+o.styles+' '+o.notes).toLowerCase();
   o.svcs=SVC_DEFS.filter(([,re])=>new RegExp(re).test(sv)).map(([label])=>label);
   o.blob=Object.values(o).join(' ').toLowerCase();return o}).filter(o=>o.name)}
+function attachBooking(){const supported=new Set(['acuity','square','glossgenius','chronos']);for(const o of data){const entry=BOOKING[o.name];if(!entry)continue;o.bk=supported.has(entry.platform)?entry:null;o.ids=JSON.stringify(entry.ids);o.plat=o.plat||entry.platform;o.avservice=entry.service||'';o.verified=entry.verified||'';o.blob=Object.values(o).join(' ').toLowerCase()}}
+function priceFreshness(o){
+ if(!o.pupd)return'<div class="pdate">Price date unknown</div>';
+ const date=new Date(o.pupd);if(!Number.isFinite(date.getTime()))return'<div class="pdate">Price date unknown</div>';
+ const source=(o.psrc||'').trim(),linked=/^https?:\/\//i.test(source);
+ const label=source?(linked?`<a href="${esc(source)}" target="_blank" rel="noopener">${esc(source)}</a>`:esc(source)):'';
+ const stale=Date.now()-date.getTime()>180*24*60*60*1000;
+ return `<div class="pdate">Prices updated ${date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'})}${source?' · '+label:''}${stale?` <span class="warning">— may be outdated</span>`:''}</div>`
+}
 function igHandle(o){const h=(o.ig||'').replace(/^@/,'').trim()||((o.igurl||'').match(/instagram\.com\/([^/?#]+)/i)||[])[1]||'';return /^[A-Za-z0-9._]{1,30}$/.test(h)?h:''}
 function photosHTML(o){const posts=[...new Set([...(o.photos||'').matchAll(/instagram\.com\/(?:[^/\s]+\/)?(?:p|reel)\/([A-Za-z0-9_-]+)/gi)].map(m=>m[1]))];
  if(posts.length)return `<div class="photos posts">${posts.map(c=>`<iframe src="https://www.instagram.com/p/${c}/embed/" loading="lazy" scrolling="no" title="${esc(o.name)} Instagram post"></iframe>`).join('')}</div>`;
@@ -174,7 +185,7 @@ function render(){const L=filtered();
   const pr=[['Base gel',o.base],['Hard gel',o.hard],['Art',o.art]].filter(x=>x[1]).map(x=>`<b>${x[0]}</b><span>${esc(x[1])}</span>`).join(''),v=o.val;
   const pbox=o.price!=null||o.art?`<div class="price"><div class="pline"><span>Manicure</span><b>${o.price!=null?'$'+o.price:'not listed'}</b></div><div class="pline"><span>Nail art</span><b>${v.incl?'<span class="incl">included</span>':v.add!=null?'+$'+v.add:'not listed'}</b></div>${v.total!=null?`<div class="pline tot"><span>Est. set with art</span><b>$${v.total}</b></div>`:''}${v.how?`<div class="how">${esc(v.how)}</div>`:''}</div>`:'<div class="price none">No prices in the sheet yet</div>';
   return `<article class="card" id="card-${o.i}">${photosHTML(o)}<div class="top"><div class="who">${hv?`<span class="av" aria-hidden="true">${esc(o.name.trim()[0].toUpperCase())}${PHOTOS[hv]?`<img src="${PHOTOS[hv]}" alt="" loading="lazy" onerror="this.remove()">`:''}</span>`:''}
-   <div class="ttl"><h2>${esc(o.name)}</h2>${o.price!=null?`<span class="from">from $${o.price}</span>`:''}${o.vrank?`<span class="vbadge">Best value #${o.vrank}</span>`:''}</div></div></div>${pbox}
+   <div class="ttl"><h2>${esc(o.name)}</h2>${o.price!=null?`<span class="from">from $${o.price}</span>`:''}${o.vrank?`<span class="vbadge">Best value #${o.vrank}</span>`:''}</div></div></div>${pbox}${priceFreshness(o)}
   ${o.rate!=null?`<div>${stars(o.rate)}${o.grate?` <span class="meta">Google</span>`:''}</div>`:''}
   <div class="meta">${esc([o.type,o.hood].filter(Boolean).join(' · '))}</div>
   ${o.svcs.length?`<div class="tags">${o.svcs.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div>`:''}
@@ -214,7 +225,7 @@ function phoneLink(o){const number=(o.phone||'').replace(/[^\d+]/g,'');return /\
 function manualContact(o){const bk=bookingLink(o);if(bk)return{state:'Check manually',action:bk};const phone=phoneLink(o);if(phone)return{state:'Call',action:phone};const ig=instagramLink(o);return ig?{state:'Check Instagram',action:ig}:{state:'No booking link in sheet',action:''}}
 function staleIDs(value){if(!/^\d{4}-\d{2}-\d{2}$/.test(value||''))return true;const parsed=Date.parse(value);if(!Number.isFinite(parsed)||new Date(parsed).toISOString().slice(0,10)!==value)return true;return (Date.now()-parsed)>30*24*60*60*1000}
 function availabilityState(error){return ({timeout:'Timed out',blocked:'Blocked — check manually',upstream:'Error — check manually',manual:'Check manually'})[error]||'Error — check manually'}
-const onlineCheck=o=>/^y$/i.test(o.avenabled)&&!!o.ids;
+const onlineCheck=o=>!!o.bk;
 function availabilityRow({o,state,slots=[],warning='',action}){const bk=bookingLink(o),ig=instagramLink(o),href=bk||ig,service=(o.avservice||'').trim();
  const chips=slots.map(slot=>{const time=new Date(slot.start).toLocaleTimeString('en-US',{timeZone:'America/New_York',hour:'numeric',minute:'2-digit'});const title=slot.staff?` title="${esc(slot.staff)}"`:'';return href?`<a class="slot" href="${esc(href)}" target="_blank" rel="noopener"${title}>${esc(time)}</a>`:`<span class="slot"${title}>${esc(time)}</span>`}).join('');
  const label=state==='Loading…'?`<span class="spinner"></span>${esc(state)}`:esc(state),target=action&&!action.startsWith('tel:')?' target="_blank" rel="noopener"':'';
@@ -228,7 +239,7 @@ const addDays=(d,n)=>{const t=new Date(d+'T12:00:00Z');t.setUTCDate(t.getUTCDate
 const nyHour=x=>+new Date(x).toLocaleString('en-US',{timeZone:'America/New_York',hour:'numeric',hourCycle:'h23'});
 const nyTime=x=>new Date(x).toLocaleTimeString('en-US',{timeZone:'America/New_York',hour:'numeric',minute:'2-digit'});
 async function fetchDay(o,ids,date,from,to){const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),8000);
- try{const r=await fetch(API_URL,{method:'POST',headers:{'content-type':'application/json'},signal:controller.signal,body:JSON.stringify({platform:o.plat,ids,date,...(from?{from}:{}),...(to?{to}:{})})});if(!r.ok)throw new Error('request failed');
+ try{const r=await fetch(API_URL,{method:'POST',headers:{'content-type':'application/json'},signal:controller.signal,body:JSON.stringify({platform:o.bk.platform,ids,date,...(from?{from}:{}),...(to?{to}:{})})});if(!r.ok)throw new Error('request failed');
   const j=await r.json();if(j.error)return{error:j.error};return{slots:(Array.isArray(j.slots)?j.slots:[]).map(x=>({...x,date}))}}
  catch{return{error:controller.signal.aborted?'timeout':'upstream'}}finally{clearTimeout(timer)}}
 function stateHTML({state,action}){const label=state==='Loading…'?`<span class="spinner"></span>${esc(state)}`:esc(state),target=action&&!action.startsWith('tel:')?' target="_blank" rel="noopener"':'';return action?`<a href="${esc(action)}"${target}>${label}</a>`:label}
@@ -254,8 +265,8 @@ async function checkAvailability(){if(checking)return;checking=true;const button
   const err=res.find(r=>r.error);if(err&&!item.slots.length){item.state=availabilityState(err.error);if(item.state.includes('check manually'))item.action=bk;return}
   item.state=item.slots.length?`${item.slots.length} opening${item.slots.length>1?'s':''}`:dates.length>1?'No openings in these 7 days':'No openings that day'}));
  paintAvailability(items,dates);checking=false;button.disabled=false;button.textContent='Check availability'}
-fetch(CSV_URL).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}).then(t=>{
- if(/^\s*</.test(t))throw new Error('sheet is not public');data=toRows(parseCSV(t));
+fetch(CSV_URL).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}).then(async t=>{
+ if(/^\s*</.test(t))throw new Error('sheet is not public');data=toRows(parseCSV(t));BOOKING=await bookingPromise;attachBooking();
  fill('hood',data.flatMap(o=>o.hoods));fill('type',data.map(o=>o.type));fill('plat',data.map(o=>o.plat));fill('availabilityService',data.map(o=>o.avservice));
  const chips=$('svcchips');
  SVC_DEFS.forEach(([label])=>{const c=document.createElement('button');c.type='button';c.className='chip';c.textContent=label;c.setAttribute('aria-pressed','false');

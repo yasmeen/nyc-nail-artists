@@ -1,21 +1,21 @@
 # Adding a place with live availability
 
-The spreadsheet is the only place to store booking-platform IDs. Do not add a place's IDs or service to application code. Enable a row only after confirming the exact service and IDs on its public booking page.
+The sheet is directory data only. Store supported booking-platform IDs in root `booking.json`, keyed by the exact place `Name` from the sheet. Supported entries are checked on demand automatically; do not add availability columns to the sheet.
 
-## Spreadsheet fields
+Add an entry in this shape after verifying the public IDs. The UI service selector filters places; the service ID in `ids` determines what is queried.
 
-Fill these four columns:
-
-- `Platform IDs (JSON)`: valid JSON object with the shape below.
-- `Availability service`: readable service name shown in the results list.
-- `Availability enabled`: `Y` to query on demand, or `N` to leave manual.
-- `IDs last verified`: `YYYY-MM-DD`. The UI warns when an enabled row is missing this date or it is over 30 days old.
-
-The service choice sent upstream is the service encoded in the IDs. The UI service selector filters the places being checked; it does not change a platform service ID.
+```json
+{
+  "platform": "acuity",
+  "ids": { "subdomain": "example", "owner": "public-owner", "appointmentTypeId": 123 },
+  "service": "Hard Gel Manicure",
+  "verified": "2026-10-16"
+}
+```
 
 ## Finding IDs and required JSON
 
-Use the provider's public booking page and inspect its page data or read-only public requests. Never submit a booking, evade a captcha, or use private account credentials. If the public flow is blocked or does not expose stable identifiers, leave availability disabled and use the place's booking link or Instagram.
+Use the provider's public booking page and inspect its page data or read-only public requests. Never submit a booking, evade a captcha, or use private account credentials. If the public flow is blocked or does not expose stable identifiers, omit the entry and use the place's booking link or Instagram.
 
 ### Acuity
 
@@ -83,13 +83,12 @@ The public location page identifies the location slug. Read its public `/api/ser
 
 The adapter obtains the public session/XSRF cookies from the location's services page and uses them only for its read-only availability request. Cookies and XSRF values must never be placed in the sheet.
 
-## Verification before enabling
+## Verification before adding an entry
 
 1. Confirm the platform, service label, location, and staff scope on the public booking page.
-2. Paste valid JSON in `Platform IDs (JSON)` and set `Availability enabled` to `N` while reviewing it.
-3. Set `IDs last verified` to today's date after confirming the IDs.
-4. Run `npm run smoke -- --csv test.csv` or check locally with the dev mock before setting `Y`.
-5. If a provider returns a captcha, denial, or unstable IDs, keep the row manual. Do not retry repeatedly.
+2. Add a valid JSON entry to `booking.json` with the platform, IDs, service label, and today's verification date.
+3. Run `npm run smoke` or check locally with the dev mock.
+4. If a provider returns a captcha, denial, or unstable IDs, omit the entry and keep the place manual. Do not retry repeatedly.
 
 ## Photos
 
