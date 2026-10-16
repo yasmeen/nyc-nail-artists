@@ -26,7 +26,7 @@ main{max-width:1200px;margin:auto;padding:16px;display:grid;grid-template-column
 #availabilityResults{display:grid;gap:8px;margin-top:10px}
 .availability-row{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;grid-template-columns:minmax(160px,1fr) minmax(160px,1fr) 2fr;gap:8px;align-items:center}
 .availability-name{font-weight:650}.availability-service,.availability-state{font-size:13px;color:var(--mute)}
-.availability-state{color:var(--ink)}.stale{font-size:12px;color:#9a5b17;margin-left:6px}
+.availability-state{color:var(--ink)}.availability-state a{color:var(--acc);text-decoration:none}.stale{font-size:12px;color:#9a5b17;margin-left:6px}
 .slots{display:flex;flex-wrap:wrap;gap:6px}.slot{font-size:13px;text-decoration:none;padding:4px 8px;border-radius:999px;background:#f3e6eb;color:var(--acc)}
 .availability-empty{color:var(--mute);font-size:13px;padding:6px}
 .spinner{display:inline-block;width:12px;height:12px;border:2px solid var(--line);border-top-color:var(--acc);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px;margin-right:5px}
@@ -91,21 +91,25 @@ function render(){const q=$('q').value.toLowerCase().trim(),h=$('hood').value,t=
   <div class="links">${ig?`<a href="${esc(ig)}" target="_blank" rel="noopener">${esc(o.ig||'Instagram')}</a>`:''}${bk?`<a class="alt" href="${esc(bk)}" target="_blank" rel="noopener">Book${o.plat?' ('+esc(o.plat)+')':''}</a>`:''}</div></article>`}).join('');
  $('msg').textContent=L.length?'':'No matches.'}
 function tomorrowNY(){const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));const d=new Date(Date.UTC(+p.year,+p.month-1,+p.day+1));return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`}
-function bookingLink(o){const value=(o.book||'').trim();if(!value||/^(none\b|n\/a\b|dm\b|instagram\b)/i.test(value))return'';return url(value)}
+function bookingLink(o){const value=(o.book||'').trim();if(!value||/^(none\b|n\/a\b|dm\b|instagram\b|phone\b|call\b)/i.test(value)||(/\s/.test(value)&&!value.includes('.')))return'';return url(value)}
+function instagramLink(o){return url(o.igurl)||(o.ig?'https://instagram.com/'+o.ig.replace(/^@/,''):'')}
+function phoneLink(o){const number=(o.phone||'').replace(/[^\d+]/g,'');return /\d/.test(number)?`tel:${number}`:''}
+function manualContact(o){const bk=bookingLink(o);if(bk)return{state:'Check manually',action:bk};const phone=phoneLink(o);if(phone)return{state:'Call',action:phone};return{state:'Check Instagram',action:instagramLink(o)}}
 function availabilityRows(){const q=$('q').value.toLowerCase().trim(),h=$('hood').value,t=$('type').value,st=$('status').value,mx=parseFloat($('max').value),so=$('sort').value,service=$('availabilityService').value;
  let L=data.filter(o=>!o.out&&(!q||q.split(/\s+/).every(w=>o.blob.includes(w)))&&(!h||o.hoods.includes(h))&&(!t||o.type===t)&&(!st||o.status===st)&&(isNaN(mx)||(o.price!=null&&o.price<=mx))&&(!service||o.avservice===service));
  const P=o=>o.price??(so=='asc'?Infinity:-Infinity);if(so=='asc')L.sort((a,b)=>P(a)-P(b));else if(so=='desc')L.sort((a,b)=>P(b)-P(a));else if(so=='name')L.sort((a,b)=>a.name.localeCompare(b.name));return L}
 function staleIDs(value){if(!/^\d{4}-\d{2}-\d{2}$/.test(value||''))return true;const parsed=Date.parse(value);if(!Number.isFinite(parsed)||new Date(parsed).toISOString().slice(0,10)!==value)return true;return (Date.now()-parsed)>30*24*60*60*1000}
 function availabilityState(error){return ({timeout:'Timed out',blocked:'Blocked — check manually',upstream:'Error — check manually',manual:'Check manually'})[error]||'Error — check manually'}
-function paintAvailability(items){$('availabilityResults').innerHTML=items.map(({o,state,slots=[],warning='',action})=>{const bk=bookingLink(o),ig=url(o.igurl)||(o.ig?'https://instagram.com/'+o.ig.replace(/^@/,''):''),href=bk||ig;
+function paintAvailability(items){$('availabilityResults').innerHTML=items.map(({o,state,slots=[],warning='',action})=>{const bk=bookingLink(o),ig=instagramLink(o),href=bk||ig,service=(o.avservice||'').trim();
  const chips=slots.map(slot=>{const time=new Date(slot.start).toLocaleTimeString('en-US',{timeZone:'America/New_York',hour:'numeric',minute:'2-digit'});const title=slot.staff?` title="${esc(slot.staff)}"`:'';return href?`<a class="slot" href="${esc(href)}" target="_blank" rel="noopener"${title}>${esc(time)}</a>`:`<span class="slot"${title}>${esc(time)}</span>`}).join('');
- const label=state==='Loading…'?`<span class="spinner"></span>${esc(state)}`:esc(state);const stateHtml=action?`<a href="${esc(action)}" target="_blank" rel="noopener">${label}</a>`:label;
- return `<article class="availability-row"><div><div class="availability-name">${esc(o.name)}${warning?`<span class="stale">${esc(warning)}</span>`:''}</div><div class="availability-service">${esc(o.avservice||'Any service')}</div></div><div class="availability-state">${stateHtml}</div><div class="slots">${chips}</div></article>`}).join('')||'<div class="availability-empty">No places to check with these filters.</div>'}
+ const label=state==='Loading…'?`<span class="spinner"></span>${esc(state)}`:esc(state),target=action&&!action.startsWith('tel:')?' target="_blank" rel="noopener"':'';
+ const stateHtml=action?`<a href="${esc(action)}"${target}>${label}</a>`:label;
+ return `<article class="availability-row"><div><div class="availability-name">${esc(o.name)}${warning?`<span class="stale">${esc(warning)}</span>`:''}</div>${service?`<div class="availability-service">${esc(service)}</div>`:''}</div><div class="availability-state">${stateHtml}</div><div class="slots">${chips}</div></article>`}).join('')||'<div class="availability-empty">No places to check with these filters.</div>'}
 async function checkAvailability(){if(checking)return;checking=true;const button=$('checkAvailability');button.disabled=true;button.textContent='Checking…';
  const places=availabilityRows(),selectedDate=$('availabilityDate').value;const from=$('availabilityFrom').value,to=$('availabilityTo').value;
  const items=places.map(o=>({o,state:'',slots:[],action:'',warning:/^y$/i.test(o.avenabled)&&staleIDs(o.verified)?'IDs may be stale':''}));paintAvailability(items.map(x=>({...x,state:'Loading…'})));
- await Promise.all(items.map(async item=>{const o=item.o,bk=bookingLink(o),ig=url(o.igurl)||(o.ig?'https://instagram.com/'+o.ig.replace(/^@/,''):'');if(!/^y$/i.test(o.avenabled)){item.state=bk?'Check manually':'Check Instagram';item.action=bk||ig;return}
- if(!o.ids){item.state=bk?'Check manually':'Check Instagram';item.action=bk||ig;return}
+ await Promise.all(items.map(async item=>{const o=item.o;if(!/^y$/i.test(o.avenabled)){Object.assign(item,manualContact(o));return}
+ if(!o.ids){Object.assign(item,manualContact(o));return}
  let ids;try{ids=JSON.parse(o.ids)}catch{item.state='IDs invalid';return}
  if(!ids||typeof ids!=='object'||Array.isArray(ids)){item.state='IDs invalid';return}
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),8000);

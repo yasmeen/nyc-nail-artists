@@ -5,6 +5,7 @@ import * as acuity from '../lib/adapters/acuity.js';
 import * as square from '../lib/adapters/square.js';
 import * as glossgenius from '../lib/adapters/glossgenius.js';
 import * as chronos from '../lib/adapters/chronos.js';
+import { nyDate } from '../lib/tz.js';
 
 const fixture = async name => JSON.parse(await readFile(new URL(`./fixtures/${name}.json`, import.meta.url), 'utf8'));
 
@@ -50,8 +51,11 @@ test('GlossGenius filters slots by New York day, not the upstream UTC date', asy
 test('GlossGenius normalizes the saved live response', async () => {
   const raw = await fixture('glossgenius');
   const slots = glossgenius.normalize(raw, { ids: { staffNames: {} }, date: '2026-10-17' });
-  assert.ok(Array.isArray(slots));
+  const dates = [...new Set(raw.data.map(item => nyDate(Date.parse(item.starts_at))))].sort();
+  assert.deepEqual(dates, ['2026-10-16', '2026-10-17']);
+  assert.ok(slots.length > 0);
   assert.ok(slots.every(slot => slot.start.startsWith('2026-10-17T')));
+  assert.equal(slots.length, raw.data.filter(item => nyDate(Date.parse(item.starts_at)) === '2026-10-17').length);
 });
 
 test('Chronos seconds after NY midnight normalize across the DST boundary', async () => {
