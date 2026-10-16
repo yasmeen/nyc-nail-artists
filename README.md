@@ -33,6 +33,11 @@ Add these headers to the sheet; header matching is case-insensitive and accepts 
 
 New or updated IDs should be checked against the provider's public booking page before enabling a row. The UI flags enabled IDs older than 30 days or without a verification date.
 
+## Map, prices and value
+
+- **Map pins** come from `geo.json`, which maps each place Name to `[lat, lng]`. Rebuild it after adding addresses: export the sheet as CSV, then run `python3 tools/geocode.py --csv sheet.csv` (it uses OpenStreetMap Nominatim, bounded to Manhattan, at 1 request/second). Places with no street address get an **approx.** pin near their neighborhood's center (dashed outline).
+- **Est. set with art** = the lowest manicure price (`Base gel` / `Hard gel`) plus the nail-art add-on parsed from `Art price`. The parsing works like this: "incl" means art is included, "$5/finger" is counted as ×10 nails, and "sets"/prices at or above the manicure price are treated as a full art-set price. Every total is an estimate. An optional `Art add-on $` column overrides the parse: enter a number, with `0` meaning art is included. **Best value** ranks the visible places by this total.
+
 ## Local development and checks
 
 Node 24+ is recommended. There are no npm dependencies.
