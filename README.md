@@ -4,7 +4,8 @@ Searchable, filterable directory of NYC nail artists, read live from a Google Sh
 
 - Data: Google Sheet `1yorNY5SrbFzbGx295afxff2bSLH23DHwdH58eMOI1vw`, fetched via `gviz/tq?tqx=out:csv`. The sheet must be shared "Anyone with the link can view".
 - The sheet is the source of truth for place IDs and services; platform IDs are not embedded in the app. See [the sheet columns](#availability-sheet-columns) and [the place onboarding guide](docs/adding-a-place.md).
-- Filters: text search, neighborhood, type, status, max price (lowest of base/hard gel price). Sort by price or name.
+- Instagram photos on every card (profile embed, or curated `Photo posts` URLs).
+- Filters: text search, neighborhood, type, max price (lowest of base/hard gel price). Sort by price or name.
 - Availability is checked only after clicking **Check availability**. Results query supported public endpoints for enabled rows, use a three-minute in-memory cache, and never make or modify bookings. There is no scheduled polling.
 
 ## Architecture and deployment

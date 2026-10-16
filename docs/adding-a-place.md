@@ -90,3 +90,7 @@ The adapter obtains the public session/XSRF cookies from the location's services
 3. Set `IDs last verified` to today's date after confirming the IDs.
 4. Run `npm run smoke -- --csv test.csv` or check locally with the dev mock before setting `Y`.
 5. If a provider returns a captcha, denial, or unstable IDs, keep the row manual. Do not retry repeatedly.
+
+## Photos
+
+Each card shows the Instagram profile's six most recent posts via Instagram's public profile embed, using the `Instagram` handle (or `Instagram URL`). To show specific nail-work posts instead, add a `Photo posts` column and paste one or more Instagram post/reel URLs (space- or comma-separated); those render as a swipeable strip of post embeds.
