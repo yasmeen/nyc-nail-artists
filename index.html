@@ -96,6 +96,7 @@ function parseCSV(t){const r=[];let row=[],f='',q=false;for(let i=0;i<t.length;i
  else if(c=='"')q=true;else if(c==','){row.push(f);f=''}else if(c=='\n'||c=='\r'){if(c=='\r'&&t[i+1]=='\n')i++;row.push(f);r.push(row);row=[];f=''}else f+=c}
  if(f||row.length){row.push(f);r.push(row)}return r.filter(x=>x.some(v=>v.trim()))}
 const KEYS={name:'name',ig:'instagram',igurl:'instagram url',type:'type',hood:'neighborhood',addr:'address',phone:'phone',book:'booking url',plat:'booking platform',svc:'services',base:'base gel',hard:'hard gel',art:'art price',styles:'styles',rating:'rating',grate:'google rating',maps:'maps url',status:'status',why:'ruled-out',checked:'last checked',avail:'availability',notes:'notes',photos:'photo posts',ids:'platform ids (json)',avservice:'availability service',avenabled:'availability enabled',verified:'ids last verified'};
+const KEY_VALUES=Object.values(KEYS);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const url=u=>{u=(u||'').trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='https://'+u;return /^https?:\/\//i.test(u)?u:''};
 const num=s=>{const m=String(s||'').match(/\$?\s*(\d+(?:\.\d+)?)/);return m?+m[1]:null};
@@ -104,7 +105,7 @@ const SVC_DEFS=[['Russian','russian'],['Japanese gel','japanese'],['Hard gel / B
 let data=[],activeSvcs=new Set(),checking=false;const $=id=>document.getElementById(id);
 let PHOTOS={};fetch('photos.json').then(r=>r.ok?r.json():{}).then(p=>{PHOTOS=p||{};if(data.length)render()}).catch(()=>{});
 function toRows(rows){const h=rows[0].map(x=>x.trim().toLowerCase());const idx={};
- for(const[k,p]of Object.entries(KEYS)){idx[k]=h.findIndex(x=>x===p);if(idx[k]<0)idx[k]=h.findIndex(x=>x.startsWith(p))}
+ for(const[k,p]of Object.entries(KEYS)){idx[k]=h.findIndex(x=>x===p);if(idx[k]<0)idx[k]=h.findIndex(x=>x.startsWith(p)&&!KEY_VALUES.includes(x))}
  return rows.slice(1).map((r,i)=>{const o={i};for(const k in idx)o[k]=idx[k]>=0?(r[idx[k]]||'').trim():'';
   const ps=[num(o.base),num(o.hard)].filter(x=>x!=null);o.price=ps.length?Math.min(...ps):null;
   o.rate=ratingNum(o.grate)||ratingNum(o.rating);
