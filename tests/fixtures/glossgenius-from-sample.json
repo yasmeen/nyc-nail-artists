@@ -1,0 +1,70 @@
+{
+  "data": [
+    {
+      "starts_at": "2026-10-16T21:45:00.000Z",
+      "ends_at": "2026-10-16T22:55:00.000Z",
+      "events": [
+        {
+          "service_token": "fixture_service",
+          "space_member_tokens": [
+            "fixture_staff"
+          ],
+          "timing": {
+            "starts_at": "2026-10-16T21:45:00.000Z",
+            "client_starts_at": "2026-10-16T21:45:00.000Z",
+            "processing_time": {
+              "starts_at": "2026-10-16T22:45:00.000Z",
+              "ends_at": "2026-10-16T22:50:00.000Z"
+            },
+            "client_ends_at": "2026-10-16T22:50:00.000Z",
+            "ends_at": "2026-10-16T22:55:00.000Z"
+          }
+        }
+      ]
+    },
+    {
+      "starts_at": "2026-10-17T16:30:00.000Z",
+      "ends_at": "2026-10-17T17:40:00.000Z",
+      "events": [
+        {
+          "service_token": "fixture_service",
+          "space_member_tokens": [
+            "fixture_staff"
+          ],
+          "timing": {
+            "starts_at": "2026-10-17T16:30:00.000Z",
+            "client_starts_at": "2026-10-17T16:30:00.000Z",
+            "processing_time": {
+              "starts_at": "2026-10-17T17:30:00.000Z",
+              "ends_at": "2026-10-17T17:35:00.000Z"
+            },
+            "client_ends_at": "2026-10-17T17:35:00.000Z",
+            "ends_at": "2026-10-17T17:40:00.000Z"
+          }
+        }
+      ]
+    },
+    {
+      "starts_at": "2026-10-18T14:00:00.000Z",
+      "ends_at": "2026-10-18T15:10:00.000Z",
+      "events": [
+        {
+          "service_token": "fixture_service",
+          "space_member_tokens": [
+            "fixture_staff"
+          ],
+          "timing": {
+            "starts_at": "2026-10-18T14:00:00.000Z",
+            "client_starts_at": "2026-10-18T14:00:00.000Z",
+            "processing_time": {
+              "starts_at": "2026-10-18T15:00:00.000Z",
+              "ends_at": "2026-10-18T15:05:00.000Z"
+            },
+            "client_ends_at": "2026-10-18T15:05:00.000Z",
+            "ends_at": "2026-10-18T15:10:00.000Z"
+          }
+        }
+      ]
+    }
+  ]
+}

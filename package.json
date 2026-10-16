@@ -1,0 +1,8 @@
+{
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "dev": "node scripts/dev.mjs",
+    "smoke": "node scripts/smoke.mjs"
+  }
+}

@@ -1,0 +1,365 @@
+{
+  "data": [
+    {
+      "starts_at": "2026-10-16T21:45:00.000Z",
+      "ends_at": "2026-10-16T22:55:00.000Z",
+      "client_starts_at": "2026-10-16T21:45:00.000Z",
+      "client_ends_at": "2026-10-16T22:50:00.000Z",
+      "events": [
+        {
+          "service_token": "fixture_service",
+          "space_member_tokens": [
+            "fixture_staff"
+          ],
+          "timing": {
+            "starts_at": "2026-10-16T21:45:00.000Z",
+            "client_starts_at": "2026-10-16T21:45:00.000Z",
+            "processing_time": {
+              "starts_at": "2026-10-16T22:45:00.000Z",
+              "ends_at": "2026-10-16T22:50:00.000Z"
+            },
+            "client_ends_at": "2026-10-16T22:50:00.000Z",
+            "ends_at": "2026-10-16T22:55:00.000Z"
+          }
+        }
+      ]
+    },
+    {
+      "starts_at": "2026-10-16T22:00:00.000Z",
+      "ends_at": "2026-10-16T23:10:00.000Z",
+      "client_starts_at": "2026-10-16T22:00:00.000Z",
+      "client_ends_at": "2026-10-16T23:05:00.000Z",
+      "events": [
+        {
+          "service_token": "fixture_service",
+          "space_member_tokens": [
+            "fixture_staff"
+          ],
+          "timing": {
+            "starts_at": "2026-10-16T22:00:00.000Z",
+            "client_starts_at": "2026-10-16T22:00:00.000Z",
+            "processing_time": {
+              "starts_at": "2026-10-16T23:00:00.000Z",
+              "ends_at": "2026-10-16T23:05:00.000Z"
+            },
+            "client_ends_at": "2026-10-16T23:05:00.000Z",
+            "ends_at": "2026-10-16T23:10:00.000Z"
+          }
+        }
+      ]
+    },
+    {
+      "starts_at": "2026-10-16T22:15:00.000Z",
+      "ends_at": "2026-10-16T23:25:00.000Z",
+      "client_starts_at": "2026-10-16T22:15:00.000Z",
+      "client_ends_at": "2026-10-16T23:20:00.000Z",
+      "events": [
+        {
+          "service_token": "fixture_service",
+          "space_member_tokens": [
+            "fixture_staff"
+          ],
+          "timing": {
+            "starts_at": "2026-10-16T22:15:00.000Z",
+            "client_starts_at": "2026-10-16T22:15:00.000Z",
+            "processing_time": {
+              "starts_at": "2026-10-16T23:15:00.000Z",
+              "ends_at": "2026-10-16T23:20:00.000Z"
+            },
+            "client_ends_at": "2026-10-16T23:20:00.000Z",
+            "ends_at": "2026-10-16T23:25:00.000Z"
+          }
+        }
+      ]
+    },
+    {
+      "starts_at": "2026-10-16T22:30:00.000Z",
+      "ends_at": "2026-10-16T23:40:00.000Z",
+      "client_starts_at": "2026-10-16T22:30:00.000Z",
+      "client_ends_at": "2026-10-16T23:35:00.000Z",
+      "events": [
+        {
+          "service_token": "fixture_service",
+          "space_member_tokens": [
+            "fixture_staff"
+          ],
+          "timing": {
+            "starts_at": "2026-10-16T22:30:00.000Z",
+            "client_starts_at": "2026-10-16T22:30:00.000Z",
+            "processing_time": {
+              "starts_at": "2026-10-16T23:30:00.000Z",
+              "ends_at": "2026-10-16T23:35:00.000Z"
+            },
+            "client_ends_at": "2026-10-16T23:35:00.000Z",
+            "ends_at": "2026-10-16T23:40:00.000Z"
+          }
+        }
+      ]
+    },
+    {
+      "starts_at": "2026-10-16T22:45:00.000Z",
+      "ends_at": "2026-10-16T23:55:00.000Z",
+      "client_starts_at": "2026-10-16T22:45:00.000Z",
+      "client_ends_at": "2026-10-16T23:50:00.000Z",
+      "events": [
+        {
+          "service_token": "fixture_service",
+          "space_member_tokens": [
+            "fixture_staff"
+          ],
+          "timing": {
+            "starts_at": "2026-10-16T22:45:00.000Z",
+            "client_starts_at": "2026-10-16T22:45:00.000Z",
+            "processing_time": {
+              "starts_at": "2026-10-16T23:45:00.000Z",
+              "ends_at": "2026-10-16T23:50:00.000Z"
+            },
+            "client_ends_at": "2026-10-16T23:50:00.000Z",
+            "ends_at": "2026-10-16T23:55:00.000Z"
+          }
+        }
+      ]
+    },
+    {
+      "starts_at": "2026-10-17T16:30:00.000Z",
+      "ends_at": "2026-10-17T17:40:00.000Z",
+      "client_starts_at": "2026-10-17T16:30:00.000Z",
+      "client_ends_at": "2026-10-17T17:35:00.000Z",
+      "events": [
+        {
+          "service_token": "fixture_service",
+          "space_member_tokens": [
+            "fixture_staff"
+          ],
+          "timing": {
+            "starts_at": "2026-10-17T16:30:00.000Z",
+            "client_starts_at": "2026-10-17T16:30:00.000Z",
+            "processing_time": {
+              "starts_at": "2026-10-17T17:30:00.000Z",
+              "ends_at": "2026-10-17T17:35:00.000Z"
+            },
+            "client_ends_at": "2026-10-17T17:35:00.000Z",
+            "ends_at": "2026-10-17T17:40:00.000Z"
+          }
+        }
+      ]
+    },
+    {
+      "starts_at": "2026-10-17T16:45:00.000Z",
+      "ends_at": "2026-10-17T17:55:00.000Z",
+      "client_starts_at": "2026-10-17T16:45:00.000Z",
+      "client_ends_at": "2026-10-17T17:50:00.000Z",
+      "events": [
+        {
+          "service_token": "fixture_service",
+          "space_member_tokens": [
+            "fixture_staff"
+          ],
+          "timing": {
+            "starts_at": "2026-10-17T16:45:00.000Z",
+            "client_starts_at": "2026-10-17T16:45:00.000Z",
+            "processing_time": {
+              "starts_at": "2026-10-17T17:45:00.000Z",
+              "ends_at": "2026-10-17T17:50:00.000Z"
+            },
+            "client_ends_at": "2026-10-17T17:50:00.000Z",
+            "ends_at": "2026-10-17T17:55:00.000Z"
+          }
+        }
+      ]
+    },
+    {
+      "starts_at": "2026-10-17T17:00:00.000Z",
+      "ends_at": "2026-10-17T18:10:00.000Z",
+      "client_starts_at": "2026-10-17T17:00:00.000Z",
+      "client_ends_at": "2026-10-17T18:05:00.000Z",
+      "events": [
+        {
+          "service_token": "fixture_service",
+          "space_member_tokens": [
+            "fixture_staff"
+          ],
+          "timing": {
+            "starts_at": "2026-10-17T17:00:00.000Z",
+            "client_starts_at": "2026-10-17T17:00:00.000Z",
+            "processing_time": {
+              "starts_at": "2026-10-17T18:00:00.000Z",
+              "ends_at": "2026-10-17T18:05:00.000Z"
+            },
+            "client_ends_at": "2026-10-17T18:05:00.000Z",
+            "ends_at": "2026-10-17T18:10:00.000Z"
+          }
+        }
+      ]
+    },
+    {
+      "starts_at": "2026-10-17T17:15:00.000Z",
+      "ends_at": "2026-10-17T18:25:00.000Z",
+      "client_starts_at": "2026-10-17T17:15:00.000Z",
+      "client_ends_at": "2026-10-17T18:20:00.000Z",
+      "events": [
+        {
+          "service_token": "fixture_service",
+          "space_member_tokens": [
+            "fixture_staff"
+          ],
+          "timing": {
+            "starts_at": "2026-10-17T17:15:00.000Z",
+            "client_starts_at": "2026-10-17T17:15:00.000Z",
+            "processing_time": {
+              "starts_at": "2026-10-17T18:15:00.000Z",
+              "ends_at": "2026-10-17T18:20:00.000Z"
+            },
+            "client_ends_at": "2026-10-17T18:20:00.000Z",
+            "ends_at": "2026-10-17T18:25:00.000Z"
+          }
+        }
+      ]
+    },
+    {
+      "starts_at": "2026-10-17T17:30:00.000Z",
+      "ends_at": "2026-10-17T18:40:00.000Z",
+      "client_starts_at": "2026-10-17T17:30:00.000Z",
+      "client_ends_at": "2026-10-17T18:35:00.000Z",
+      "events": [
+        {
+          "service_token": "fixture_service",
+          "space_member_tokens": [
+            "fixture_staff"
+          ],
+          "timing": {
+            "starts_at": "2026-10-17T17:30:00.000Z",
+            "client_starts_at": "2026-10-17T17:30:00.000Z",
+            "processing_time": {
+              "starts_at": "2026-10-17T18:30:00.000Z",
+              "ends_at": "2026-10-17T18:35:00.000Z"
+            },
+            "client_ends_at": "2026-10-17T18:35:00.000Z",
+            "ends_at": "2026-10-17T18:40:00.000Z"
+          }
+        }
+      ]
+    },
+    {
+      "starts_at": "2026-10-17T17:45:00.000Z",
+      "ends_at": "2026-10-17T18:55:00.000Z",
+      "client_starts_at": "2026-10-17T17:45:00.000Z",
+      "client_ends_at": "2026-10-17T18:50:00.000Z",
+      "events": [
+        {
+          "service_token": "fixture_service",
+          "space_member_tokens": [
+            "fixture_staff"
+          ],
+          "timing": {
+            "starts_at": "2026-10-17T17:45:00.000Z",
+            "client_starts_at": "2026-10-17T17:45:00.000Z",
+            "processing_time": {
+              "starts_at": "2026-10-17T18:45:00.000Z",
+              "ends_at": "2026-10-17T18:50:00.000Z"
+            },
+            "client_ends_at": "2026-10-17T18:50:00.000Z",
+            "ends_at": "2026-10-17T18:55:00.000Z"
+          }
+        }
+      ]
+    },
+    {
+      "starts_at": "2026-10-17T18:00:00.000Z",
+      "ends_at": "2026-10-17T19:10:00.000Z",
+      "client_starts_at": "2026-10-17T18:00:00.000Z",
+      "client_ends_at": "2026-10-17T19:05:00.000Z",
+      "events": [
+        {
+          "service_token": "fixture_service",
+          "space_member_tokens": [
+            "fixture_staff"
+          ],
+          "timing": {
+            "starts_at": "2026-10-17T18:00:00.000Z",
+            "client_starts_at": "2026-10-17T18:00:00.000Z",
+            "processing_time": {
+              "starts_at": "2026-10-17T19:00:00.000Z",
+              "ends_at": "2026-10-17T19:05:00.000Z"
+            },
+            "client_ends_at": "2026-10-17T19:05:00.000Z",
+            "ends_at": "2026-10-17T19:10:00.000Z"
+          }
+        }
+      ]
+    },
+    {
+      "starts_at": "2026-10-17T18:15:00.000Z",
+      "ends_at": "2026-10-17T19:25:00.000Z",
+      "client_starts_at": "2026-10-17T18:15:00.000Z",
+      "client_ends_at": "2026-10-17T19:20:00.000Z",
+      "events": [
+        {
+          "service_token": "fixture_service",
+          "space_member_tokens": [
+            "fixture_staff"
+          ],
+          "timing": {
+            "starts_at": "2026-10-17T18:15:00.000Z",
+            "client_starts_at": "2026-10-17T18:15:00.000Z",
+            "processing_time": {
+              "starts_at": "2026-10-17T19:15:00.000Z",
+              "ends_at": "2026-10-17T19:20:00.000Z"
+            },
+            "client_ends_at": "2026-10-17T19:20:00.000Z",
+            "ends_at": "2026-10-17T19:25:00.000Z"
+          }
+        }
+      ]
+    },
+    {
+      "starts_at": "2026-10-17T18:30:00.000Z",
+      "ends_at": "2026-10-17T19:40:00.000Z",
+      "client_starts_at": "2026-10-17T18:30:00.000Z",
+      "client_ends_at": "2026-10-17T19:35:00.000Z",
+      "events": [
+        {
+          "service_token": "fixture_service",
+          "space_member_tokens": [
+            "fixture_staff"
+          ],
+          "timing": {
+            "starts_at": "2026-10-17T18:30:00.000Z",
+            "client_starts_at": "2026-10-17T18:30:00.000Z",
+            "processing_time": {
+              "starts_at": "2026-10-17T19:30:00.000Z",
+              "ends_at": "2026-10-17T19:35:00.000Z"
+            },
+            "client_ends_at": "2026-10-17T19:35:00.000Z",
+            "ends_at": "2026-10-17T19:40:00.000Z"
+          }
+        }
+      ]
+    },
+    {
+      "starts_at": "2026-10-17T18:45:00.000Z",
+      "ends_at": "2026-10-17T19:55:00.000Z",
+      "client_starts_at": "2026-10-17T18:45:00.000Z",
+      "client_ends_at": "2026-10-17T19:50:00.000Z",
+      "events": [
+        {
+          "service_token": "fixture_service",
+          "space_member_tokens": [
+            "fixture_staff"
+          ],
+          "timing": {
+            "starts_at": "2026-10-17T18:45:00.000Z",
+            "client_starts_at": "2026-10-17T18:45:00.000Z",
+            "processing_time": {
+              "starts_at": "2026-10-17T19:45:00.000Z",
+              "ends_at": "2026-10-17T19:50:00.000Z"
+            },
+            "client_ends_at": "2026-10-17T19:50:00.000Z",
+            "ends_at": "2026-10-17T19:55:00.000Z"
+          }
+        }
+      ]
+    }
+  ],
+  "pagination": {}
+}

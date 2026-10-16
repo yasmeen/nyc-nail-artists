@@ -14,6 +14,13 @@ input,select,button{font:inherit;padding:8px 10px;border:1px solid var(--line);b
 label.c{display:flex;align-items:center;gap:6px;color:var(--mute);font-size:14px;cursor:pointer}
 button{cursor:pointer}#count{color:var(--mute);font-size:14px;margin-left:auto}
 .chips{display:flex;gap:6px;flex-wrap:wrap;width:100%}
+.gloss{width:100%;max-width:760px;color:var(--mute);font-size:12px;order:3}
+.gloss summary{cursor:pointer}
+.gloss dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:0 10px;margin:8px 0}
+.gloss dt{font-weight:700;color:var(--ink)}
+.gloss dd{margin:0 0 8px}
+.gloss p{margin:8px 0 0}
+@media(max-width:480px){.gloss dl{grid-template-columns:1fr}}
 .chip{font-size:13px;line-height:inherit;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--mute);cursor:pointer;user-select:none}
 .chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
 .chip:focus-visible,#ftoggle:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
@@ -25,32 +32,57 @@ button{cursor:pointer}#count{color:var(--mute);font-size:14px;margin-left:auto}
 }
 main{max-width:1200px;margin:auto;padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px}
-.card.out{opacity:.6}.top{display:flex;justify-content:space-between;gap:8px;align-items:start}
+.top{display:flex;justify-content:space-between;gap:8px;align-items:start}.card h2{margin:0;font-size:17px}.from{color:var(--acc);font-weight:600;font-size:15px;white-space:nowrap}
+.photos{container-type:inline-size;margin:-16px -16px 0;border-bottom:1px solid var(--line);background:#f6f1f3;border-radius:14px 14px 0 0;overflow:hidden}
+.crop{height:66.7cqw;overflow:hidden}.crop iframe{display:block;width:100%;height:calc(190px + 66.7cqw);margin-top:-147px;border:0}
+.posts{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px}.posts iframe{flex:0 0 260px;width:260px;height:470px;scroll-snap-align:start}
 .who{display:flex;gap:10px;align-items:center;min-width:0}
 .av{flex:0 0 44px;width:44px;height:44px;border-radius:50%;background:var(--chip);color:var(--acc);display:grid;place-items:center;font-weight:600;overflow:hidden;position:relative}
 .av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .ttl{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:8px;min-width:0}
-.card h2{margin:0;font-size:17px}.from{color:var(--acc);font-weight:600;font-size:15px;white-space:nowrap}
-.badge{font-size:12px;padding:2px 8px;border-radius:99px;background:var(--chip);color:var(--acc);white-space:nowrap}
-.badge.out{background:#eee;color:#777}
 .stars{color:var(--star);font-size:13px;letter-spacing:1px}
 .meta{color:var(--mute);font-size:13px}.meta a{color:inherit}
 .tags{display:flex;gap:6px;flex-wrap:wrap}
 .tag{font-size:12px;padding:2px 8px;border-radius:99px;background:#f6f1f3;color:#6b5b63}
-.prices{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13px}
-.prices b{font-weight:600;color:var(--mute)}
+.prices{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13px}.prices b{font-weight:600;color:var(--mute)}
 .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
 .links a{text-decoration:none;font-size:13px;padding:7px 12px;border-radius:8px;background:var(--acc);color:#fff}
 .links a.alt{background:#fff;color:var(--acc);border:1px solid var(--acc)}
 .note{font-size:13px}.avail{font-size:13px;background:#fdf6e3;border:1px solid #f0dfae;border-radius:8px;padding:6px 10px}
-.why{font-size:13px;color:#a33}
 #msg{max-width:1200px;margin:20px auto;padding:0 16px;color:var(--mute)}
+.viewtog{display:inline-flex;border:1px solid var(--acc);border-radius:8px;overflow:hidden;order:1}.viewtog button{border:0;border-radius:0;color:var(--acc);padding:7px 14px}.viewtog button.on{background:var(--acc);color:#fff}
+#mapwrap{max-width:1200px;margin:14px auto;padding:0 16px}#map{height:72vh;min-height:420px;border:1px solid var(--line);border-radius:14px}
+.maplegend{color:var(--mute);font-size:13px;margin:6px 0 0}.pop{display:flex;gap:10px;align-items:center;min-width:200px}.pop img{width:44px;height:44px;border-radius:50%;object-fit:cover}.pop b{display:block;font-size:14px}.pop .meta{font-size:12px}.pop button{margin-top:6px;font-size:12px;padding:4px 10px;color:var(--acc);border-color:var(--acc)}
+.price{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fdf9fa;display:grid;gap:2px}.price.none{color:var(--mute);font-size:13px}
+.pdate{font-size:12px;color:var(--mute)}.pdate a{color:inherit}.pdate .warning{color:#a33}
+.pline{display:flex;justify-content:space-between;gap:8px;font-size:14px}.pline span{color:var(--mute)}.pline.tot{border-top:1px dashed var(--line);margin-top:4px;padding-top:4px}.pline.tot b{color:var(--acc);font-size:16px}
+.incl{color:#2f8a57}.how{font-size:12px;color:var(--mute)}.vbadge{font-size:12px;background:#2f8a57;color:#fff;border-radius:99px;padding:2px 8px;font-weight:600;align-self:center}
+#map .leaflet-tile-pane{filter:grayscale(.85) contrast(.95) brightness(1.04)}
+.gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}.agrid{border-collapse:collapse;width:100%;font-size:13px}
+.agrid th,.agrid td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:center;white-space:nowrap}.agrid tr:last-child>*{border-bottom:0}.agrid thead th{color:var(--mute);font-weight:600;font-size:12px}
+.agrid th[scope=row],.agrid thead th:first-child{text-align:left;position:sticky;left:0;background:var(--card);min-width:180px;white-space:normal;font-weight:400;border-right:1px solid var(--line)}
+.agrid td.none{text-align:left;color:var(--mute)}.agrid .cell{display:inline-block;min-width:52px;padding:4px 8px;border-radius:8px;background:var(--chip);color:var(--acc);text-decoration:none;font-weight:600}.agrid .cell small{display:block;font-weight:400;font-size:11px}.astate{font-size:12px;color:var(--mute)}
+.card.flash{outline:3px solid var(--acc);outline-offset:2px}
+.availability{max-width:1200px;margin:14px auto 0;padding:0 16px}
+.availability-controls{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.availability-controls label{font-size:13px;color:var(--mute);display:flex;align-items:center;gap:6px}
+.availability-controls input[type=date]{min-width:150px}.availability-controls input[type=time]{width:120px}
+#checkAvailability{background:var(--acc);color:white;border-color:var(--acc)}#checkAvailability:disabled{opacity:.6;cursor:wait}
+#availabilityResults{display:grid;gap:8px;margin-top:10px}#availabilityResults:empty{display:none}.manual summary{cursor:pointer;color:var(--acc);font-size:14px;padding:4px 2px}.manual[open]{display:grid;gap:8px}
+.availability-row{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;grid-template-columns:minmax(160px,1fr) minmax(160px,1fr) 2fr;gap:8px;align-items:center}
+.availability-name{font-weight:650}.availability-service,.availability-state{font-size:13px;color:var(--mute)}
+.availability-state{color:var(--ink)}.availability-state a{color:var(--acc);text-decoration:none}.stale{font-size:12px;color:#9a5b17;margin-left:6px}
+.slots{display:flex;flex-wrap:wrap;gap:6px}.slot{font-size:13px;text-decoration:none;padding:4px 8px;border-radius:999px;background:#f3e6eb;color:var(--acc)}
+.availability-empty{color:var(--mute);font-size:13px;padding:6px}
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid var(--line);border-top-color:var(--acc);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px;margin-right:5px}
+@keyframes spin{to{transform:rotate(360deg)}}
 footer{max-width:1200px;margin:8px auto 32px;padding:0 16px;color:var(--mute);font-size:13px}
+@media(max-width:600px){.availability-row{grid-template-columns:1fr;gap:4px}.availability-controls{align-items:stretch}.availability-controls label{flex:1 1 140px}.availability-controls input,.availability-controls select{min-width:0;max-width:100%}}
 @media(max-width:560px){h1{font-size:24px}main{grid-template-columns:1fr}}
 </style></head><body>
 <header><h1>💅 NYC Nail Artists</h1><p>Yasmeen's living directory — filter by service, neighborhood, price, or rating. Data reads live from the research sheet; edit the sheet and refresh.</p></header>
 <div class="controls" id="controls"><div class="in">
-<div class="fbar"><button id="ftoggle" type="button" aria-expanded="false" aria-controls="fbody">Filters</button><span id="count"></span></div>
+<div class="fbar"><button id="ftoggle" type="button" aria-expanded="false" aria-controls="fbody">Filters</button><div class="viewtog" role="group" aria-label="View"><button id="viewList" type="button" class="on" aria-pressed="true">List</button><button id="viewMap" type="button" aria-pressed="false">Map</button></div><span id="count"></span></div>
 <div id="fbody">
 <input id="q" type="search" placeholder="Search name, services, styles, notes…">
 <select id="hood"><option value="">All neighborhoods</option></select>
@@ -58,66 +90,122 @@ footer{max-width:1200px;margin:8px auto 32px;padding:0 16px;color:var(--mute);fo
 <select id="plat"><option value="">Any booking platform</option></select>
 <label class="p">Max $<input id="max" type="number" min="0" step="5" placeholder="any"></label>
 <label class="p">Min rating<input id="minr" type="number" min="0" max="5" step="0.1" placeholder="any"></label>
-<select id="sort"><option value="">Sort: sheet order</option><option value="asc">Price: low → high</option><option value="desc">Price: high → low</option><option value="rate">Rating: high → low</option><option value="name">Name A–Z</option></select>
-<label class="c"><input id="hideout" type="checkbox" checked> Hide ruled-out</label>
+<select id="sort"><option value="">Sort: sheet order</option><option value="asc">Price: low → high</option><option value="desc">Price: high → low</option><option value="value">Best value: manicure + cheapest art</option><option value="rate">Rating: high → low</option><option value="name">Name A–Z</option></select>
+<label class="c"><input id="hideout" type="checkbox"> Hide ruled-out</label>
 <button id="reset" type="button">Reset</button>
 <div class="chips" id="svcchips" role="group" aria-label="Services"></div>
+<details class="gloss"><summary>What do these terms mean?</summary><dl>
+<dt>Gel manicure (soft gel):</dt><dd>thin gel colour cured under a UV/LED lamp. Soaks off in acetone; lasts about 2–3 weeks.</dd>
+<dt>Structured manicure:</dt><dd>a shaped layer of builder or hard gel that levels and strengthens your natural nail before colour. Salons also call it a structure, structured gel or Japanese structure manicure.</dd>
+<dt>Japanese gel:</dt><dd>gel from Japanese brands (e.g. Kokoist, Presto). Usually soft and soak-off, known for a glossy finish and fine art. Often used for structured manicures.</dd>
+<dt>Builder gel / BIAB:</dt><dd>a thicker, usually soak-off gel brushed on for strength and shape. BIAB means "builder in a bottle". Can be refilled.</dd>
+<dt>Hard gel:</dt><dd>the strongest gel. It doesn't soak off, so it's filed down or refilled. Used for overlays and extensions.</dd>
+<dt>Gel overlay:</dt><dd>any gel (soft, builder or hard) over your natural nail, with no extension.</dd>
+<dt>Russian manicure:</dt><dd>a dry manicure done with an e-file (nail drill) that cleans very close to the cuticle, so gel can sit right at the base. Often paired with hard gel.</dd>
+<dt>Gel-X / soft-gel extensions:</dt><dd>full-cover soft-gel tips attached with gel. They soak off.</dd>
+<dt>Fill / refill:</dt><dd>rebalancing grown-out builder or hard gel instead of removing it.</dd>
+<dt>Cat eye:</dt><dd>magnetic gel polish. A magnet pulls the shimmer into a band of light.</dd>
+<dt>Chrome:</dt><dd>a fine metallic powder rubbed onto cured gel for a mirror finish.</dd>
+</dl><p>Filters group hard gel, Japanese gel, builder/BIAB, structured and overlay together under "Structured / hard gel" — search for any of them to find all.</p></details>
 </div>
 </div></div>
-<div id="msg">Loading…</div><main id="list"></main>
+<section class="availability" aria-label="Check appointment availability">
+ <div class="availability-controls">
+  <label>Date <input id="availabilityDate" type="date"></label>
+  <label>Range <select id="availabilityRange"><option value="day">That day</option><option value="week">Next 7 days</option></select></label>
+  <label>From <input id="availabilityFrom" type="time"></label>
+  <label>To <input id="availabilityTo" type="time"></label>
+  <label>Service <select id="availabilityService"><option value="">Any service</option></select></label>
+  <button id="checkAvailability" type="button">Check availability</button>
+ </div>
+ <div id="availabilityResults" aria-live="polite"></div>
+</section>
+<div id="msg">Loading…</div><div id="mapwrap" hidden><div id="map"></div><p class="maplegend">● exact address &nbsp; ◌ estimated from neighborhood — click a pin to see the place</p></div><main id="list"></main>
 <footer>Tip: share a filtered view — filters sync to the URL (e.g. <code>?svc=russian&amp;hood=Chelsea</code>).</footer>
 <script>
 const SHEET_ID='1yorNY5SrbFzbGx295afxff2bSLH23DHwdH58eMOI1vw';
 const CSV_URL=new URLSearchParams(location.search).get('csv')||`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+const API_URL=new URLSearchParams(location.search).get('api')||'/api/availability';
 function parseCSV(t){const r=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];
  if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=c}
  else if(c=='"')q=true;else if(c==','){row.push(f);f=''}else if(c=='\n'||c=='\r'){if(c=='\r'&&t[i+1]=='\n')i++;row.push(f);r.push(row);row=[];f=''}else f+=c}
  if(f||row.length){row.push(f);r.push(row)}return r.filter(x=>x.some(v=>v.trim()))}
-const KEYS={name:'name',ig:'instagram',igurl:'instagram url',type:'type',hood:'neighborhood',addr:'address',phone:'phone',book:'booking url',plat:'booking platform',svc:'services',base:'base gel',hard:'hard gel',art:'art price',styles:'styles',rating:'rating',grate:'google rating',maps:'maps url',status:'status',why:'ruled-out',checked:'last checked',avail:'availability',notes:'notes'};
+const KEYS={name:'name',ig:'instagram',igurl:'instagram url',type:'type',hood:'neighborhood',addr:'address',phone:'phone',book:'booking url',plat:'booking platform',svc:'services',base:'base gel',hard:'hard gel',art:'art price',styles:'styles',rating:'rating',grate:'google rating',maps:'maps url',status:'status',why:'ruled-out',checked:'last checked',avail:'availability',notes:'notes',photos:'photo posts',artadd:'art add-on',pupd:'prices updated',psrc:'price source',other:'other prices'};
+const KEY_VALUES=Object.values(KEYS);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const url=u=>{u=(u||'').trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='https://'+u;return /^https?:\/\//i.test(u)?u:''};
 const num=s=>{const m=String(s||'').match(/\$?\s*(\d+(?:\.\d+)?)/);return m?+m[1]:null};
 const ratingNum=s=>{const m=String(s||'').match(/(\d(?:\.\d+)?)/);return m?+m[1]:null};
-const SVC_DEFS=[['Russian','russian'],['Japanese gel','japanese'],['Hard gel / BIAB','hard gel|builder|biab|structure'],['Gel-X','gel-?x'],['Acrylic','acrylic'],['Nail art','nail art|design|hand-paint']];
-let data=[],activeSvcs=new Set();const $=id=>document.getElementById(id);
-let PHOTOS={};fetch('photos.json').then(r=>r.ok?r.json():{}).then(p=>{PHOTOS=p||{};if(data.length)render()}).catch(()=>{});
+const SVC_DEFS=[['Russian','russian'],['Structured / hard gel','hard[ -]?gel|builder|biab|structur|japanese|overlay'],['Gel-X','gel-?x'],['Acrylic','acrylic'],['Nail art','nail art|design|hand-paint']];
+let data=[],activeSvcs=new Set(),checking=false;const $=id=>document.getElementById(id);
+let PHOTOS={},BOOKING={};fetch('photos.json').then(r=>r.ok?r.json():{}).then(p=>{PHOTOS=p||{};if(data.length)render()}).catch(()=>{});
+const bookingPromise=fetch('booking.json').then(r=>r.ok?r.json():{}).catch(()=>({}));
+function valueOf(o){const m=o.price,col=(o.artadd||'').replace(/[$,\s]/g,'');
+ if(col!==''&&!isNaN(+col)){const add=+col,incl=add===0;return{mani:m,add,incl,total:m!=null?m+add:null,how:incl?'art included (from price list)':`$${m} manicure + $${add} cheapest nail art`}}
+ if(/\bincl/i.test(o.art||'')&&!/not\s+incl/i.test(o.art||''))return{mani:m,add:0,incl:true,total:m,how:'art included'};
+ return{mani:m,add:null,incl:false,total:null,how:o.art?'nail art priced separately — see price list below':'nail-art price not listed'}}
 function toRows(rows){const h=rows[0].map(x=>x.trim().toLowerCase());const idx={};
- for(const[k,p]of Object.entries(KEYS)){idx[k]=h.findIndex(x=>x===p);if(idx[k]<0)idx[k]=h.findIndex(x=>x.startsWith(p))}
+ for(const[k,p]of Object.entries(KEYS)){idx[k]=h.findIndex(x=>x===p);if(idx[k]<0)idx[k]=h.findIndex(x=>x.startsWith(p)&&!KEY_VALUES.includes(x))}
  return rows.slice(1).map((r,i)=>{const o={i};for(const k in idx)o[k]=idx[k]>=0?(r[idx[k]]||'').trim():'';
-  const ps=[num(o.base),num(o.hard)].filter(x=>x!=null);o.price=ps.length?Math.min(...ps):null;
+  const ps=[num(o.base),num(o.hard)].filter(x=>x!=null);o.price=ps.length?Math.min(...ps):null;o.val=valueOf(o);
   o.rate=ratingNum(o.grate)||ratingNum(o.rating);
   o.hoods=o.hood?o.hood.split(/[\/,]/).map(s=>s.trim()).filter(Boolean):[];
   o.out=/ruled/i.test(o.status);
-  const sv=(o.svc+' '+o.styles+' '+o.notes).toLowerCase();
+  const sv=(o.svc+' '+o.hard+' '+o.styles+' '+o.notes).toLowerCase();
   o.svcs=SVC_DEFS.filter(([,re])=>new RegExp(re).test(sv)).map(([label])=>label);
   o.blob=Object.values(o).join(' ').toLowerCase();return o}).filter(o=>o.name)}
+function attachBooking(){const supported=new Set(['acuity','square','glossgenius','chronos']);for(const o of data){const entry=BOOKING[o.name];if(!entry)continue;o.bk=supported.has(entry.platform)?entry:null;o.ids=JSON.stringify(entry.ids);o.plat=o.plat||entry.platform;o.avservice=entry.service||'';o.verified=entry.verified||'';o.blob=Object.values(o).join(' ').toLowerCase()}}
+function priceFreshness(o){
+ if(!o.pupd)return'<div class="pdate">Price date unknown</div>';
+ const date=new Date(o.pupd);if(!Number.isFinite(date.getTime()))return'<div class="pdate">Price date unknown</div>';
+ const source=(o.psrc||'').trim();
+ const label=source?source.split(/;\s*/).map(item=>{const value=item.trim();if(!/^https?:\/\//i.test(value))return esc(value);try{const host=new URL(value).hostname.replace(/^www\./i,'');return `<a href="${esc(value)}" target="_blank" rel="noopener">${esc(host)}</a>`}catch{return esc(value)}}).join('; '):'';
+ const stale=Date.now()-date.getTime()>180*24*60*60*1000;
+ return `<div class="pdate">Prices updated ${date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'})}${source?' · '+label:''}${stale?` <span class="warning">— may be outdated</span>`:''}</div>`
+}
+function igHandle(o){const h=(o.ig||'').replace(/^@/,'').trim()||((o.igurl||'').match(/instagram\.com\/([^/?#]+)/i)||[])[1]||'';return /^[A-Za-z0-9._]{1,30}$/.test(h)?h:''}
+function photosHTML(o){const posts=[...new Set([...(o.photos||'').matchAll(/instagram\.com\/(?:[^/\s]+\/)?(?:p|reel)\/([A-Za-z0-9_-]+)/gi)].map(m=>m[1]))];
+ if(posts.length)return `<div class="photos posts">${posts.map(c=>`<iframe src="https://www.instagram.com/p/${c}/embed/" loading="lazy" scrolling="no" title="${esc(o.name)} Instagram post"></iframe>`).join('')}</div>`;
+ const h=igHandle(o);return h?`<div class="photos"><div class="crop"><iframe src="https://www.instagram.com/${h}/embed/" loading="lazy" scrolling="no" title="${esc(o.name)} Instagram photos"></iframe></div></div>`:''}
 function fill(id,vals){const s=$(id);[...new Set(vals)].filter(Boolean).sort().forEach(v=>s.add(new Option(v,v)))}
 function stars(r){if(r==null)return'';const f=Math.round(r);return `<span class="stars">${'★'.repeat(f)}${'☆'.repeat(5-f)}</span> <span class="meta">${esc(String(r).slice(0,3))}</span>`}
 function syncURL(){const p=new URLSearchParams();
  const v={q:$('q').value,hood:$('hood').value,type:$('type').value,plat:$('plat').value,max:$('max').value,minr:$('minr').value,sort:$('sort').value};
  for(const[k,val]of Object.entries(v))if(val)p.set(k,val);
  if(activeSvcs.size)p.set('svc',[...activeSvcs].join(','));
- if(!$('hideout').checked)p.set('showout','1');
+ if($('hideout').checked)p.set('hideout','1');
+ if(view==='map')p.set('view','map');
+ const current=new URLSearchParams(location.search);
+ for(const key of ['csv','api'])if(current.get(key))p.set(key,current.get(key));
  history.replaceState(null,'',location.pathname+(p.toString()?'?'+p.toString():'')+location.hash)}
 const setChip=(c,on)=>{c.classList.toggle('on',on);c.setAttribute('aria-pressed',on)};
 function activeCount(){return ['q','hood','type','plat','max','minr'].filter(id=>$(id).value.trim()).length+activeSvcs.size}
-function render(){const q=$('q').value.toLowerCase().trim(),h=$('hood').value,t=$('type').value,pl=$('plat').value,
+function filtered(){const q=$('q').value.toLowerCase().trim(),h=$('hood').value,t=$('type').value,pl=$('plat').value,
  mx=parseFloat($('max').value),mr=parseFloat($('minr').value),so=$('sort').value,hide=$('hideout').checked;
- let L=data.filter(o=>(!q||q.split(/\s+/).every(w=>o.blob.includes(w)))&&(!h||o.hoods.includes(h))&&(!t||o.type===t)&&(!pl||o.plat===pl)
+ const SYN=[['hard gel','hard-gel','japanese gel','japanese','builder gel','builder','biab','structured','structure','gel overlay','overlay']];
+ const queryMatches=o=>{if(!q)return true;if(q.split(/\s+/).every(w=>o.blob.includes(w)))return true;
+  for(const group of SYN){const terms=[...group].sort((a,b)=>b.length-a.length),term=terms.find(x=>q.includes(x));
+   if(term)return terms.some(x=>x!==term&&o.blob.includes(q.replace(term,x)))}
+  return false};
+ let L=data.filter(o=>queryMatches(o)&&(!h||o.hoods.includes(h))&&(!t||o.type===t)&&(!pl||o.plat===pl)
   &&(isNaN(mx)||(o.price!=null&&o.price<=mx))&&(isNaN(mr)||(o.rate!=null&&o.rate>=mr))&&(!hide||!o.out)
   &&[...activeSvcs].every(s=>o.svcs.includes(s)));
  const P=o=>o.price??(so=='asc'?Infinity:-Infinity);
  if(so=='asc')L.sort((a,b)=>P(a)-P(b));else if(so=='desc')L.sort((a,b)=>P(b)-P(a));
+ else if(so=='value')L.sort((a,b)=>(a.val.total??Infinity)-(b.val.total??Infinity)||a.i-b.i);
  else if(so=='rate')L.sort((a,b)=>(b.rate??-1)-(a.rate??-1));else if(so=='name')L.sort((a,b)=>a.name.localeCompare(b.name));
+ return L}
+function render(){const L=filtered();
  $('count').textContent=`${L.length} of ${data.length}`;
+ L.forEach(o=>o.vrank=0);L.filter(o=>o.val.total!=null).sort((a,b)=>a.val.total-b.val.total).slice(0,3).forEach((o,k)=>o.vrank=k+1);
  const n=activeCount();$('ftoggle').textContent=n?`Filters (${n})`:'Filters';
- $('list').innerHTML=L.map(o=>{const ig=url(o.igurl)||(o.ig?'https://instagram.com/'+o.ig.replace(/^@/,''):''),bk=url(o.book);
+ $('list').innerHTML=L.map(o=>{const ig=url(o.igurl)||(o.ig?'https://instagram.com/'+o.ig.replace(/^@/,''):''),bk=bookingLink(o);
   const hd=o.ig.trim().replace(/^@/,'').toLowerCase(),hv=/^[a-z0-9._]+$/.test(hd)?hd:'';
   const maps=url(o.maps)||(o.addr?'https://maps.google.com/?q='+encodeURIComponent(o.name+' '+o.addr):'');
-  const pr=[['Base gel',o.base],['Hard gel',o.hard],['Art',o.art]].filter(x=>x[1]).map(x=>`<b>${x[0]}</b><span>${esc(x[1])}</span>`).join('');
-  return `<article class="card${o.out?' out':''}"><div class="top"><div class="who">${hv?`<span class="av" aria-hidden="true">${esc(o.name.trim()[0].toUpperCase())}${PHOTOS[hv]?`<img src="${PHOTOS[hv]}" alt="" loading="lazy" onerror="this.remove()">`:''}</span>`:''}
-   <div class="ttl"><h2>${esc(o.name)}</h2>${o.price!=null?`<span class="from">from $${o.price}</span>`:''}</div></div>
-   ${o.status&&!(hide&&!o.out&&/^candidate$/i.test(o.status.trim()))?`<span class="badge${o.out?' out':''}">${esc(o.status)}</span>`:''}</div>
+  const pr=[['Base gel',o.base],['Hard gel',o.hard],['Art',o.art],['Other',o.other]].filter(x=>x[1]).map(x=>`<b>${x[0]}</b><span>${esc(x[1])}</span>`).join(''),v=o.val;
+  const pbox=o.price!=null||o.art?`<div class="price"><div class="pline"><span>Manicure</span><b>${o.price!=null?'$'+o.price:'not listed'}</b></div><div class="pline"><span>Nail art</span><b>${v.incl?'<span class="incl">included</span>':v.add!=null?'+$'+v.add:o.art?'see list':'not listed'}</b></div>${v.total!=null?`<div class="pline tot"><span>Set with art</span><b>$${v.total}</b></div>`:''}${v.how?`<div class="how">${esc(v.how)}</div>`:''}</div>`:'<div class="price none">No prices in the sheet yet</div>';
+  return `<article class="card" id="card-${o.i}">${photosHTML(o)}<div class="top"><div class="who">${hv?`<span class="av" aria-hidden="true">${esc(o.name.trim()[0].toUpperCase())}${PHOTOS[hv]?`<img src="${PHOTOS[hv]}" alt="" loading="lazy" onerror="this.remove()">`:''}</span>`:''}
+   <div class="ttl"><h2>${esc(o.name)}</h2>${o.price!=null?`<span class="from">from $${o.price}</span>`:''}${o.vrank?`<span class="vbadge">Best value #${o.vrank}</span>`:''}</div></div></div>${pbox}${priceFreshness(o)}
   ${o.rate!=null?`<div>${stars(o.rate)}${o.grate?` <span class="meta">Google</span>`:''}</div>`:''}
   <div class="meta">${esc([o.type,o.hood].filter(Boolean).join(' · '))}</div>
   ${o.svcs.length?`<div class="tags">${o.svcs.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div>`:''}
@@ -126,23 +214,93 @@ function render(){const q=$('q').value.toLowerCase().trim(),h=$('hood').value,t=
   ${o.avail?`<div class="avail">📅 ${esc(o.avail)}</div>`:''}
   ${o.svc?`<div class="note"><b>Services:</b> ${esc(o.svc)}</div>`:''}${pr?`<div class="prices">${pr}</div>`:''}
   ${o.styles?`<div class="note"><b>Styles:</b> ${esc(o.styles)}</div>`:''}${o.notes?`<div class="note">${esc(o.notes)}</div>`:''}
-  ${o.out&&o.why?`<div class="why">Ruled out: ${esc(o.why)}</div>`:''}${o.checked?`<div class="meta">Last checked ${esc(o.checked)}</div>`:''}
+  ${o.why?`<div class="note"><b>Note:</b> ${esc(o.why)}</div>`:''}${o.checked?`<div class="meta">Last checked ${esc(o.checked)}</div>`:''}
   <div class="links">${ig?`<a href="${esc(ig)}" target="_blank" rel="noopener">${esc(o.ig||'Instagram')}</a>`:''}${bk?`<a class="alt" href="${esc(bk)}" target="_blank" rel="noopener">Book${o.plat?' ('+esc(o.plat)+')':''}</a>`:''}</div></article>`}).join('');
- $('msg').textContent=L.length?'':'No matches.';syncURL()}
-fetch(CSV_URL).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}).then(t=>{
- if(/^\s*</.test(t))throw new Error('sheet is not public');data=toRows(parseCSV(t));
- fill('hood',data.flatMap(o=>o.hoods));fill('type',data.map(o=>o.type));fill('plat',data.map(o=>o.plat));
+ $('msg').textContent=L.length?'':'No matches.';if(view==='map')drawMap(L);syncURL()}
+let GEO={},view='list',map=null,pins=null;fetch('geo.json').then(r=>r.ok?r.json():{}).then(g=>{GEO=g||{};if(map)drawMap(filtered())}).catch(()=>{});
+const HOODS={flatiron:[40.7411,-73.9897],nomad:[40.7448,-73.988],chelsea:[40.7465,-74.0014],koreatown:[40.7477,-73.9867],ktown:[40.7477,-73.9867],'midtown east':[40.754,-73.97],midtown:[40.7549,-73.984],"hell's kitchen":[40.7638,-73.9918],'upper east side':[40.7736,-73.9566],ues:[40.7736,-73.9566],'upper west side':[40.787,-73.9754],uws:[40.787,-73.9754],'east village':[40.7265,-73.9815],'west village':[40.7358,-74.0036],'greenwich village':[40.7336,-73.999],'lower east side':[40.715,-73.9843],les:[40.715,-73.9843],nolita:[40.723,-73.9955],soho:[40.7233,-74.003],tribeca:[40.7163,-74.0086],'financial district':[40.7075,-74.0113],fidi:[40.7075,-74.0113],'murray hill':[40.7479,-73.9757],gramercy:[40.7368,-73.9845],'union square':[40.7359,-73.9911],'long island city':[40.7447,-73.9485],lic:[40.7447,-73.9485],williamsburg:[40.7081,-73.9571],brooklyn:[40.6782,-73.9442],queens:[40.7282,-73.7949],manhattan:[40.758,-73.9855]};
+function where(o){if(GEO[o.name])return{ll:GEO[o.name],approx:false};const s=(o.hood+' '+o.addr).toLowerCase();let best=null;
+ for(const k in HOODS){const m=s.match(new RegExp('\\b'+k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b'));if(m&&(!best||m.index<best.i||(m.index===best.i&&k.length>best.k.length)))best={i:m.index,k}}
+ const c=HOODS[best?best.k:'manhattan'];let x=0;for(const ch of o.name)x=(x*31+ch.charCodeAt(0))>>>0;const a=(x%360)*Math.PI/180,r=.0012+(x%7)*.0003;
+ return{ll:[c[0]+r*Math.sin(a),c[1]+r*Math.cos(a)*1.3],approx:true,area:best?best.k:''}}
+function loadLeaflet(){if(window.L)return Promise.resolve();const B='https://unpkg.com/leaflet@1.9.4/dist/leaflet.';return new Promise((ok,no)=>{
+ const c=document.createElement('link');c.rel='stylesheet';c.href=B+'css';c.integrity='sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H';c.crossOrigin='';document.head.appendChild(c);
+ const j=document.createElement('script');j.src=B+'js';j.integrity='sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH';j.crossOrigin='';j.onload=ok;j.onerror=no;document.head.appendChild(j)})}
+function drawMap(L){if(!window.L)return;if(!map){map=window.L.map('map');window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);pins=window.L.layerGroup().addTo(map)}
+ pins.clearLayers();const pts=[],exact=[];
+ for(const o of L){const w=where(o);pts.push(w.ll);if(!w.approx)exact.push(w.ll);const hd=o.ig.trim().replace(/^@/,'').toLowerCase(),img=PHOTOS[hd];
+  const loc=w.approx?`Approximate — estimated from ${w.area?esc(w.area.replace(/\b\w/g,c=>c.toUpperCase())):'Manhattan'}`:esc(o.addr);
+  window.L.circleMarker(w.ll,{radius:w.approx?7:8,color:'#c2577a',weight:2,fillColor:w.approx?'#fff':'#c2577a',fillOpacity:.95,dashArray:w.approx?'3 3':null})
+   .bindTooltip(esc(o.name)).bindPopup(`<div class="pop">${img?`<img src="${img}" alt="">`:''}<div><b>${esc(o.name)}</b>${o.price!=null?`<span class="meta">from $${o.price} · </span>`:''}<span class="meta">${loc}</span><br><button type="button" data-goto="${o.i}">See photos &amp; details</button></div></div>`).addTo(pins)}
+ const fit=exact.length>1?exact:pts;if(fit.length)map.fitBounds(fit,{padding:[30,30],maxZoom:15})}
+function setView(v){view=v;const m=v==='map';$('mapwrap').hidden=!m;$('list').hidden=m;
+ [['viewList',!m],['viewMap',m]].forEach(([id,on])=>{$(id).classList.toggle('on',on);$(id).setAttribute('aria-pressed',on)});
+ if(m)loadLeaflet().then(()=>{drawMap(filtered());map.invalidateSize()}).catch(()=>{$('msg').textContent='Could not load the map.'});syncURL()}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-goto]');if(!b)return;setView('list');const c=$('card-'+b.dataset.goto);if(c){c.scrollIntoView({behavior:'smooth',block:'center'});c.classList.add('flash');setTimeout(()=>c.classList.remove('flash'),1600)}});
+function availabilityRows(){const service=$('availabilityService').value;return filtered().filter(o=>!service||o.avservice===service)}
+function tomorrowNY(){const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));const d=new Date(Date.UTC(+p.year,+p.month-1,+p.day+1));return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`}
+function bookingLink(o){const value=(o.book||'').trim();if(!value||/^(none\b|n\/a\b|dm\b|instagram\b|phone\b|call\b)/i.test(value)||(/\s/.test(value)&&!value.includes('.')))return'';return url(value)}
+function instagramLink(o){return url(o.igurl)||(o.ig?'https://instagram.com/'+o.ig.replace(/^@/,''):'')}
+function phoneLink(o){const number=(o.phone||'').replace(/[^\d+]/g,'');return /\d/.test(number)?`tel:${number}`:''}
+function manualContact(o){const bk=bookingLink(o);if(bk)return{state:'Check manually',action:bk};const phone=phoneLink(o);if(phone)return{state:'Call',action:phone};const ig=instagramLink(o);return ig?{state:'Check Instagram',action:ig}:{state:'No booking link in sheet',action:''}}
+function staleIDs(value){if(!/^\d{4}-\d{2}-\d{2}$/.test(value||''))return true;const parsed=Date.parse(value);if(!Number.isFinite(parsed)||new Date(parsed).toISOString().slice(0,10)!==value)return true;return (Date.now()-parsed)>30*24*60*60*1000}
+function availabilityState(error){return ({timeout:'Timed out',blocked:'Blocked — check manually',upstream:'Error — check manually',manual:'Check manually'})[error]||'Error — check manually'}
+const onlineCheck=o=>!!o.bk;
+function availabilityRow({o,state,slots=[],warning='',action}){const bk=bookingLink(o),ig=instagramLink(o),href=bk||ig,service=(o.avservice||'').trim();
+ const chips=slots.map(slot=>{const time=new Date(slot.start).toLocaleTimeString('en-US',{timeZone:'America/New_York',hour:'numeric',minute:'2-digit'});const title=slot.staff?` title="${esc(slot.staff)}"`:'';return href?`<a class="slot" href="${esc(href)}" target="_blank" rel="noopener"${title}>${esc(time)}</a>`:`<span class="slot"${title}>${esc(time)}</span>`}).join('');
+ const label=state==='Loading…'?`<span class="spinner"></span>${esc(state)}`:esc(state),target=action&&!action.startsWith('tel:')?' target="_blank" rel="noopener"':'';
+ const stateHtml=action?`<a href="${esc(action)}"${target}>${label}</a>`:label;
+ return `<article class="availability-row"><div><div class="availability-name">${esc(o.name)}${warning?`<span class="stale">${esc(warning)}</span>`:''}</div>${service?`<div class="availability-service">${esc(service)}</div>`:''}</div><div class="availability-state">${stateHtml}</div><div class="slots">${chips}</div></article>`}
+function paintAvailability(items,dates){dates=dates||[$('availabilityDate').value];const auto=items.filter(x=>onlineCheck(x.o)),man=items.filter(x=>!onlineCheck(x.o));
+ $('availabilityResults').innerHTML=((auto.length?gridHTML(auto,dates):'')||(items.length?'<div class="availability-empty">None of these places can be checked online yet.</div>':''))
+  +(man.length?`<details class="manual"><summary>${man.length} place${man.length>1?'s':''} can't be checked online — show booking links</summary>${man.map(availabilityRow).join('')}</details>`:'')
+  ||'<div class="availability-empty">No places to check with these filters.</div>'}
+const addDays=(d,n)=>{const t=new Date(d+'T12:00:00Z');t.setUTCDate(t.getUTCDate()+n);return t.toISOString().slice(0,10)};
+const nyHour=x=>+new Date(x).toLocaleString('en-US',{timeZone:'America/New_York',hour:'numeric',hourCycle:'h23'});
+const nyTime=x=>new Date(x).toLocaleTimeString('en-US',{timeZone:'America/New_York',hour:'numeric',minute:'2-digit'});
+async function fetchDay(o,ids,date,from,to){const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),8000);
+ try{const r=await fetch(API_URL,{method:'POST',headers:{'content-type':'application/json'},signal:controller.signal,body:JSON.stringify({platform:o.bk.platform,ids,date,...(from?{from}:{}),...(to?{to}:{})})});if(!r.ok)throw new Error('request failed');
+  const j=await r.json();if(j.error)return{error:j.error};return{slots:(Array.isArray(j.slots)?j.slots:[]).map(x=>({...x,date}))}}
+ catch{return{error:controller.signal.aborted?'timeout':'upstream'}}finally{clearTimeout(timer)}}
+function stateHTML({state,action}){const label=state==='Loading…'?`<span class="spinner"></span>${esc(state)}`:esc(state),target=action&&!action.startsWith('tel:')?' target="_blank" rel="noopener"':'';return action?`<a href="${esc(action)}"${target}>${label}</a>`:label}
+function gridHTML(auto,dates){const week=dates.length>1,all=auto.flatMap(x=>x.slots);let cols;
+ if(week)cols=dates.map(d=>({k:d,label:new Date(d+'T12:00:00Z').toLocaleDateString('en-US',{weekday:'short',month:'numeric',day:'numeric',timeZone:'UTC'})}));
+ else{const hs=all.map(x=>nyHour(x.start)),lo=hs.length?Math.min(...hs):10,hi=hs.length?Math.max(...hs):19;cols=[];for(let h=lo;h<=hi;h++)cols.push({k:h,label:new Date(Date.UTC(2000,0,1,h)).toLocaleTimeString('en-US',{hour:'numeric',timeZone:'UTC'})})}
+ const key=x=>week?x.date:nyHour(x.start);
+ const rows=auto.map(x=>{const o=x.o,href=bookingLink(o)||instagramLink(o),service=(o.avservice||'').trim();
+  const head=`<th scope="row"><div class="availability-name">${esc(o.name)}${x.warning?`<span class="stale">${esc(x.warning)}</span>`:''}</div>${service?`<div class="availability-service">${esc(service)}</div>`:''}${x.slots.length?`<div class="astate">${esc(x.state)}</div>`:''}</th>`;
+  if(!x.slots.length)return `<tr>${head}<td colspan="${cols.length}" class="none">${stateHTML(x)}</td></tr>`;
+  return `<tr>${head}${cols.map(c=>{const ss=x.slots.filter(y=>key(y)===c.k);if(!ss.length)return '<td></td>';const t=ss.map(y=>nyTime(y.start)),tag=href?'a':'span';
+   const lab=week?`${ss.length}<small>from ${esc(t[0])}</small>`:`${esc(t[0].replace(/ [AP]M$/,''))}${ss.length>1?`<small>+${ss.length-1} more</small>`:''}`;
+   return `<td><${tag} class="cell"${href?` href="${esc(href)}" target="_blank" rel="noopener"`:''} title="${esc(t.join(', '))}">${lab}</${tag}></td>`}).join('')}</tr>`}).join('');
+ return `<div class="gridwrap"><table class="agrid"><thead><tr><th>${week?'Openings per day':'Openings by hour'}</th>${cols.map(c=>`<th>${esc(c.label)}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`}
+async function checkAvailability(){if(checking)return;checking=true;const button=$('checkAvailability');button.disabled=true;button.textContent='Checking…';
+ const places=availabilityRows(),start=$('availabilityDate').value,from=$('availabilityFrom').value,to=$('availabilityTo').value;
+ const dates=$('availabilityRange').value==='week'?[0,1,2,3,4,5,6].map(n=>addDays(start,n)):[start];
+ const items=places.map(o=>({o,state:'',slots:[],action:'',warning:onlineCheck(o)&&staleIDs(o.verified)?'IDs may be stale':''}));paintAvailability(items.map(x=>({...x,state:'Loading…'})),dates);
+ await Promise.all(items.map(async item=>{const o=item.o,bk=bookingLink(o);if(!onlineCheck(o)){Object.assign(item,manualContact(o));return}
+  let ids;try{ids=JSON.parse(o.ids)}catch{item.state='IDs invalid';return}
+  if(!ids||typeof ids!=='object'||Array.isArray(ids)){item.state='IDs invalid';return}
+  const res=await Promise.all(dates.map(d=>fetchDay(o,ids,d,from,to)));item.slots=res.flatMap(r=>r.slots||[]);
+  const err=res.find(r=>r.error);if(err&&!item.slots.length){item.state=availabilityState(err.error);if(item.state.includes('check manually'))item.action=bk;return}
+  item.state=item.slots.length?`${item.slots.length} opening${item.slots.length>1?'s':''}`:dates.length>1?'No openings in these 7 days':'No openings that day'}));
+ paintAvailability(items,dates);checking=false;button.disabled=false;button.textContent='Check availability'}
+fetch(CSV_URL).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}).then(async t=>{
+ if(/^\s*</.test(t))throw new Error('sheet is not public');data=toRows(parseCSV(t));BOOKING=await bookingPromise;attachBooking();
+ fill('hood',data.flatMap(o=>o.hoods));fill('type',data.map(o=>o.type));fill('plat',data.map(o=>o.plat));fill('availabilityService',data.map(o=>o.avservice));
  const chips=$('svcchips');
  SVC_DEFS.forEach(([label])=>{const c=document.createElement('button');c.type='button';c.className='chip';c.textContent=label;c.setAttribute('aria-pressed','false');
   c.onclick=()=>{activeSvcs.has(label)?activeSvcs.delete(label):activeSvcs.add(label);setChip(c,activeSvcs.has(label));render()};chips.appendChild(c)});
  const qp=new URLSearchParams(location.search);
  ['q','hood','type','plat','max','minr','sort'].forEach(id=>{if(qp.get(id))$(id).value=qp.get(id)});
- if(qp.get('showout'))$('hideout').checked=false;
- (qp.get('svc')||'').split(',').forEach(s=>{const lbl=SVC_DEFS.map(d=>d[0]).find(l=>l.toLowerCase()===s.toLowerCase());
+ if(qp.get('hideout')==='1')$('hideout').checked=true;
+ const svcAliases=new Map([['japanese gel','Structured / hard gel'],['hard gel / biab','Structured / hard gel']]);
+ (qp.get('svc')||'').split(',').forEach(s=>{const key=s.toLowerCase(),lbl=svcAliases.get(key)||SVC_DEFS.map(d=>d[0]).find(l=>l.toLowerCase()===key);
   if(lbl){activeSvcs.add(lbl);const c=[...chips.children].find(c=>c.textContent===lbl);if(c)setChip(c,true)}});
- ['q','hood','type','plat','max','minr','sort','hideout'].forEach(id=>$(id).addEventListener('input',render));
- $('reset').onclick=()=>{['q','hood','type','plat','max','minr','sort'].forEach(id=>$(id).value='');$('hideout').checked=true;activeSvcs.clear();[...chips.children].forEach(c=>setChip(c,false));render()};
+ ['q','hood','type','plat','max','minr','sort','hideout','availabilityService'].forEach(id=>$(id).addEventListener('input',render));
+ $('reset').onclick=()=>{['q','hood','type','plat','max','minr','sort','availabilityService'].forEach(id=>$(id).value='');$('hideout').checked=false;activeSvcs.clear();[...chips.children].forEach(c=>setChip(c,false));render()};
  $('ftoggle').onclick=()=>{const open=$('controls').classList.toggle('open');$('ftoggle').setAttribute('aria-expanded',open)};
- render()
+ $('viewList').onclick=()=>setView('list');$('viewMap').onclick=()=>setView('map');
+ $('availabilityDate').value=tomorrowNY();$('checkAvailability').onclick=checkAvailability;render();if(qp.get('view')==='map')setView('map')
 }).catch(e=>{$('msg').textContent='Could not load the sheet ('+e.message+'). Make sure it is shared as "Anyone with the link can view".'});
 </script></body></html>
