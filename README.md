@@ -30,6 +30,7 @@ Add availability entries to root `booking.json`, keyed by the exact `Name` in th
 
 - **Map pins** come from `geo.json`, which maps each place Name to `[lat, lng]`. Rebuild it after adding addresses: export the sheet as CSV, then run `python3 tools/geocode.py --csv sheet.csv` (it uses OpenStreetMap Nominatim, bounded to Manhattan, at 1 request/second). Places with no street address get an **approx.** pin near their neighborhood's center (dashed outline).
 - **Est. set with art** = the lowest manicure price (`Base gel` / `Hard gel`) plus the nail-art add-on parsed from `Art price`. The parsing works like this: "incl" means art is included, "$5/finger" is counted as ×10 nails, and "sets"/prices at or above the manicure price are treated as a full art-set price. Every total is an estimate. An optional `Art add-on $` column overrides the parse: enter a number, with `0` meaning art is included. **Best value** ranks the visible places by this total.
+- **Price freshness:** optional sheet columns `Prices updated` (YYYY-MM-DD) and `Price source` (URL) show under each price box. Prices older than 180 days are flagged "may be outdated". `Other prices` (removal, extensions, French…) shows in the card's price list.
 
 ## Local development and checks
 

@@ -110,7 +110,7 @@ function parseCSV(t){const r=[];let row=[],f='',q=false;for(let i=0;i<t.length;i
  if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=c}
  else if(c=='"')q=true;else if(c==','){row.push(f);f=''}else if(c=='\n'||c=='\r'){if(c=='\r'&&t[i+1]=='\n')i++;row.push(f);r.push(row);row=[];f=''}else f+=c}
  if(f||row.length){row.push(f);r.push(row)}return r.filter(x=>x.some(v=>v.trim()))}
-const KEYS={name:'name',ig:'instagram',igurl:'instagram url',type:'type',hood:'neighborhood',addr:'address',phone:'phone',book:'booking url',plat:'booking platform',svc:'services',base:'base gel',hard:'hard gel',art:'art price',styles:'styles',rating:'rating',grate:'google rating',maps:'maps url',status:'status',why:'ruled-out',checked:'last checked',avail:'availability',notes:'notes',photos:'photo posts',artadd:'art add-on',pupd:'prices updated',psrc:'price source'};
+const KEYS={name:'name',ig:'instagram',igurl:'instagram url',type:'type',hood:'neighborhood',addr:'address',phone:'phone',book:'booking url',plat:'booking platform',svc:'services',base:'base gel',hard:'hard gel',art:'art price',styles:'styles',rating:'rating',grate:'google rating',maps:'maps url',status:'status',why:'ruled-out',checked:'last checked',avail:'availability',notes:'notes',photos:'photo posts',artadd:'art add-on',pupd:'prices updated',psrc:'price source',other:'other prices'};
 const KEY_VALUES=Object.values(KEYS);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const url=u=>{u=(u||'').trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='https://'+u;return /^https?:\/\//i.test(u)?u:''};
@@ -182,7 +182,7 @@ function render(){const L=filtered();
  $('list').innerHTML=L.map(o=>{const ig=url(o.igurl)||(o.ig?'https://instagram.com/'+o.ig.replace(/^@/,''):''),bk=bookingLink(o);
   const hd=o.ig.trim().replace(/^@/,'').toLowerCase(),hv=/^[a-z0-9._]+$/.test(hd)?hd:'';
   const maps=url(o.maps)||(o.addr?'https://maps.google.com/?q='+encodeURIComponent(o.name+' '+o.addr):'');
-  const pr=[['Base gel',o.base],['Hard gel',o.hard],['Art',o.art]].filter(x=>x[1]).map(x=>`<b>${x[0]}</b><span>${esc(x[1])}</span>`).join(''),v=o.val;
+  const pr=[['Base gel',o.base],['Hard gel',o.hard],['Art',o.art],['Other',o.other]].filter(x=>x[1]).map(x=>`<b>${x[0]}</b><span>${esc(x[1])}</span>`).join(''),v=o.val;
   const pbox=o.price!=null||o.art?`<div class="price"><div class="pline"><span>Manicure</span><b>${o.price!=null?'$'+o.price:'not listed'}</b></div><div class="pline"><span>Nail art</span><b>${v.incl?'<span class="incl">included</span>':v.add!=null?'+$'+v.add:'not listed'}</b></div>${v.total!=null?`<div class="pline tot"><span>Est. set with art</span><b>$${v.total}</b></div>`:''}${v.how?`<div class="how">${esc(v.how)}</div>`:''}</div>`:'<div class="price none">No prices in the sheet yet</div>';
   return `<article class="card" id="card-${o.i}">${photosHTML(o)}<div class="top"><div class="who">${hv?`<span class="av" aria-hidden="true">${esc(o.name.trim()[0].toUpperCase())}${PHOTOS[hv]?`<img src="${PHOTOS[hv]}" alt="" loading="lazy" onerror="this.remove()">`:''}</span>`:''}
    <div class="ttl"><h2>${esc(o.name)}</h2>${o.price!=null?`<span class="from">from $${o.price}</span>`:''}${o.vrank?`<span class="vbadge">Best value #${o.vrank}</span>`:''}</div></div></div>${pbox}${priceFreshness(o)}
