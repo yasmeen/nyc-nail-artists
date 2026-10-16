@@ -18,6 +18,20 @@ main{max-width:1200px;margin:auto;padding:16px;display:grid;grid-template-column
 .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}.links a{text-decoration:none;font-size:13px;padding:6px 10px;border-radius:8px;background:var(--acc);color:#fff}
 .links a.alt{background:#fff;color:var(--acc);border:1px solid var(--acc)}.note{font-size:13px}.why{font-size:13px;color:#a33}
 #msg{max-width:1200px;margin:20px auto;padding:0 16px;color:var(--mute)}
+.availability{max-width:1200px;margin:14px auto 0;padding:0 16px}
+.availability-controls{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.availability-controls label{font-size:13px;color:var(--mute);display:flex;align-items:center;gap:6px}
+.availability-controls input[type=date]{min-width:150px}.availability-controls input[type=time]{width:120px}
+#checkAvailability{background:var(--acc);color:white;border-color:var(--acc)}#checkAvailability:disabled{opacity:.6;cursor:wait}
+#availabilityResults{display:grid;gap:8px;margin-top:10px}
+.availability-row{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;grid-template-columns:minmax(160px,1fr) minmax(160px,1fr) 2fr;gap:8px;align-items:center}
+.availability-name{font-weight:650}.availability-service,.availability-state{font-size:13px;color:var(--mute)}
+.availability-state{color:var(--ink)}.stale{font-size:12px;color:#9a5b17;margin-left:6px}
+.slots{display:flex;flex-wrap:wrap;gap:6px}.slot{font-size:13px;text-decoration:none;padding:4px 8px;border-radius:999px;background:#f3e6eb;color:var(--acc)}
+.availability-empty{color:var(--mute);font-size:13px;padding:6px}
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid var(--line);border-top-color:var(--acc);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px;margin-right:5px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:600px){.availability-row{grid-template-columns:1fr;gap:4px}.availability-controls{align-items:stretch}.availability-controls label{flex:1 1 140px}.availability-controls input,.availability-controls select{min-width:0;max-width:100%}}
 </style></head><body>
 <header><h1>💅 NYC Nail Artists</h1><p>Live from Yasmeen's research sheet.</p></header>
 <div class="controls"><div class="in">
@@ -29,19 +43,30 @@ main{max-width:1200px;margin:auto;padding:16px;display:grid;grid-template-column
 <select id="sort"><option value="">Sort: sheet order</option><option value="asc">Price: low → high</option><option value="desc">Price: high → low</option><option value="name">Name A–Z</option></select>
 <button id="reset">Reset</button><span id="count"></span>
 </div></div>
+<section class="availability" aria-label="Check appointment availability">
+ <div class="availability-controls">
+  <label>Date <input id="availabilityDate" type="date"></label>
+  <label>From <input id="availabilityFrom" type="time"></label>
+  <label>To <input id="availabilityTo" type="time"></label>
+  <label>Service <select id="availabilityService"><option value="">Any service</option></select></label>
+  <button id="checkAvailability" type="button">Check availability</button>
+ </div>
+ <div id="availabilityResults" aria-live="polite"></div>
+</section>
 <div id="msg">Loading…</div><main id="list"></main>
 <script>
 const SHEET_ID='1yorNY5SrbFzbGx295afxff2bSLH23DHwdH58eMOI1vw';
 const CSV_URL=new URLSearchParams(location.search).get('csv')||`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+const API_URL=new URLSearchParams(location.search).get('api')||'/api/availability';
 function parseCSV(t){const r=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];
  if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=c}
  else if(c=='"')q=true;else if(c==','){row.push(f);f=''}else if(c=='\n'||c=='\r'){if(c=='\r'&&t[i+1]=='\n')i++;row.push(f);r.push(row);row=[];f=''}else f+=c}
  if(f||row.length){row.push(f);r.push(row)}return r.filter(x=>x.some(v=>v.trim()))}
-const KEYS={name:'name',ig:'instagram',igurl:'instagram url',type:'type',hood:'neighborhood',addr:'address',phone:'phone',book:'booking url',plat:'booking platform',svc:'services',base:'base gel',hard:'hard gel',art:'art price',styles:'styles',rating:'rating',status:'status',why:'ruled-out',checked:'last checked',notes:'notes'};
+const KEYS={name:'name',ig:'instagram',igurl:'instagram url',type:'type',hood:'neighborhood',addr:'address',phone:'phone',book:'booking url',plat:'booking platform',svc:'services',base:'base gel',hard:'hard gel',art:'art price',styles:'styles',rating:'rating',status:'status',why:'ruled-out',checked:'last checked',notes:'notes',ids:'platform ids (json)',avservice:'availability service',avenabled:'availability enabled',verified:'ids last verified'};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const url=u=>{u=(u||'').trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='https://'+u;return /^https?:\/\//i.test(u)?u:''};
 const num=s=>{const m=String(s||'').match(/\$?\s*(\d+(?:\.\d+)?)/);return m?+m[1]:null};
-let data=[];const $=id=>document.getElementById(id);
+let data=[];let checking=false;const $=id=>document.getElementById(id);
 function toRows(rows){const h=rows[0].map(x=>x.trim().toLowerCase());const idx={};
  for(const[k,p]of Object.entries(KEYS)){idx[k]=h.findIndex(x=>x===p);if(idx[k]<0)idx[k]=h.findIndex(x=>x.startsWith(p))}
  return rows.slice(1).map((r,i)=>{const o={i};for(const k in idx)o[k]=idx[k]>=0?(r[idx[k]]||'').trim():'';
@@ -65,10 +90,32 @@ function render(){const q=$('q').value.toLowerCase().trim(),h=$('hood').value,t=
   ${o.out&&o.why?`<div class="why">Ruled out: ${esc(o.why)}</div>`:''}${o.checked?`<div class="meta">Last checked ${esc(o.checked)}</div>`:''}
   <div class="links">${ig?`<a href="${esc(ig)}" target="_blank" rel="noopener">${esc(o.ig||'Instagram')}</a>`:''}${bk?`<a class="alt" href="${esc(bk)}" target="_blank" rel="noopener">Book${o.plat?' ('+esc(o.plat)+')':''}</a>`:''}</div></article>`}).join('');
  $('msg').textContent=L.length?'':'No matches.'}
+function tomorrowNY(){const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));const d=new Date(Date.UTC(+p.year,+p.month-1,+p.day+1));return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`}
+function bookingLink(o){const value=(o.book||'').trim();if(!value||/^(none\b|n\/a\b|dm\b|instagram\b)/i.test(value))return'';return url(value)}
+function availabilityRows(){const q=$('q').value.toLowerCase().trim(),h=$('hood').value,t=$('type').value,st=$('status').value,mx=parseFloat($('max').value),so=$('sort').value,service=$('availabilityService').value;
+ let L=data.filter(o=>!o.out&&(!q||q.split(/\s+/).every(w=>o.blob.includes(w)))&&(!h||o.hoods.includes(h))&&(!t||o.type===t)&&(!st||o.status===st)&&(isNaN(mx)||(o.price!=null&&o.price<=mx))&&(!service||o.avservice===service));
+ const P=o=>o.price??(so=='asc'?Infinity:-Infinity);if(so=='asc')L.sort((a,b)=>P(a)-P(b));else if(so=='desc')L.sort((a,b)=>P(b)-P(a));else if(so=='name')L.sort((a,b)=>a.name.localeCompare(b.name));return L}
+function staleIDs(value){if(!/^\d{4}-\d{2}-\d{2}$/.test(value||''))return true;const parsed=Date.parse(value);if(!Number.isFinite(parsed)||new Date(parsed).toISOString().slice(0,10)!==value)return true;return (Date.now()-parsed)>30*24*60*60*1000}
+function availabilityState(error){return ({timeout:'Timed out',blocked:'Blocked — check manually',upstream:'Error — check manually',manual:'Check manually'})[error]||'Error — check manually'}
+function paintAvailability(items){$('availabilityResults').innerHTML=items.map(({o,state,slots=[],warning='',action})=>{const bk=bookingLink(o),ig=url(o.igurl)||(o.ig?'https://instagram.com/'+o.ig.replace(/^@/,''):''),href=bk||ig;
+ const chips=slots.map(slot=>{const time=new Date(slot.start).toLocaleTimeString('en-US',{timeZone:'America/New_York',hour:'numeric',minute:'2-digit'});const title=slot.staff?` title="${esc(slot.staff)}"`:'';return href?`<a class="slot" href="${esc(href)}" target="_blank" rel="noopener"${title}>${esc(time)}</a>`:`<span class="slot"${title}>${esc(time)}</span>`}).join('');
+ const label=state==='Loading…'?`<span class="spinner"></span>${esc(state)}`:esc(state);const stateHtml=action?`<a href="${esc(action)}" target="_blank" rel="noopener">${label}</a>`:label;
+ return `<article class="availability-row"><div><div class="availability-name">${esc(o.name)}${warning?`<span class="stale">${esc(warning)}</span>`:''}</div><div class="availability-service">${esc(o.avservice||'Any service')}</div></div><div class="availability-state">${stateHtml}</div><div class="slots">${chips}</div></article>`}).join('')||'<div class="availability-empty">No places to check with these filters.</div>'}
+async function checkAvailability(){if(checking)return;checking=true;const button=$('checkAvailability');button.disabled=true;button.textContent='Checking…';
+ const places=availabilityRows(),selectedDate=$('availabilityDate').value;const from=$('availabilityFrom').value,to=$('availabilityTo').value;
+ const items=places.map(o=>({o,state:'',slots:[],action:'',warning:/^y$/i.test(o.avenabled)&&staleIDs(o.verified)?'IDs may be stale':''}));paintAvailability(items.map(x=>({...x,state:'Loading…'})));
+ await Promise.all(items.map(async item=>{const o=item.o,bk=bookingLink(o),ig=url(o.igurl)||(o.ig?'https://instagram.com/'+o.ig.replace(/^@/,''):'');if(!/^y$/i.test(o.avenabled)){item.state=bk?'Check manually':'Check Instagram';item.action=bk||ig;return}
+ if(!o.ids){item.state=bk?'Check manually':'Check Instagram';item.action=bk||ig;return}
+ let ids;try{ids=JSON.parse(o.ids)}catch{item.state='IDs invalid';return}
+ if(!ids||typeof ids!=='object'||Array.isArray(ids)){item.state='IDs invalid';return}
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),8000);
+ try{const response=await fetch(API_URL,{method:'POST',headers:{'content-type':'application/json'},signal:controller.signal,body:JSON.stringify({platform:o.plat,ids,date:selectedDate,...(from?{from}:{}),...(to?{to}:{})})});if(!response.ok)throw new Error('request failed');const result=await response.json();if(result.error){item.state=availabilityState(result.error);if(item.state.includes('check manually'))item.action=bk;return}item.slots=Array.isArray(result.slots)?result.slots:[];item.state=item.slots.length?`${item.slots.length} openings`:'No openings that day'}catch(error){item.state=controller.signal.aborted?'Timed out':'Error — check manually';if(item.state.includes('check manually'))item.action=bk}finally{clearTimeout(timer)}}));
+ paintAvailability(items);checking=false;button.disabled=false;button.textContent='Check availability'}
 fetch(CSV_URL).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}).then(t=>{
  if(/^\s*</.test(t))throw new Error('sheet is not public');data=toRows(parseCSV(t));
  fill('hood',data.flatMap(o=>o.hoods));fill('type',data.map(o=>o.type));fill('status',data.map(o=>o.status));
+ fill('availabilityService',data.map(o=>o.avservice));
  ['q','hood','type','status','max','sort'].forEach(id=>$(id).addEventListener('input',render));
- $('reset').onclick=()=>{['q','hood','type','status','max','sort'].forEach(id=>$(id).value='');render()};render()
+ $('reset').onclick=()=>{['q','hood','type','status','max','sort','availabilityService'].forEach(id=>$(id).value='');render()};$('availabilityDate').value=tomorrowNY();$('checkAvailability').onclick=checkAvailability;render()
 }).catch(e=>{$('msg').textContent='Could not load the sheet ('+e.message+'). Make sure it is shared as "Anyone with the link can view".'});
 </script></body></html>
