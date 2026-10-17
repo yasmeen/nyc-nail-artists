@@ -80,7 +80,6 @@ details.more[open]{flex-basis:100%}
 .how,.line{font-size:13px;color:var(--mute)}.line b{color:var(--ink)}
 .tech{font-size:13px}.tags{display:flex;flex-wrap:wrap;gap:6px}
 .tag{font-size:12px;font-weight:600;padding:3px 9px;border-radius:8px;background:var(--chip)}.tag.hl{background:var(--ink);color:var(--bg)}
-.out{font-size:13px;color:var(--warn);margin:0}
 details.info>summary{cursor:pointer;font-size:13px;font-weight:700;padding:6px 0;color:var(--ink)}
 .infobody{display:grid;gap:6px;font-size:13px;padding:4px 0}
 .meta{color:var(--mute);font-size:13px}.meta a{color:inherit}.stars{color:var(--star);letter-spacing:1px}
@@ -141,7 +140,6 @@ footer{color:var(--mute);font-size:13px;padding:8px 0 32px}
    <select id="availabilityRange" aria-label="Openings range"><option value="day">Openings: that day</option><option value="week">Openings: next 7 days</option></select>
    <label>Until <input id="availabilityTo" type="time"></label>
    <select id="availabilityService" aria-label="Service to check"><option value="">Check any service</option></select>
-   <label><input id="hideout" type="checkbox"> Hide ruled-out</label>
    <button id="reset" class="soft" type="button">Reset</button>
    <details class="gloss"><summary>What do these terms mean?</summary><dl>
     <dt>Gel manicure (soft gel):</dt><dd>thin gel colour cured under a UV/LED lamp. Soaks off in acetone; lasts about 2–3 weeks.</dd>
@@ -214,12 +212,12 @@ function toRows(rows){const h=rows[0].map(x=>x.trim().toLowerCase());const idx={
   const ps=[num(o.base),num(o.hard)].filter(x=>x!=null);o.price=ps.length?Math.min(...ps):null;o.val=valueOf(o);
   o.rate=ratingNum(o.grate)||ratingNum(o.rating);
   o.hoods=o.hood?o.hood.split(/[\/,]/).map(s=>s.trim()).filter(Boolean):[];
-  o.out=/ruled/i.test(o.status);
   const sv=(o.svc+' '+o.hard+' '+o.styles+' '+o.notes).toLowerCase();
   o.svcs=SVC_DEFS.filter(([,re])=>new RegExp(re).test(sv)).map(([label])=>label);
   o.known=KNOWN.filter(([,re])=>re.test(o.styles)).map(([label])=>label);
-  o.blob=Object.values(o).join(' ').toLowerCase();return o}).filter(o=>o.name)}
-function attachBooking(){const supported=new Set(['acuity','square','glossgenius','chronos']);for(const o of data){const entry=BOOKING[o.name];if(!entry)continue;o.bk=supported.has(entry.platform)?entry:null;o.ids=JSON.stringify(entry.ids);o.plat=o.plat||entry.platform;o.avservice=entry.service||'';o.verified=entry.verified||'';o.blob=Object.values(o).join(' ').toLowerCase()}}
+  o.blob=searchText(o);return o}).filter(o=>o.name)}
+const searchText=o=>Object.entries(o).filter(([key])=>key!=='status'&&key!=='why').map(([,value])=>value).join(' ').toLowerCase();
+function attachBooking(){const supported=new Set(['acuity','square','glossgenius','chronos']);for(const o of data){const entry=BOOKING[o.name];if(!entry)continue;o.bk=supported.has(entry.platform)?entry:null;o.ids=JSON.stringify(entry.ids);o.plat=o.plat||entry.platform;o.avservice=entry.service||'';o.verified=entry.verified||'';o.blob=searchText(o)}}
 function priceFreshness(o){
  if(!o.pupd)return'<div class="pdate">Price date unknown</div>';
  const date=new Date(o.pupd);if(!Number.isFinite(date.getTime()))return'<div class="pdate">Price date unknown</div>';
@@ -250,7 +248,6 @@ function syncURL(){const p=new URLSearchParams();
  if(ART()==='simple')p.set('art','simple');
  if($('from').value&&$('from').value!=='here')p.set('from',$('from').value);
  if(activeSvcs.size)p.set('svc',[...activeSvcs].join(','));
- if($('hideout').checked)p.set('hideout','1');
  if(view!=='feed')p.set('view',view);
  const current=new URLSearchParams(location.search);
  for(const key of ['csv','api','photos'])if(current.get(key))p.set(key,current.get(key));
@@ -269,7 +266,6 @@ function fails(o){const r=[],q=$('q').value.toLowerCase().trim(),h=$('hood').val
  const miss=[...activeSvcs].filter(s=>!o.svcs.includes(s));if(miss.length)r.push('no '+miss.join(', ')+' listed');
  const tot=totalFor(o);if(!isNaN(mx)&&tot!=null&&tot>mx)r.push(`from $${tot}, over your $${mx}`);
  if(!isNaN(mr)&&!(o.rate!=null&&o.rate>=mr))r.push(o.rate==null?'no rating yet':`rated ${o.rate}`);
- if($('hideout').checked&&o.out)r.push('ruled out'+(o.why?': '+o.why:''));
  const w=walkInfo(o);if(!isNaN(wl)&&w&&!w.approx&&w.min>wl)r.push(`~${w.min} min walk, over your ${wl}`);
  return r}
 function sortMode(){const s=$('sort').value;return s||(startLL()?'near':'sheet')}
@@ -303,7 +299,6 @@ function cardHTML(o){const tot=totalFor(o),w=walkInfo(o),v=o.val,ig=instagramLin
  ${loc?`<div class="line">${loc}</div>`:''}<div class="line">${whenText(o)}</div>
  ${tech?`<div class="tech">${tech}</div>`:''}
  ${o.known.length?`<div class="tags">${o.known.map(k=>`<span class="tag${k===HL?' hl':''}">Known for ${esc(k.toLowerCase())}</span>`).join('')}</div>`:''}
- ${o.out?`<p class="out">Ruled out${o.why?': '+esc(o.why):''}</p>`:''}
  <details class="info"><summary>Prices, address and booking</summary><div class="infobody">${pbox}${pr?`<div class="prices">${pr}</div>`:''}${priceFreshness(o)}
   <div>${o.rate!=null?stars(o.rate)+(o.grate?' <span class="meta">Google</span>':''):'<span class="meta">No rating yet</span>'}</div>
   <div class="meta">${esc([o.type,o.hood].filter(Boolean).join(' · '))}</div>
@@ -431,18 +426,17 @@ fetch(CSV_URL).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text
  const so=qp.get('sort');if(so)$('sort').value=({asc:'total',desc:'total',value:'total'})[so]||so;
  if(qp.get('art')==='simple')$('art').value='simple';
  const fr=qp.get('from')||store.get('nail.from','');if(STARTS[fr])$('from').value=fr;
- if(qp.get('hideout')==='1')$('hideout').checked=true;
  const svcAliases=new Map([['japanese gel','Structured / hard gel'],['hard gel / biab','Structured / hard gel']]);
  (qp.get('svc')||'').split(',').forEach(s=>{const key=s.toLowerCase(),lbl=svcAliases.get(key)||SVC_DEFS.map(d=>d[0]).find(l=>l.toLowerCase()===key);if(lbl)activeSvcs.add(lbl)});
  if(activeSvcs.size)$('tech').value=[...activeSvcs][0];
  const shared=(qp.get('saved')||'').split('|').map(s=>s.trim()).filter(Boolean);if(shared.length){shared.forEach(n=>SAVED.add(n));store.set('nail.saved',[...SAVED])}
- ['q','hood','type','plat','max','minr','sort','hideout','availabilityService','art','walk'].forEach(id=>$(id).addEventListener('input',render));
+ ['q','hood','type','plat','max','minr','sort','availabilityService','art','walk'].forEach(id=>$(id).addEventListener('input',render));
  $('tech').addEventListener('input',()=>{activeSvcs=new Set($('tech').value?[$('tech').value]:[]);render()});
  $('from').addEventListener('input',()=>{const f=$('from').value;store.set('nail.from',f==='here'?'':f);
   if(f!=='here'){render();return}
   if(!navigator.geolocation){$('from').value='';$('msg').textContent='Location is not available in this browser.';render();return}
   navigator.geolocation.getCurrentPosition(p=>{HERE=[p.coords.latitude,p.coords.longitude];render()},()=>{$('from').value='';HERE=null;render();$('msg').textContent="Couldn't get your location, so distances are off. Pick a starting point instead."},{maximumAge:300000,timeout:10000})});
- $('reset').onclick=()=>{['q','hood','type','plat','max','minr','sort','availabilityService','walk','tech'].forEach(id=>$(id).value='');$('art').value='none';$('hideout').checked=false;activeSvcs.clear();HL='';render()};
+ $('reset').onclick=()=>{['q','hood','type','plat','max','minr','sort','availabilityService','walk','tech'].forEach(id=>$(id).value='');$('art').value='none';activeSvcs.clear();HL='';render()};
  $('tabFeed').onclick=()=>setTab('feed');$('tabSaved').onclick=()=>setTab('saved');$('tabMap').onclick=()=>setTab('map');
  fillDays();$('checkAvailability').onclick=()=>checkAvailability();render();
  const v=qp.get('view');if(v==='map'||v==='saved')setTab(v)
