@@ -4,6 +4,7 @@ Searchable, filterable directory of NYC nail artists, read live from a Google Sh
 
 - Data: Google Sheet `1yorNY5SrbFzbGx295afxff2bSLH23DHwdH58eMOI1vw`, fetched via `gviz/tq?tqx=out:csv`. The sheet must be shared "Anyone with the link can view".
 - The sheet contains directory data only. Read-only booking IDs and services live in root `booking.json`; see [the place onboarding guide](docs/adding-a-place.md).
+- Researching a place's details (handle, address, prices, art add-on, photos): follow [the research guide](docs/research-guide.md). It covers where to look for each sheet column, how to search Instagram exhaustively, and the cell formats the site parses.
 - Photo-first feed: every card leads with Instagram photos (profile embed, or curated `Photo posts` URLs) in a Pinterest-style column layout, with the total, walk time, next opening and technique in plain words underneath.
 - Search reads as one editable sentence: technique, art (none or simple), total budget, day and earliest time, walking distance, and starting point (a preset or your location). Places whose total is unknown stay visible, marked "Total unknown", and are never ranked as cheap. More filters (neighborhood, type, booking platform, min rating, sort, hide ruled-out) sit under **More filters**.
 - **Known for** chips come from the `Styles` column (tortoiseshell, French, hand-painted art, minimal, chrome, cat eye, gems, ombré). Tapping one moves those places to the top; it never hides anyone.
