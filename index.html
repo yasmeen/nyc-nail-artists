@@ -57,6 +57,13 @@ details.more[open]{flex-basis:100%}
 .card.flash .media{outline:3px solid var(--acc);outline-offset:3px}
 .media{position:relative;border-radius:16px;overflow:hidden;background:var(--surface);container-type:inline-size}
 .crop{height:66.7cqw;overflow:hidden}.crop iframe{display:block;width:100%;height:calc(190px + 66.7cqw);margin-top:-147px;border:0}
+.photos.saved{display:grid;gap:4px;overflow:hidden}
+.photos.saved[data-count="1"]{grid-template-columns:1fr;aspect-ratio:1}
+.photos.saved[data-count="2"]{grid-template-columns:repeat(2,minmax(0,1fr));aspect-ratio:2}
+.photos.saved[data-count="3"]{grid-template-columns:repeat(3,minmax(0,1fr));aspect-ratio:3}
+.photos.saved[data-count="4"]{grid-template-columns:repeat(2,minmax(0,1fr));aspect-ratio:1}
+.photos.saved a{display:block;min-width:0;overflow:hidden;aspect-ratio:1}
+.photos.saved img{display:block;width:100%;height:100%;object-fit:cover}
 .posts{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px}.posts iframe{flex:0 0 260px;width:260px;height:470px;border:0;scroll-snap-align:start}
 .nophoto{height:150px;display:grid;place-items:center;align-content:center;gap:4px;color:var(--mute)}.nophoto b{font-size:44px;line-height:1}.nophoto small{font-size:12px}
 .heart{position:absolute;top:10px;right:10px;z-index:2;width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.95);color:#211922;display:grid;place-items:center;box-shadow:0 1px 6px rgba(0,0,0,.22)}
@@ -172,6 +179,9 @@ function parseCSV(t){const r=[];let row=[],f='',q=false;for(let i=0;i<t.length;i
 const KEYS={name:'name',ig:'instagram',igurl:'instagram url',type:'type',hood:'neighborhood',addr:'address',phone:'phone',book:'booking url',plat:'booking platform',svc:'services',base:'base gel',hard:'hard gel',art:'art price',styles:'styles',rating:'rating',grate:'google rating',maps:'maps url',status:'status',why:'ruled-out',checked:'last checked',avail:'availability',notes:'notes',photos:'photo posts',artadd:'art add-on',pupd:'prices updated',psrc:'price source',other:'other prices'};
 const KEY_VALUES=Object.values(KEYS);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const PHOTO_FILE=/^photos\/[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+\.(jpg|jpeg|webp|png)$/;
+const PHOTO_POST=/^https?:\/\/(?:www\.)?instagram\.com\/(?:p|reel)\/[A-Za-z0-9_-]+\/?(?:\?[^\s#]*)?(?:#[^\s]*)?$/i;
+const validSavedPhoto=p=>p&&typeof p.file==='string'&&PHOTO_FILE.test(p.file)&&!['.','..'].includes(p.file.split('/')[1])&&typeof p.post==='string'&&PHOTO_POST.test(p.post);
 const url=u=>{u=(u||'').trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='https://'+u;return /^https?:\/\//i.test(u)?u:''};
 const num=s=>{const m=String(s||'').match(/\$?\s*(\d+(?:\.\d+)?)/);return m?+m[1]:null};
 const ratingNum=s=>{const m=String(s||'').match(/(\d(?:\.\d+)?)/);return m?+m[1]:null};
@@ -182,7 +192,8 @@ const STARTS={usq:['Union Sq',[40.7359,-73.9906]],herald:['Herald Sq',[40.7497,-
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
 let data=[],activeSvcs=new Set(),checking=false,view='feed',HL='',HERE=null,AV={};const $=id=>document.getElementById(id);
 let SAVED=new Set(store.get('nail.saved',[]));
-let PHOTOS={},BOOKING={};fetch('photos.json').then(r=>r.ok?r.json():{}).then(p=>{PHOTOS=p||{};if(data.length)render()}).catch(()=>{});
+let PHOTO_MANIFEST={},BOOKING={};const PHOTO_MANIFEST_URL=new URLSearchParams(location.search).get('photos')||'photos/manifest.json';
+fetch(PHOTO_MANIFEST_URL).then(r=>r.ok?r.json():{}).then(p=>{PHOTO_MANIFEST=p&&typeof p==='object'&&!Array.isArray(p)?p:{};if(data.length)render()}).catch(()=>{});
 const bookingPromise=fetch('booking.json').then(r=>r.ok?r.json():{}).catch(()=>({}));
 function valueOf(o){const m=o.price,col=(o.artadd||'').replace(/[$,\s]/g,'');
  if(col!==''&&!isNaN(+col)){const add=+col,incl=add===0;return{mani:m,add,incl,total:m!=null?m+add:null,how:incl?'art included (from price list)':`$${m} manicure + $${add} cheapest nail art`}}
@@ -209,7 +220,9 @@ function priceFreshness(o){
  return `<div class="pdate">Prices updated ${date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'})}${source?' · '+label:''}${stale?` <span class="warning">— may be outdated</span>`:''}</div>`
 }
 function igHandle(o){const h=(o.ig||'').replace(/^@/,'').trim()||((o.igurl||'').match(/instagram\.com\/([^/?#]+)/i)||[])[1]||'';return /^[A-Za-z0-9._]{1,30}$/.test(h)?h:''}
-function photosHTML(o){const posts=[...new Set([...(o.photos||'').matchAll(/instagram\.com\/(?:[^/\s]+\/)?(?:p|reel)\/([A-Za-z0-9_-]+)/gi)].map(m=>m[1]))];
+function photosHTML(o){const saved=(Array.isArray(PHOTO_MANIFEST[o.name]?.photos)?PHOTO_MANIFEST[o.name].photos:[]).filter(validSavedPhoto).slice(0,4);
+ if(saved.length)return `<div class="photos saved" data-count="${saved.length}">${saved.map(photo=>`<a href="${esc(photo.post)}" target="_blank" rel="noopener"><img src="${esc(photo.file)}" loading="lazy" decoding="async" width="600" height="600" alt="${esc(o.name)}: ${esc(photo.desc)}"></a>`).join('')}</div>`;
+ const posts=[...new Set([...(o.photos||'').matchAll(/instagram\.com\/(?:[^/\s]+\/)?(?:p|reel)\/([A-Za-z0-9_-]+)/gi)].map(m=>m[1]))];
  if(posts.length)return `<div class="photos posts">${posts.map(c=>`<iframe src="https://www.instagram.com/p/${c}/embed/" loading="lazy" scrolling="no" title="${esc(o.name)} Instagram post"></iframe>`).join('')}</div>`;
  const h=igHandle(o);return h?`<div class="photos"><div class="crop"><iframe src="https://www.instagram.com/${h}/embed/" loading="lazy" scrolling="no" title="${esc(o.name)} Instagram photos"></iframe></div></div>`:''}
 function fill(id,vals){const s=$(id);[...new Set(vals)].filter(Boolean).sort().forEach(v=>s.add(new Option(v,v)))}
@@ -230,7 +243,7 @@ function syncURL(){const p=new URLSearchParams();
  if($('hideout').checked)p.set('hideout','1');
  if(view!=='feed')p.set('view',view);
  const current=new URLSearchParams(location.search);
- for(const key of ['csv','api'])if(current.get(key))p.set(key,current.get(key));
+ for(const key of ['csv','api','photos'])if(current.get(key))p.set(key,current.get(key));
  history.replaceState(null,'',location.pathname+(p.toString()?'?'+p.toString():'')+location.hash)}
 const SYN=[['hard gel','hard-gel','japanese gel','japanese','builder gel','builder','biab','structured','structure','gel overlay','overlay']];
 function queryMatches(o,q){if(!q)return true;if(q.split(/\s+/).every(w=>o.blob.includes(w)))return true;
@@ -339,7 +352,7 @@ document.addEventListener('click',e=>{
  const h=e.target.closest('[data-save]');if(h){toggleSave(h.dataset.save);return}
  const k=e.target.closest('[data-known]');if(k){HL=HL===k.dataset.known?'':k.dataset.known;render();return}
  if(e.target.closest('#checkSaved')){checkAvailability(savedList().filter(o=>!fails(o).length));return}
- const cp=e.target.closest('#copySaved');if(cp){const p=new URLSearchParams();p.set('saved',[...SAVED].join('|'));const c=new URLSearchParams(location.search).get('csv');if(c)p.set('csv',c);
+ const cp=e.target.closest('#copySaved');if(cp){const p=new URLSearchParams();p.set('saved',[...SAVED].join('|'));const current=new URLSearchParams(location.search);for(const key of ['csv','photos'])if(current.get(key))p.set(key,current.get(key));
   const link=location.origin+location.pathname+'?'+p.toString();(navigator.clipboard?navigator.clipboard.writeText(link):Promise.reject()).then(()=>{cp.textContent='Link copied'},()=>{window.prompt('Copy this link',link)})}});
 function availabilityRows(){const service=$('availabilityService').value;return filtered().filter(o=>!service||o.avservice===service)}
 function tomorrowNY(){const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));const d=new Date(Date.UTC(+p.year,+p.month-1,+p.day+1));return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`}
