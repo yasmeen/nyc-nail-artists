@@ -195,6 +195,8 @@ let data=[],activeSvcs=new Set(),checking=false,view='feed',HL='',HERE=null,AV={
 let SAVED=new Set(store.get('nail.saved',[]));
 let PHOTO_MANIFEST={},BOOKING={};const PHOTO_MANIFEST_URL=new URLSearchParams(location.search).get('photos')||'photos/manifest.json';
 fetch(PHOTO_MANIFEST_URL).then(r=>r.ok?r.json():{}).then(p=>{PHOTO_MANIFEST=p&&typeof p==='object'&&!Array.isArray(p)?p:{};if(data.length)render()}).catch(()=>{});
+const embedObserver=window.IntersectionObserver?new IntersectionObserver(entries=>{for(const entry of entries){if(!entry.isIntersecting)continue;const frame=entry.target;frame.src=frame.dataset.src;frame.removeAttribute('data-src');embedObserver.unobserve(frame)}},{rootMargin:'800px 0px'}):null;
+function observeEmbeds(root=document){root.querySelectorAll('iframe[data-src]').forEach(frame=>{if(embedObserver)embedObserver.observe(frame);else{frame.src=frame.dataset.src;frame.removeAttribute('data-src')}})}
 const bookingPromise=fetch('booking.json').then(r=>r.ok?r.json():{}).catch(()=>({}));
 function valueOf(o){const m=o.price,col=(o.artadd||'').replace(/[$,\s]/g,'');
  if(col!==''&&!isNaN(+col)){const add=+col,incl=add===0;return{mani:m,add,incl,total:m!=null?m+add:null,how:incl?'art included (from price list)':`$${m} manicure + $${add} cheapest nail art`}}
@@ -224,8 +226,8 @@ function igHandle(o){const h=(o.ig||'').replace(/^@/,'').trim()||((o.igurl||'').
 function photosHTML(o){const saved=(Array.isArray(PHOTO_MANIFEST[o.name]?.photos)?PHOTO_MANIFEST[o.name].photos:[]).filter(validSavedPhoto).slice(0,4);
  if(saved.length)return `<div class="photos saved" data-count="${saved.length}">${saved.map(photo=>`<a href="${esc(photo.post)}" target="_blank" rel="noopener"><img src="${esc(photo.file)}" loading="lazy" decoding="async" width="600" height="600" alt="${esc(o.name)}: ${esc(photo.desc)}"></a>`).join('')}</div>`;
  const posts=[...new Set([...(o.photos||'').matchAll(/instagram\.com\/(?:[^/\s]+\/)?(?:p|reel)\/([A-Za-z0-9_-]+)/gi)].map(m=>m[1]))];
- if(posts.length)return `<div class="photos posts">${posts.map(c=>`<iframe src="https://www.instagram.com/p/${c}/embed/" loading="lazy" scrolling="no" title="${esc(o.name)} Instagram post"></iframe>`).join('')}</div>`;
- const h=igHandle(o);return h?`<div class="photos"><div class="crop"><iframe src="https://www.instagram.com/${h}/embed/" loading="lazy" scrolling="no" title="${esc(o.name)} Instagram photos"></iframe></div></div>`:''}
+ if(posts.length)return `<div class="photos posts">${posts.map(c=>`<iframe data-src="https://www.instagram.com/p/${c}/embed/" loading="lazy" scrolling="no" title="${esc(o.name)} Instagram post"></iframe>`).join('')}</div>`;
+ const h=igHandle(o);return h?`<div class="photos"><div class="crop"><iframe data-src="https://www.instagram.com/${h}/embed/" loading="lazy" scrolling="no" title="${esc(o.name)} Instagram photos"></iframe></div></div>`:''}
 function fill(id,vals){const s=$(id);[...new Set(vals)].filter(Boolean).sort().forEach(v=>s.add(new Option(v,v)))}
 function stars(r){if(r==null)return'';const f=Math.round(r);return `<span class="stars" aria-hidden="true">${'★'.repeat(f)}${'☆'.repeat(5-f)}</span> <span class="meta">${esc(String(r).slice(0,3))}</span>`}
 const ART=()=>$('art').value;
@@ -314,6 +316,7 @@ function render(){const L=filtered();
   $('list').innerHTML=(known.length?`<div class="feed">${known.map(cardHTML).join('')}</div>`:'')
    +(unk.length?`<h2 class="sec">Total unknown · ${unk.length}</h2><p class="secnote">No price for this set in the sheet, so these aren't ranked by price. Ask them, or check their price list.</p><div class="feed">${unk.map(cardHTML).join('')}</div>`:'')}
  else $('list').innerHTML=`<div class="feed">${L.map(cardHTML).join('')}</div>`;
+ observeEmbeds($('list'));
  $('msg').textContent=L.length?'':'No places match this search.';
  $('savedCount').textContent=SAVED.size;renderSaved();if(view==='map')drawMap(L);syncURL()}
 function savedList(){return data.filter(o=>SAVED.has(o.name))}
@@ -323,7 +326,8 @@ function renderSaved(){if(view!=='saved')return;const all=savedList();
  const fit=all.filter(o=>!fails(o).length),no=all.filter(o=>fails(o).length);
  $('saved').innerHTML=note+`<h2 class="sec">Fits this search · ${fit.length}</h2>`
   +(fit.length?`<p class="secnote">Checked against the sentence above, so this list changes with your search.</p><button type="button" class="primary" id="checkSaved">Check ${fit.length===1?'it':'these '+fit.length} for openings</button><div class="feed">${fit.map(cardHTML).join('')}</div>`:'<p class="empty">None of your saved places fit this search. Change the sentence above.</p>')
-  +(no.length?`<h2 class="sec">Saved, not a fit right now · ${no.length}</h2><ul class="nofit">${no.map(o=>`<li><div><b>${esc(o.name)}</b><span>${esc(fails(o).join(' · '))}</span></div><button type="button" class="soft" ${heartAttrs(o)}>Remove</button></li>`).join('')}</ul>`:'')}
+  +(no.length?`<h2 class="sec">Saved, not a fit right now · ${no.length}</h2><ul class="nofit">${no.map(o=>`<li><div><b>${esc(o.name)}</b><span>${esc(fails(o).join(' · '))}</span></div><button type="button" class="soft" ${heartAttrs(o)}>Remove</button></li>`).join('')}</ul>`:'');
+ observeEmbeds($('saved'))}
 function toggleSave(name){SAVED.has(name)?SAVED.delete(name):SAVED.add(name);store.set('nail.saved',[...SAVED]);
  document.querySelectorAll('.heart[data-save]').forEach(b=>{if(b.dataset.save!==name)return;const o=data.find(x=>x.name===name);if(!o)return;const on=SAVED.has(name);b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?`Saved: ${name}. Remove from saved`:`Save ${name}`)});
  $('savedCount').textContent=SAVED.size;renderSaved()}
@@ -339,15 +343,15 @@ function loadLeaflet(){if(window.L)return Promise.resolve();const B='https://unp
 function drawMap(L){if(!window.L)return;if(!map){map=window.L.map('map');window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);pins=window.L.layerGroup().addTo(map)}
  pins.clearLayers();const pts=[],exact=[],acc='#5b3df5',s=startLL();
  if(s){pts.push(s);window.L.circleMarker(s,{radius:7,color:'#fff',weight:3,fillColor:'#211922',fillOpacity:1}).bindTooltip('Your start').addTo(pins)}
- for(const o of L){const w=where(o);pts.push(w.ll);if(!w.approx)exact.push(w.ll);const hd=o.ig.trim().replace(/^@/,'').toLowerCase(),img=PHOTOS[hd],tot=totalFor(o),wk=walkInfo(o);
+ for(const o of L){const w=where(o);pts.push(w.ll);if(!w.approx)exact.push(w.ll);const photos=PHOTO_MANIFEST[o.name]?.photos,img=(Array.isArray(photos)?photos:[]).find(validSavedPhoto)?.file||'',tot=totalFor(o),wk=walkInfo(o);
   const loc=w.approx?`Approximate, estimated from ${w.area?esc(w.area.replace(/\b\w/g,c=>c.toUpperCase())):'Manhattan'}`:esc(o.addr);
   window.L.circleMarker(w.ll,{radius:w.approx?7:8,color:acc,weight:2,fillColor:w.approx?'#fff':acc,fillOpacity:.95,dashArray:w.approx?'3 3':null})
-   .bindTooltip(esc(o.name)).bindPopup(`<div class="pop">${img?`<img src="${img}" alt="">`:''}<div><b>${esc(o.name)}</b><span class="meta">${tot!=null?`from $${tot} · `:'Total unknown · '}${wk?`~${wk.min} min walk · `:''}${loc}</span><br><button type="button" data-goto="${o.i}">See photos and details</button></div></div>`).addTo(pins)}
+   .bindTooltip(esc(o.name)).bindPopup(`<div class="pop">${img?`<img src="${esc(img)}" alt="">`:''}<div><b>${esc(o.name)}</b><span class="meta">${tot!=null?`from $${tot} · `:'Total unknown · '}${wk?`~${wk.min} min walk · `:''}${loc}</span><br><button type="button" data-goto="${o.i}">See photos and details</button></div></div>`).addTo(pins)}
  const fit=exact.length>1?exact:pts;if(fit.length)map.fitBounds(fit,{padding:[30,30],maxZoom:15})}
 function setTab(v){view=v;$('list').hidden=v!=='feed';$('known').hidden=v!=='feed';$('saved').hidden=v!=='saved';$('mapwrap').hidden=v!=='map';
  [['tabFeed','feed'],['tabSaved','saved'],['tabMap','map']].forEach(([id,k])=>{$(id).classList.toggle('on',k===v);$(id).setAttribute('aria-pressed',k===v)});
  if(v==='saved')renderSaved();
- if(v==='map')loadLeaflet().then(()=>{drawMap(filtered());map.invalidateSize()}).catch(()=>{$('msg').textContent='Could not load the map.'});syncURL()}
+ if(v==='map')loadLeaflet().then(()=>{drawMap(filtered());map.invalidateSize()}).catch(e=>{console.error('Could not load the map.',e);$('msg').textContent='Could not load the map.'});syncURL()}
 document.addEventListener('click',e=>{
  const g=e.target.closest('[data-goto]');if(g){setTab('feed');const c=$('card-'+g.dataset.goto);if(c){c.scrollIntoView({behavior:'smooth',block:'center'});c.classList.add('flash');setTimeout(()=>c.classList.remove('flash'),1600)}return}
  const h=e.target.closest('[data-save]');if(h){toggleSave(h.dataset.save);return}
