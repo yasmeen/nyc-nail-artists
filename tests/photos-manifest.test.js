@@ -6,8 +6,10 @@ import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const manifestPath = resolve(root, 'photos/manifest.json');
+const blockedHandlesPath = resolve(root, 'photos/embed-blocked.json');
 const photoFilePattern = /^photos\/[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+\.(jpg|jpeg|webp|png)$/;
 const postPattern = /^https?:\/\/(?:www\.)?instagram\.com\/(?:p|reel)\/[A-Za-z0-9_-]+\/?(?:\?[^\s#]*)?(?:#[^\s]*)?$/i;
+const blockedHandlePattern = /^[a-z0-9._]{1,30}$/;
 
 test('photos manifest entries reference small local images and Instagram posts', async () => {
   let raw;
@@ -40,5 +42,22 @@ test('photos manifest entries reference small local images and Instagram posts',
       assert.ok(info.isFile(), `${name} photo exists`);
       assert.ok(info.size <= 150 * 1024, `${name} photo is at most 150 KB`);
     }
+  }
+});
+
+test('blocked Instagram handles are lowercase valid handles when the file exists', async () => {
+  let raw;
+  try {
+    raw = await readFile(blockedHandlesPath, 'utf8');
+  } catch (error) {
+    if (error.code === 'ENOENT') return;
+    throw error;
+  }
+
+  const handles = JSON.parse(raw);
+  assert.ok(Array.isArray(handles));
+  for (const handle of handles) {
+    assert.equal(typeof handle, 'string');
+    assert.match(handle, blockedHandlePattern);
   }
 });
