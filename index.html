@@ -1,127 +1,166 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>NYC Nail Artists</title>
+<script>try{const t=JSON.parse(localStorage.getItem('nail.theme')||'"system"');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch{}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400..800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#faf7f5;--card:#fff;--ink:#2a2226;--mute:#7a6f74;--acc:#c2577a;--line:#eadfe3;--chip:#f3e6eb;--star:#e8a13d}
-*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
-header{padding:28px 16px 10px;max-width:1200px;margin:auto}
-h1{margin:0;font:600 30px/1.15 Georgia,'Times New Roman',serif;letter-spacing:-.5px}
-header p{margin:6px 0 0;color:var(--mute);max-width:640px}
-.controls{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 16px}
-.controls .in{max-width:1200px;margin:auto;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-input,select,button{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
-#q{flex:1 1 200px}label.p{display:flex;align-items:center;gap:6px;color:var(--mute);font-size:14px}label.p input{width:76px}
-label.c{display:flex;align-items:center;gap:6px;color:var(--mute);font-size:14px;cursor:pointer}
-button{cursor:pointer}#count{color:var(--mute);font-size:14px;margin-left:auto}
-.chips{display:flex;gap:6px;flex-wrap:wrap;width:100%}
-.gloss{width:100%;max-width:760px;color:var(--mute);font-size:12px;order:3}
-.gloss summary{cursor:pointer}
-.gloss dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:0 10px;margin:8px 0}
-.gloss dt{font-weight:700;color:var(--ink)}
-.gloss dd{margin:0 0 8px}
-.gloss p{margin:8px 0 0}
+:root{--bg:#fff;--surface:#f1f1f1;--chip:#e9e9e9;--line:#e9e9e9;--border:#cdcdcd;--dash:#ababab;--ink:#211922;--mute:#5f5f5f;--acc:#5b3df5;--acc-ink:#5b3df5;--on-acc:#fff;--warn:#9a5b17;--ok:#1e7a46;--star:#c98a1b;color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#1f1f1f;--surface:#2b2b2b;--chip:#333;--line:#333;--border:#4a4a4a;--dash:#767676;--ink:#efefef;--mute:#b5b5b5;--acc-ink:#a898ff;--warn:#e0a75e;--ok:#5fc48a;--star:#e8b04d;color-scheme:dark}}
+:root[data-theme=dark]{--bg:#1f1f1f;--surface:#2b2b2b;--chip:#333;--line:#333;--border:#4a4a4a;--dash:#767676;--ink:#efefef;--mute:#b5b5b5;--acc-ink:#a898ff;--warn:#e0a75e;--ok:#5fc48a;--star:#e8b04d;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.45 'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;letter-spacing:-.005em;background:var(--bg);color:var(--ink);padding-bottom:calc(64px + env(safe-area-inset-bottom))}
+a{color:var(--acc-ink)}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--acc-ink);outline-offset:2px}
+.in{max-width:1240px;margin:0 auto;padding:0 16px}
+.bar{padding:14px 0 6px}.bar .in{display:flex;align-items:center;gap:10px}
+.bar h1{margin:0;font-size:17px;font-weight:800;letter-spacing:-.01em;flex:0 0 auto}
+#q{flex:1 1 auto;min-width:0;height:44px;padding:0 16px;border:0;border-radius:22px;background:var(--surface)}
+#theme{flex:0 0 auto;height:44px;padding:0 14px;border:0;border-radius:22px;background:var(--surface);font-size:13px;font-weight:600}
+.ask{padding:6px 0 10px;border-bottom:1px solid var(--line)}
+.sentence{margin:4px 0 10px;font-size:20px;line-height:1.9;font-weight:500;max-width:860px}
+.sentence select,.sentence input{font-weight:800;background:transparent;border:0;border-bottom:2px dotted var(--dash);border-radius:0;padding:2px 0;margin:0 1px;appearance:none;-webkit-appearance:none;field-sizing:content;max-width:100%}
+.sentence select{padding-right:2px}.sentence input[type=number]{width:4ch;-moz-appearance:textfield}.sentence input::-webkit-inner-spin-button,.sentence input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}@supports(field-sizing:content){.sentence input[type=number]{width:auto;min-width:3ch}}
+.sentence select:hover,.sentence input:hover{border-bottom-color:var(--ink)}
+.money{white-space:nowrap}
+.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.primary{min-height:44px;padding:0 18px;border:0;border-radius:22px;background:var(--acc);color:var(--on-acc);font-weight:700}
+.primary:disabled{opacity:.6;cursor:wait}
+.soft{min-height:40px;padding:0 16px;border:0;border-radius:20px;background:var(--chip);color:var(--ink);font-weight:600}
+#count{color:var(--mute);font-size:14px;margin-left:auto}
+details.more>summary{list-style:none;display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:20px;background:var(--chip);font-weight:600;cursor:pointer}
+details.more>summary::-webkit-details-marker{display:none}
+details.more[open]{flex-basis:100%}
+.morebody{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px;padding:12px;border-radius:16px;background:var(--surface)}
+.morebody select,.morebody input[type=number],.morebody input[type=time]{min-height:40px;padding:0 12px;border:1px solid var(--border);border-radius:12px;background:var(--bg)}
+.morebody label{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--mute)}.morebody label input[type=number]{width:76px}
+.gloss{flex-basis:100%;font-size:13px;color:var(--mute)}.gloss summary{cursor:pointer;font-weight:600;color:var(--ink)}
+.gloss dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:0 10px;margin:8px 0}.gloss dt{font-weight:700;color:var(--ink)}.gloss dd{margin:0 0 8px}.gloss p{margin:8px 0 0}
 @media(max-width:480px){.gloss dl{grid-template-columns:1fr}}
-.chip{font-size:13px;line-height:inherit;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--mute);cursor:pointer;user-select:none}
-.chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
-.chip:focus-visible,#ftoggle:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
-.fbar,#fbody{display:contents}#ftoggle{display:none}#count{order:1}.chips{order:2}
-@media(max-width:640px){
- .fbar{display:flex;align-items:center;gap:8px;width:100%}#ftoggle{display:block;font-weight:600;color:var(--acc);border-color:var(--acc)}
- #ftoggle::after{content:' ▾'}.controls.open #ftoggle::after{content:' ▴'}
- #fbody{display:none}.controls.open #fbody{display:flex;flex-wrap:wrap;gap:8px;align-items:center;width:100%;max-height:70vh;overflow:auto}
-}
-main{max-width:1200px;margin:auto;padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px}
-.top{display:flex;justify-content:space-between;gap:8px;align-items:start}.card h2{margin:0;font-size:17px}.from{color:var(--acc);font-weight:600;font-size:15px;white-space:nowrap}
-.photos{container-type:inline-size;margin:-16px -16px 0;border-bottom:1px solid var(--line);background:#f6f1f3;border-radius:14px 14px 0 0;overflow:hidden}
+#availabilityResults{display:grid;gap:8px;margin-top:12px}#availabilityResults:empty{display:none}
+.known{padding:12px 0 0}.known-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}.known-head h2{margin:0;font-size:15px;font-weight:800}.known-head span{font-size:13px;color:var(--mute)}
+.known-row{display:flex;gap:8px;overflow-x:auto;padding:8px 0 4px;scrollbar-width:none}
+.kchip{flex:0 0 auto;min-height:40px;padding:0 14px;border:0;border-radius:20px;background:var(--chip);font-weight:600;white-space:nowrap}.kchip span{color:var(--mute);font-weight:500;margin-left:4px}
+.kchip.on{background:var(--ink);color:var(--bg)}.kchip.on span{color:inherit}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(3,1fr);background:var(--bg);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.tabs button{min-height:56px;border:0;background:none;color:var(--mute);font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px}
+.tabs button.on{color:var(--ink);font-weight:800;box-shadow:inset 0 2px 0 var(--ink)}
+.badge{min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--ink);color:var(--bg);font-size:12px;font-weight:800;display:inline-grid;place-items:center}
+@media(min-width:720px){body{padding-bottom:0}.tabs{position:sticky;top:0;bottom:auto;display:flex;justify-content:center;gap:8px;border-top:0;border-bottom:1px solid var(--line);padding:0}.tabs button{padding:0 18px}.tabs button.on{box-shadow:inset 0 -2px 0 var(--ink)}}
+#msg{color:var(--mute);padding-top:16px}#msg:empty{display:none}
+.sec{margin:24px 0 2px;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.secnote{margin:0 0 12px;font-size:13px;color:var(--mute)}
+.feed{column-width:300px;column-gap:20px;padding-top:16px}
+.card{break-inside:avoid;display:flex;flex-direction:column;gap:6px;margin:0 0 26px}
+.card.flash .media{outline:3px solid var(--acc);outline-offset:3px}
+.media{position:relative;border-radius:16px;overflow:hidden;background:var(--surface);container-type:inline-size}
 .crop{height:66.7cqw;overflow:hidden}.crop iframe{display:block;width:100%;height:calc(190px + 66.7cqw);margin-top:-147px;border:0}
-.posts{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px}.posts iframe{flex:0 0 260px;width:260px;height:470px;scroll-snap-align:start}
-.who{display:flex;gap:10px;align-items:center;min-width:0}
-.av{flex:0 0 44px;width:44px;height:44px;border-radius:50%;background:var(--chip);color:var(--acc);display:grid;place-items:center;font-weight:600;overflow:hidden;position:relative}
-.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.ttl{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:8px;min-width:0}
-.stars{color:var(--star);font-size:13px;letter-spacing:1px}
-.meta{color:var(--mute);font-size:13px}.meta a{color:inherit}
-.tags{display:flex;gap:6px;flex-wrap:wrap}
-.tag{font-size:12px;padding:2px 8px;border-radius:99px;background:#f6f1f3;color:#6b5b63}
-.prices{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13px}.prices b{font-weight:600;color:var(--mute)}
-.links{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
-.links a{text-decoration:none;font-size:13px;padding:7px 12px;border-radius:8px;background:var(--acc);color:#fff}
-.links a.alt{background:#fff;color:var(--acc);border:1px solid var(--acc)}
-.note{font-size:13px}.avail{font-size:13px;background:#fdf6e3;border:1px solid #f0dfae;border-radius:8px;padding:6px 10px}
-#msg{max-width:1200px;margin:20px auto;padding:0 16px;color:var(--mute)}
-.viewtog{display:inline-flex;border:1px solid var(--acc);border-radius:8px;overflow:hidden;order:1}.viewtog button{border:0;border-radius:0;color:var(--acc);padding:7px 14px}.viewtog button.on{background:var(--acc);color:#fff}
-#mapwrap{max-width:1200px;margin:14px auto;padding:0 16px}#map{height:72vh;min-height:420px;border:1px solid var(--line);border-radius:14px}
-.maplegend{color:var(--mute);font-size:13px;margin:6px 0 0}.pop{display:flex;gap:10px;align-items:center;min-width:200px}.pop img{width:44px;height:44px;border-radius:50%;object-fit:cover}.pop b{display:block;font-size:14px}.pop .meta{font-size:12px}.pop button{margin-top:6px;font-size:12px;padding:4px 10px;color:var(--acc);border-color:var(--acc)}
-.price{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fdf9fa;display:grid;gap:2px}.price.none{color:var(--mute);font-size:13px}
-.pdate{font-size:12px;color:var(--mute)}.pdate a{color:inherit}.pdate .warning{color:#a33}
-.pline{display:flex;justify-content:space-between;gap:8px;font-size:14px}.pline span{color:var(--mute)}.pline.tot{border-top:1px dashed var(--line);margin-top:4px;padding-top:4px}.pline.tot b{color:var(--acc);font-size:16px}
-.incl{color:#2f8a57}.how{font-size:12px;color:var(--mute)}.vbadge{font-size:12px;background:#2f8a57;color:#fff;border-radius:99px;padding:2px 8px;font-weight:600;align-self:center}
-#map .leaflet-tile-pane{filter:grayscale(.85) contrast(.95) brightness(1.04)}
-.gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}.agrid{border-collapse:collapse;width:100%;font-size:13px}
+.posts{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px}.posts iframe{flex:0 0 260px;width:260px;height:470px;border:0;scroll-snap-align:start}
+.nophoto{height:150px;display:grid;place-items:center;align-content:center;gap:4px;color:var(--mute)}.nophoto b{font-size:44px;line-height:1}.nophoto small{font-size:12px}
+.heart{position:absolute;top:10px;right:10px;z-index:2;width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.95);color:#211922;display:grid;place-items:center;box-shadow:0 1px 6px rgba(0,0,0,.22)}
+.heart svg{fill:none}.heart[aria-pressed=true]{color:#5b3df5}.heart[aria-pressed=true] svg{fill:currentColor}
+.card h2{margin:4px 0 0;font-size:17px;font-weight:800;letter-spacing:-.01em}
+.total{margin:0;font-size:17px}.total b{font-weight:800}.total span{font-size:13px;color:var(--mute)}
+.unknown{display:inline-block;padding:1px 8px;border:1px dashed var(--dash);border-radius:6px;color:var(--mute);font-size:13px;font-weight:700}
+.how,.line{font-size:13px;color:var(--mute)}.line b{color:var(--ink)}
+.tech{font-size:13px}.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;font-weight:600;padding:3px 9px;border-radius:8px;background:var(--chip)}.tag.hl{background:var(--ink);color:var(--bg)}
+.out{font-size:13px;color:var(--warn);margin:0}
+details.info>summary{cursor:pointer;font-size:13px;font-weight:700;padding:6px 0;color:var(--ink)}
+.infobody{display:grid;gap:6px;font-size:13px;padding:4px 0}
+.meta{color:var(--mute);font-size:13px}.meta a{color:inherit}.stars{color:var(--star);letter-spacing:1px}
+.price{border-radius:12px;padding:8px 10px;background:var(--surface);display:grid;gap:2px}
+.pline{display:flex;justify-content:space-between;gap:8px;font-size:14px}.pline span{color:var(--mute)}.pline.tot{border-top:1px dashed var(--border);margin-top:4px;padding-top:4px}
+.incl{color:var(--ok)}.prices{display:grid;grid-template-columns:auto 1fr;gap:2px 10px}.prices b{font-weight:600;color:var(--mute)}
+.pdate{font-size:12px;color:var(--mute)}.pdate a{color:inherit}.pdate .warning{color:var(--warn)}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.links a{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:20px;background:var(--chip);color:var(--ink);text-decoration:none;font-weight:600}
+.links a.go{background:var(--acc);color:var(--on-acc)}
+.saved-note{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:16px;padding:12px 14px;border-radius:16px;background:var(--surface)}.saved-note p{margin:0;font-size:13px;color:var(--mute)}
+.empty{color:var(--mute)}
+.nofit{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px}.nofit li{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line)}
+.nofit b{display:block}.nofit span{font-size:13px;color:var(--mute)}
+#mapwrap{padding-top:16px}#map{height:72vh;min-height:420px;border-radius:16px;background:var(--surface)}
+.maplegend{color:var(--mute);font-size:13px;margin:6px 0 0}
+.pop{display:flex;gap:10px;align-items:center;min-width:200px}.pop img{width:44px;height:44px;border-radius:50%;object-fit:cover}.pop b{display:block;font-size:14px}.pop button{margin-top:6px;padding:6px 12px;border:0;border-radius:16px;background:#e9e9e9;color:#211922;font-weight:600}
+#map .leaflet-tile-pane{filter:grayscale(.9) contrast(.95) brightness(1.04)}
+:root[data-theme=dark] #map .leaflet-tile-pane{filter:grayscale(1) invert(.9) hue-rotate(180deg) brightness(.95)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) #map .leaflet-tile-pane{filter:grayscale(1) invert(.9) hue-rotate(180deg) brightness(.95)}}
+.gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--bg)}.agrid{border-collapse:collapse;width:100%;font-size:13px}
 .agrid th,.agrid td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:center;white-space:nowrap}.agrid tr:last-child>*{border-bottom:0}.agrid thead th{color:var(--mute);font-weight:600;font-size:12px}
-.agrid th[scope=row],.agrid thead th:first-child{text-align:left;position:sticky;left:0;background:var(--card);min-width:180px;white-space:normal;font-weight:400;border-right:1px solid var(--line)}
-.agrid td.none{text-align:left;color:var(--mute)}.agrid .cell{display:inline-block;min-width:52px;padding:4px 8px;border-radius:8px;background:var(--chip);color:var(--acc);text-decoration:none;font-weight:600}.agrid .cell small{display:block;font-weight:400;font-size:11px}.astate{font-size:12px;color:var(--mute)}
-.card.flash{outline:3px solid var(--acc);outline-offset:2px}
-.availability{max-width:1200px;margin:14px auto 0;padding:0 16px}
-.availability-controls{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.availability-controls label{font-size:13px;color:var(--mute);display:flex;align-items:center;gap:6px}
-.availability-controls input[type=date]{min-width:150px}.availability-controls input[type=time]{width:120px}
-#checkAvailability{background:var(--acc);color:white;border-color:var(--acc)}#checkAvailability:disabled{opacity:.6;cursor:wait}
-#availabilityResults{display:grid;gap:8px;margin-top:10px}#availabilityResults:empty{display:none}.manual summary{cursor:pointer;color:var(--acc);font-size:14px;padding:4px 2px}.manual[open]{display:grid;gap:8px}
-.availability-row{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;grid-template-columns:minmax(160px,1fr) minmax(160px,1fr) 2fr;gap:8px;align-items:center}
-.availability-name{font-weight:650}.availability-service,.availability-state{font-size:13px;color:var(--mute)}
-.availability-state{color:var(--ink)}.availability-state a{color:var(--acc);text-decoration:none}.stale{font-size:12px;color:#9a5b17;margin-left:6px}
-.slots{display:flex;flex-wrap:wrap;gap:6px}.slot{font-size:13px;text-decoration:none;padding:4px 8px;border-radius:999px;background:#f3e6eb;color:var(--acc)}
+.agrid th[scope=row],.agrid thead th:first-child{text-align:left;position:sticky;left:0;background:var(--bg);min-width:180px;white-space:normal;font-weight:400;border-right:1px solid var(--line)}
+.agrid td.none{text-align:left;color:var(--mute)}.agrid .cell{display:inline-block;min-width:52px;padding:4px 8px;border-radius:8px;background:var(--chip);color:var(--acc-ink);text-decoration:none;font-weight:700}.agrid .cell small{display:block;font-weight:400;font-size:11px}.astate{font-size:12px;color:var(--mute)}
+.manual summary{cursor:pointer;color:var(--acc-ink);font-size:14px;padding:4px 2px}.manual[open]{display:grid;gap:8px}
+.availability-row{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;grid-template-columns:minmax(160px,1fr) minmax(160px,1fr) 2fr;gap:8px;align-items:center}
+.availability-name{font-weight:700}.availability-service{font-size:13px;color:var(--mute)}.availability-state{font-size:13px}.availability-state a{color:var(--acc-ink);text-decoration:none}.stale{font-size:12px;color:var(--warn);margin-left:6px}
+.slots{display:flex;flex-wrap:wrap;gap:6px}.slot{font-size:13px;text-decoration:none;padding:4px 8px;border-radius:999px;background:var(--chip);color:var(--acc-ink)}
 .availability-empty{color:var(--mute);font-size:13px;padding:6px}
-.spinner{display:inline-block;width:12px;height:12px;border:2px solid var(--line);border-top-color:var(--acc);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px;margin-right:5px}
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid var(--line);border-top-color:var(--acc-ink);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px;margin-right:5px}
 @keyframes spin{to{transform:rotate(360deg)}}
-footer{max-width:1200px;margin:8px auto 32px;padding:0 16px;color:var(--mute);font-size:13px}
-@media(max-width:600px){.availability-row{grid-template-columns:1fr;gap:4px}.availability-controls{align-items:stretch}.availability-controls label{flex:1 1 140px}.availability-controls input,.availability-controls select{min-width:0;max-width:100%}}
-@media(max-width:560px){h1{font-size:24px}main{grid-template-columns:1fr}}
+footer{color:var(--mute);font-size:13px;padding:8px 0 32px}
+@media(max-width:600px){.sentence{font-size:18px}.availability-row{grid-template-columns:1fr;gap:4px}#count{flex-basis:100%;margin-left:0}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.spinner{animation:none}}
 </style></head><body>
-<header><h1>💅 NYC Nail Artists</h1><p>Yasmeen's living directory — filter by service, neighborhood, price, or rating. Data reads live from the research sheet; edit the sheet and refresh.</p></header>
-<div class="controls" id="controls"><div class="in">
-<div class="fbar"><button id="ftoggle" type="button" aria-expanded="false" aria-controls="fbody">Filters</button><div class="viewtog" role="group" aria-label="View"><button id="viewList" type="button" class="on" aria-pressed="true">List</button><button id="viewMap" type="button" aria-pressed="false">Map</button></div><span id="count"></span></div>
-<div id="fbody">
-<input id="q" type="search" placeholder="Search name, services, styles, notes…">
-<select id="hood"><option value="">All neighborhoods</option></select>
-<select id="type"><option value="">All types</option></select>
-<select id="plat"><option value="">Any booking platform</option></select>
-<label class="p">Max $<input id="max" type="number" min="0" step="5" placeholder="any"></label>
-<label class="p">Min rating<input id="minr" type="number" min="0" max="5" step="0.1" placeholder="any"></label>
-<select id="sort"><option value="">Sort: sheet order</option><option value="asc">Price: low → high</option><option value="desc">Price: high → low</option><option value="value">Best value: manicure + cheapest art</option><option value="rate">Rating: high → low</option><option value="name">Name A–Z</option></select>
-<label class="c"><input id="hideout" type="checkbox"> Hide ruled-out</label>
-<button id="reset" type="button">Reset</button>
-<div class="chips" id="svcchips" role="group" aria-label="Services"></div>
-<details class="gloss"><summary>What do these terms mean?</summary><dl>
-<dt>Gel manicure (soft gel):</dt><dd>thin gel colour cured under a UV/LED lamp. Soaks off in acetone; lasts about 2–3 weeks.</dd>
-<dt>Structured manicure:</dt><dd>a shaped layer of builder or hard gel that levels and strengthens your natural nail before colour. Salons also call it a structure, structured gel or Japanese structure manicure.</dd>
-<dt>Japanese gel:</dt><dd>gel from Japanese brands (e.g. Kokoist, Presto). Usually soft and soak-off, known for a glossy finish and fine art. Often used for structured manicures.</dd>
-<dt>Builder gel / BIAB:</dt><dd>a thicker, usually soak-off gel brushed on for strength and shape. BIAB means "builder in a bottle". Can be refilled.</dd>
-<dt>Hard gel:</dt><dd>the strongest gel. It doesn't soak off, so it's filed down or refilled. Used for overlays and extensions.</dd>
-<dt>Gel overlay:</dt><dd>any gel (soft, builder or hard) over your natural nail, with no extension.</dd>
-<dt>Russian manicure:</dt><dd>a dry manicure done with an e-file (nail drill) that cleans very close to the cuticle, so gel can sit right at the base. Often paired with hard gel.</dd>
-<dt>Gel-X / soft-gel extensions:</dt><dd>full-cover soft-gel tips attached with gel. They soak off.</dd>
-<dt>Fill / refill:</dt><dd>rebalancing grown-out builder or hard gel instead of removing it.</dd>
-<dt>Cat eye:</dt><dd>magnetic gel polish. A magnet pulls the shimmer into a band of light.</dd>
-<dt>Chrome:</dt><dd>a fine metallic powder rubbed onto cured gel for a mirror finish.</dd>
-</dl><p>Filters group hard gel, Japanese gel, builder/BIAB, structured and overlay together under "Structured / hard gel" — search for any of them to find all.</p></details>
-</div>
-</div></div>
-<section class="availability" aria-label="Check appointment availability">
- <div class="availability-controls">
-  <label>Date <input id="availabilityDate" type="date"></label>
-  <label>Range <select id="availabilityRange"><option value="day">That day</option><option value="week">Next 7 days</option></select></label>
-  <label>From <input id="availabilityFrom" type="time"></label>
-  <label>To <input id="availabilityTo" type="time"></label>
-  <label>Service <select id="availabilityService"><option value="">Any service</option></select></label>
-  <button id="checkAvailability" type="button">Check availability</button>
+<header class="bar"><div class="in">
+ <h1>NYC Nail Artists</h1>
+ <input id="q" type="search" placeholder="Search names, notes, styles" aria-label="Search">
+ <button id="theme" type="button" aria-label="Colour theme: follows your device">Auto</button>
+</div></header>
+<section class="ask" aria-label="What you're looking for"><div class="in">
+ <p class="sentence">
+  <select id="tech" aria-label="Technique"><option value="">Any technique</option></select>
+  with <select id="art" aria-label="Art"><option value="none">no art</option><option value="simple">simple art</option></select>,
+  under <span class="money">$<input id="max" type="number" min="0" step="5" placeholder="any" aria-label="Total budget in dollars"></span>,
+  <select id="availabilityDate" aria-label="Day"></select> <select id="availabilityFrom" aria-label="Earliest time"><option value="">at any time</option><option value="09:00">after 9 AM</option><option value="12:00">after noon</option><option value="15:00">after 3 PM</option><option value="17:00">after 5 PM</option><option value="19:00">after 7 PM</option></select>,
+  within <select id="walk" aria-label="Walking time"><option value="">any distance</option><option value="10">a 10 min walk</option><option value="15">a 15 min walk</option><option value="20">a 20 min walk</option><option value="30">a 30 min walk</option></select>
+  <span class="money">of <select id="from" aria-label="Starting point"><option value="">anywhere</option><option value="here">my location</option></select>.</span>
+ </p>
+ <div class="actions">
+  <button id="checkAvailability" class="primary" type="button">Check openings</button>
+  <details class="more"><summary>More filters</summary><div class="morebody">
+   <select id="hood" aria-label="Neighborhood"><option value="">All neighborhoods</option></select>
+   <select id="type" aria-label="Type"><option value="">All types</option></select>
+   <select id="plat" aria-label="Booking platform"><option value="">Any booking platform</option></select>
+   <label>Min rating<input id="minr" type="number" min="0" max="5" step="0.1" placeholder="any"></label>
+   <select id="sort" aria-label="Sort"><option value="">Sort: closest first (sheet order with no start)</option><option value="total">Total: low → high</option><option value="rate">Rating: high → low</option><option value="name">Name A–Z</option><option value="sheet">Sheet order</option></select>
+   <select id="availabilityRange" aria-label="Openings range"><option value="day">Openings: that day</option><option value="week">Openings: next 7 days</option></select>
+   <label>Until <input id="availabilityTo" type="time"></label>
+   <select id="availabilityService" aria-label="Service to check"><option value="">Check any service</option></select>
+   <label><input id="hideout" type="checkbox"> Hide ruled-out</label>
+   <button id="reset" class="soft" type="button">Reset</button>
+   <details class="gloss"><summary>What do these terms mean?</summary><dl>
+    <dt>Gel manicure (soft gel):</dt><dd>thin gel colour cured under a UV/LED lamp. Soaks off in acetone; lasts about 2–3 weeks.</dd>
+    <dt>Structured manicure:</dt><dd>a shaped layer of builder or hard gel that levels and strengthens your natural nail before colour. Salons also call it a structure, structured gel or Japanese structure manicure.</dd>
+    <dt>Japanese gel:</dt><dd>gel from Japanese brands (e.g. Kokoist, Presto). Usually soft and soak-off, known for a glossy finish and fine art. Often used for structured manicures.</dd>
+    <dt>Builder gel / BIAB:</dt><dd>a thicker, usually soak-off gel brushed on for strength and shape. BIAB means "builder in a bottle". Can be refilled.</dd>
+    <dt>Hard gel:</dt><dd>the strongest gel. It doesn't soak off, so it's filed down or refilled. Used for overlays and extensions.</dd>
+    <dt>Gel overlay:</dt><dd>any gel (soft, builder or hard) over your natural nail, with no extension.</dd>
+    <dt>Russian manicure:</dt><dd>a dry manicure done with an e-file (nail drill) that cleans very close to the cuticle, so gel can sit right at the base. Often paired with hard gel.</dd>
+    <dt>Gel-X / soft-gel extensions:</dt><dd>full-cover soft-gel tips attached with gel. They soak off.</dd>
+    <dt>Fill / refill:</dt><dd>rebalancing grown-out builder or hard gel instead of removing it.</dd>
+    <dt>Cat eye:</dt><dd>magnetic gel polish. A magnet pulls the shimmer into a band of light.</dd>
+    <dt>Chrome:</dt><dd>a fine metallic powder rubbed onto cured gel for a mirror finish.</dd>
+   </dl><p>"Structured / hard gel" groups hard gel, Japanese gel, builder/BIAB, structured and overlay. Searching for any of them finds all.</p></details>
+  </div></details>
+  <span id="count" aria-live="polite"></span>
  </div>
  <div id="availabilityResults" aria-live="polite"></div>
-</section>
-<div id="msg">Loading…</div><div id="mapwrap" hidden><div id="map"></div><p class="maplegend">● exact address &nbsp; ◌ estimated from neighborhood — click a pin to see the place</p></div><main id="list"></main>
-<footer>Tip: share a filtered view — filters sync to the URL (e.g. <code>?svc=russian&amp;hood=Chelsea</code>).</footer>
+</div></section>
+<nav class="tabs" aria-label="Views">
+ <button id="tabFeed" type="button" class="on" aria-pressed="true">Feed</button>
+ <button id="tabSaved" type="button" aria-pressed="false">Saved <span class="badge" id="savedCount">0</span></button>
+ <button id="tabMap" type="button" aria-pressed="false">Map</button>
+</nav>
+<div class="in">
+ <section class="known" id="known" aria-label="Known for"></section>
+ <div id="msg">Loading…</div>
+ <main id="list"></main>
+ <section id="saved" aria-label="Saved places" hidden></section>
+ <div id="mapwrap" hidden><div id="map"></div><p class="maplegend">● exact address &nbsp; ◌ estimated from neighborhood. Click a pin to see the place.</p></div>
+ <footer>Share a search: the sentence and filters sync to the URL (e.g. <code>?svc=russian&amp;max=120</code>). Walk times are straight-line estimates on the street grid at about 3 mph.</footer>
+</div>
 <script>
 const SHEET_ID='1yorNY5SrbFzbGx295afxff2bSLH23DHwdH58eMOI1vw';
 const CSV_URL=new URLSearchParams(location.search).get('csv')||`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
@@ -137,7 +176,12 @@ const url=u=>{u=(u||'').trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='htt
 const num=s=>{const m=String(s||'').match(/\$?\s*(\d+(?:\.\d+)?)/);return m?+m[1]:null};
 const ratingNum=s=>{const m=String(s||'').match(/(\d(?:\.\d+)?)/);return m?+m[1]:null};
 const SVC_DEFS=[['Russian','russian'],['Structured / hard gel','hard[ -]?gel|builder|biab|structur|japanese|overlay'],['Gel-X','gel-?x'],['Acrylic','acrylic'],['Nail art','nail art|design|hand-paint']];
-let data=[],activeSvcs=new Set(),checking=false;const $=id=>document.getElementById(id);
+const TECH_PLAIN={'Structured / hard gel':'a strong, shaped gel layer over your own nail','Russian':'a dry e-file clean very close to the cuticle','Gel-X':'soft-gel extensions that soak off','Acrylic':'hard extensions, filed off'};
+const KNOWN=[['Tortoiseshell',/tortoise/i],['French',/french/i],['Hand-painted art',/hand[- ]?paint/i],['Minimal',/minimal|clean/i],['Chrome',/chrome/i],['Cat eye',/cat[- ]?eye/i],['Gems',/\bgems?\b|rhinestone|crystal/i],['Ombré',/ombr/i]];
+const STARTS={usq:['Union Sq',[40.7359,-73.9906]],herald:['Herald Sq',[40.7497,-73.9877]],gct:['Grand Central',[40.7527,-73.9772]],tsq:['Times Sq',[40.758,-73.9855]],colc:['Columbus Circle',[40.7681,-73.9819]],fulton:['Fulton St',[40.7102,-74.0076]]};
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+let data=[],activeSvcs=new Set(),checking=false,view='feed',HL='',HERE=null,AV={};const $=id=>document.getElementById(id);
+let SAVED=new Set(store.get('nail.saved',[]));
 let PHOTOS={},BOOKING={};fetch('photos.json').then(r=>r.ok?r.json():{}).then(p=>{PHOTOS=p||{};if(data.length)render()}).catch(()=>{});
 const bookingPromise=fetch('booking.json').then(r=>r.ok?r.json():{}).catch(()=>({}));
 function valueOf(o){const m=o.price,col=(o.artadd||'').replace(/[$,\s]/g,'');
@@ -153,6 +197,7 @@ function toRows(rows){const h=rows[0].map(x=>x.trim().toLowerCase());const idx={
   o.out=/ruled/i.test(o.status);
   const sv=(o.svc+' '+o.hard+' '+o.styles+' '+o.notes).toLowerCase();
   o.svcs=SVC_DEFS.filter(([,re])=>new RegExp(re).test(sv)).map(([label])=>label);
+  o.known=KNOWN.filter(([,re])=>re.test(o.styles)).map(([label])=>label);
   o.blob=Object.values(o).join(' ').toLowerCase();return o}).filter(o=>o.name)}
 function attachBooking(){const supported=new Set(['acuity','square','glossgenius','chronos']);for(const o of data){const entry=BOOKING[o.name];if(!entry)continue;o.bk=supported.has(entry.platform)?entry:null;o.ids=JSON.stringify(entry.ids);o.plat=o.plat||entry.platform;o.avservice=entry.service||'';o.verified=entry.verified||'';o.blob=Object.values(o).join(' ').toLowerCase()}}
 function priceFreshness(o){
@@ -168,56 +213,107 @@ function photosHTML(o){const posts=[...new Set([...(o.photos||'').matchAll(/inst
  if(posts.length)return `<div class="photos posts">${posts.map(c=>`<iframe src="https://www.instagram.com/p/${c}/embed/" loading="lazy" scrolling="no" title="${esc(o.name)} Instagram post"></iframe>`).join('')}</div>`;
  const h=igHandle(o);return h?`<div class="photos"><div class="crop"><iframe src="https://www.instagram.com/${h}/embed/" loading="lazy" scrolling="no" title="${esc(o.name)} Instagram photos"></iframe></div></div>`:''}
 function fill(id,vals){const s=$(id);[...new Set(vals)].filter(Boolean).sort().forEach(v=>s.add(new Option(v,v)))}
-function stars(r){if(r==null)return'';const f=Math.round(r);return `<span class="stars">${'★'.repeat(f)}${'☆'.repeat(5-f)}</span> <span class="meta">${esc(String(r).slice(0,3))}</span>`}
+function stars(r){if(r==null)return'';const f=Math.round(r);return `<span class="stars" aria-hidden="true">${'★'.repeat(f)}${'☆'.repeat(5-f)}</span> <span class="meta">${esc(String(r).slice(0,3))}</span>`}
+const ART=()=>$('art').value;
+function totalFor(o){return ART()==='simple'?o.val.total:o.price}
+function breakdown(o){if(ART()!=='simple')return o.price!=null?`Manicure from $${o.price}, no art`:'No manicure price in the sheet';
+ if(o.val.total!=null)return o.val.how;return o.price!=null?`Manicure from $${o.price} · art add-on not listed`:'No prices in the sheet yet'}
+function startLL(){const f=$('from').value;if(f==='here')return HERE;return STARTS[f]?STARTS[f][1]:null}
+function walkInfo(o){const s=startLL();if(!s)return null;const w=where(o),dn=(w.ll[0]-s[0])*69,de=(w.ll[1]-s[1])*69*Math.cos(s[0]*Math.PI/180),a=29*Math.PI/180;
+ const miles=Math.abs(de*Math.sin(a)+dn*Math.cos(a))+Math.abs(de*Math.cos(a)-dn*Math.sin(a));return{min:Math.max(1,Math.round(miles*20)),approx:w.approx}}
 function syncURL(){const p=new URLSearchParams();
- const v={q:$('q').value,hood:$('hood').value,type:$('type').value,plat:$('plat').value,max:$('max').value,minr:$('minr').value,sort:$('sort').value};
+ const v={q:$('q').value,hood:$('hood').value,type:$('type').value,plat:$('plat').value,max:$('max').value,minr:$('minr').value,sort:$('sort').value,walk:$('walk').value};
  for(const[k,val]of Object.entries(v))if(val)p.set(k,val);
+ if(ART()==='simple')p.set('art','simple');
+ if($('from').value&&$('from').value!=='here')p.set('from',$('from').value);
  if(activeSvcs.size)p.set('svc',[...activeSvcs].join(','));
  if($('hideout').checked)p.set('hideout','1');
- if(view==='map')p.set('view','map');
+ if(view!=='feed')p.set('view',view);
  const current=new URLSearchParams(location.search);
  for(const key of ['csv','api'])if(current.get(key))p.set(key,current.get(key));
  history.replaceState(null,'',location.pathname+(p.toString()?'?'+p.toString():'')+location.hash)}
-const setChip=(c,on)=>{c.classList.toggle('on',on);c.setAttribute('aria-pressed',on)};
-function activeCount(){return ['q','hood','type','plat','max','minr'].filter(id=>$(id).value.trim()).length+activeSvcs.size}
-function filtered(){const q=$('q').value.toLowerCase().trim(),h=$('hood').value,t=$('type').value,pl=$('plat').value,
- mx=parseFloat($('max').value),mr=parseFloat($('minr').value),so=$('sort').value,hide=$('hideout').checked;
- const SYN=[['hard gel','hard-gel','japanese gel','japanese','builder gel','builder','biab','structured','structure','gel overlay','overlay']];
- const queryMatches=o=>{if(!q)return true;if(q.split(/\s+/).every(w=>o.blob.includes(w)))return true;
-  for(const group of SYN){const terms=[...group].sort((a,b)=>b.length-a.length),term=terms.find(x=>q.includes(x));
-   if(term)return terms.some(x=>x!==term&&o.blob.includes(q.replace(term,x)))}
-  return false};
- let L=data.filter(o=>queryMatches(o)&&(!h||o.hoods.includes(h))&&(!t||o.type===t)&&(!pl||o.plat===pl)
-  &&(isNaN(mx)||(o.price!=null&&o.price<=mx))&&(isNaN(mr)||(o.rate!=null&&o.rate>=mr))&&(!hide||!o.out)
-  &&[...activeSvcs].every(s=>o.svcs.includes(s)));
- const P=o=>o.price??(so=='asc'?Infinity:-Infinity);
- if(so=='asc')L.sort((a,b)=>P(a)-P(b));else if(so=='desc')L.sort((a,b)=>P(b)-P(a));
- else if(so=='value')L.sort((a,b)=>(a.val.total??Infinity)-(b.val.total??Infinity)||a.i-b.i);
- else if(so=='rate')L.sort((a,b)=>(b.rate??-1)-(a.rate??-1));else if(so=='name')L.sort((a,b)=>a.name.localeCompare(b.name));
+const SYN=[['hard gel','hard-gel','japanese gel','japanese','builder gel','builder','biab','structured','structure','gel overlay','overlay']];
+function queryMatches(o,q){if(!q)return true;if(q.split(/\s+/).every(w=>o.blob.includes(w)))return true;
+ for(const group of SYN){const terms=[...group].sort((a,b)=>b.length-a.length),term=terms.find(x=>q.includes(x));
+  if(term)return terms.some(x=>x!==term&&o.blob.includes(q.replace(term,x)))}
+ return false}
+function fails(o){const r=[],q=$('q').value.toLowerCase().trim(),h=$('hood').value,t=$('type').value,pl=$('plat').value,
+ mx=parseFloat($('max').value),mr=parseFloat($('minr').value),wl=parseFloat($('walk').value);
+ if(!queryMatches(o,q))r.push(`doesn't match "${q}"`);
+ if(h&&!o.hoods.includes(h))r.push('not in '+h);
+ if(t&&o.type!==t)r.push('type: '+(o.type||'unknown'));
+ if(pl&&o.plat!==pl)r.push('books on '+(o.plat||'an unknown platform'));
+ const miss=[...activeSvcs].filter(s=>!o.svcs.includes(s));if(miss.length)r.push('no '+miss.join(', ')+' listed');
+ const tot=totalFor(o);if(!isNaN(mx)&&tot!=null&&tot>mx)r.push(`from $${tot}, over your $${mx}`);
+ if(!isNaN(mr)&&!(o.rate!=null&&o.rate>=mr))r.push(o.rate==null?'no rating yet':`rated ${o.rate}`);
+ if($('hideout').checked&&o.out)r.push('ruled out'+(o.why?': '+o.why:''));
+ const w=walkInfo(o);if(!isNaN(wl)&&w&&!w.approx&&w.min>wl)r.push(`~${w.min} min walk, over your ${wl}`);
+ return r}
+function sortMode(){const s=$('sort').value;return s||(startLL()?'near':'sheet')}
+function filtered(){let L=data.filter(o=>!fails(o).length);const so=sortMode(),last=x=>x==null?Infinity:x;
+ if(so==='near')L.sort((a,b)=>{const x=walkInfo(a),y=walkInfo(b);return (x.approx-y.approx)||(x.min-y.min)||a.i-b.i});
+ else if(so==='total')L.sort((a,b)=>last(totalFor(a))-last(totalFor(b))||a.i-b.i);
+ else if(so==='rate')L.sort((a,b)=>(b.rate??-1)-(a.rate??-1)||a.i-b.i);
+ else if(so==='name')L.sort((a,b)=>a.name.localeCompare(b.name));
+ if(HL)L=[...L.filter(o=>o.known.includes(HL)),...L.filter(o=>!o.known.includes(HL))];
  return L}
-function render(){const L=filtered();
- $('count').textContent=`${L.length} of ${data.length}`;
- L.forEach(o=>o.vrank=0);L.filter(o=>o.val.total!=null).sort((a,b)=>a.val.total-b.val.total).slice(0,3).forEach((o,k)=>o.vrank=k+1);
- const n=activeCount();$('ftoggle').textContent=n?`Filters (${n})`:'Filters';
- $('list').innerHTML=L.map(o=>{const ig=url(o.igurl)||(o.ig?'https://instagram.com/'+o.ig.replace(/^@/,''):''),bk=bookingLink(o);
-  const hd=o.ig.trim().replace(/^@/,'').toLowerCase(),hv=/^[a-z0-9._]+$/.test(hd)?hd:'';
-  const maps=url(o.maps)||(o.addr?'https://maps.google.com/?q='+encodeURIComponent(o.name+' '+o.addr):'');
-  const pr=[['Base gel',o.base],['Hard gel',o.hard],['Art',o.art],['Other',o.other]].filter(x=>x[1]).map(x=>`<b>${x[0]}</b><span>${esc(x[1])}</span>`).join(''),v=o.val;
-  const pbox=o.price!=null||o.art?`<div class="price"><div class="pline"><span>Manicure</span><b>${o.price!=null?'$'+o.price:'not listed'}</b></div><div class="pline"><span>Nail art</span><b>${v.incl?'<span class="incl">included</span>':v.add!=null?'+$'+v.add:o.art?'see list':'not listed'}</b></div>${v.total!=null?`<div class="pline tot"><span>Set with art</span><b>$${v.total}</b></div>`:''}${v.how?`<div class="how">${esc(v.how)}</div>`:''}</div>`:'<div class="price none">No prices in the sheet yet</div>';
-  return `<article class="card" id="card-${o.i}">${photosHTML(o)}<div class="top"><div class="who">${hv?`<span class="av" aria-hidden="true">${esc(o.name.trim()[0].toUpperCase())}${PHOTOS[hv]?`<img src="${PHOTOS[hv]}" alt="" loading="lazy" onerror="this.remove()">`:''}</span>`:''}
-   <div class="ttl"><h2>${esc(o.name)}</h2>${o.price!=null?`<span class="from">from $${o.price}</span>`:''}${o.vrank?`<span class="vbadge">Best value #${o.vrank}</span>`:''}</div></div></div>${pbox}${priceFreshness(o)}
-  ${o.rate!=null?`<div>${stars(o.rate)}${o.grate?` <span class="meta">Google</span>`:''}</div>`:''}
+function bookingLink(o){const value=(o.book||'').trim();if(!value||/^(none\b|n\/a\b|dm\b|instagram\b|phone\b|call\b)/i.test(value)||(/\s/.test(value)&&!value.includes('.')))return'';return url(value)}
+function instagramLink(o){return url(o.igurl)||(o.ig?'https://instagram.com/'+o.ig.replace(/^@/,''):'')}
+function phoneLink(o){const number=(o.phone||'').replace(/[^\d+]/g,'');return /\d/.test(number)?`tel:${number}`:''}
+const slotLabel=s=>new Date(s).toLocaleString('en-US',{timeZone:'America/New_York',weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+function whenText(o){const av=AV[o.name];if(av)return av.next?`<b>Next opening: ${esc(slotLabel(av.next))}</b>`:esc(av.state);
+ if(o.avail)return esc(o.avail);if(o.bk)return 'Openings can be checked live';
+ if(/walk-?ins?/i.test(o.notes))return 'Walk-ins'+(/phone|call/i.test(o.notes)?' (call first)':'');
+ if(bookingLink(o))return `Book on ${esc(o.plat||'their site')}`;if(phoneLink(o))return 'Call to book';if(instagramLink(o))return 'Ask by Instagram DM';return 'No booking info yet'}
+const HEART='<svg width="22" height="22" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg>';
+const heartAttrs=o=>{const on=SAVED.has(o.name);return `data-save="${esc(o.name)}" aria-pressed="${on}" aria-label="${on?'Saved: '+esc(o.name)+'. Remove from saved':'Save '+esc(o.name)}"`};
+function cardHTML(o){const tot=totalFor(o),w=walkInfo(o),v=o.val,ig=instagramLink(o),bk=bookingLink(o),simple=ART()==='simple';
+ const maps=url(o.maps)||(o.addr?'https://maps.google.com/?q='+encodeURIComponent(o.name+' '+o.addr):'');
+ const media=photosHTML(o)||`<div class="nophoto" aria-hidden="true"><b>${esc(o.name.trim()[0].toUpperCase())}</b><small>No Instagram photos yet</small></div>`;
+ const total=tot!=null?`<p class="total"><b>${tot===0?'Art included':'from $'+tot}</b> <span>${simple?'with simple art':'no art'}</span></p>`:`<p class="total"><span class="unknown">Total unknown</span></p>`;
+ const loc=w?`~${w.min} min walk${w.approx?' · approx. location':''}${o.hood?' · '+esc(o.hood):''}`:esc(o.hood||'');
+ const tech=o.svcs.filter(s=>TECH_PLAIN[s]).slice(0,2).map(s=>`<b>${esc(s)}:</b> ${TECH_PLAIN[s]}`).join('<br>');
+ const pr=[['Base gel',o.base],['Hard gel',o.hard],['Art',o.art],['Other',o.other]].filter(x=>x[1]).map(x=>`<b>${x[0]}</b><span>${esc(x[1])}</span>`).join('');
+ const pbox=o.price!=null||o.art?`<div class="price"><div class="pline"><span>Manicure</span><b>${o.price!=null?'$'+o.price:'not listed'}</b></div><div class="pline"><span>Nail art</span><b>${v.incl?'<span class="incl">included</span>':v.add!=null?'+$'+v.add:o.art?'see list':'not listed'}</b></div>${v.total!=null?`<div class="pline tot"><span>Set with art</span><b>$${v.total}</b></div>`:''}</div>`:'';
+ return `<article class="card" id="card-${o.i}"><div class="media">${media}<button type="button" class="heart" ${heartAttrs(o)}>${HEART}</button></div>
+ <h2>${esc(o.name)}</h2>${total}<div class="how">${esc(breakdown(o))}</div>
+ ${loc?`<div class="line">${loc}</div>`:''}<div class="line">${whenText(o)}</div>
+ ${tech?`<div class="tech">${tech}</div>`:''}
+ ${o.known.length?`<div class="tags">${o.known.map(k=>`<span class="tag${k===HL?' hl':''}">Known for ${esc(k.toLowerCase())}</span>`).join('')}</div>`:''}
+ ${o.out?`<p class="out">Ruled out${o.why?': '+esc(o.why):''}</p>`:''}
+ <details class="info"><summary>Prices, address and booking</summary><div class="infobody">${pbox}${pr?`<div class="prices">${pr}</div>`:''}${priceFreshness(o)}
+  <div>${o.rate!=null?stars(o.rate)+(o.grate?' <span class="meta">Google</span>':''):'<span class="meta">No rating yet</span>'}</div>
   <div class="meta">${esc([o.type,o.hood].filter(Boolean).join(' · '))}</div>
-  ${o.svcs.length?`<div class="tags">${o.svcs.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div>`:''}
-  ${o.addr?`<div class="meta">📍 ${maps?`<a href="${esc(maps)}" target="_blank" rel="noopener">${esc(o.addr)}</a>`:esc(o.addr)}</div>`:''}
-  ${o.phone?`<div class="meta">📞 <a href="tel:${esc(o.phone.replace(/[^\d+]/g,''))}">${esc(o.phone)}</a></div>`:''}
-  ${o.avail?`<div class="avail">📅 ${esc(o.avail)}</div>`:''}
-  ${o.svc?`<div class="note"><b>Services:</b> ${esc(o.svc)}</div>`:''}${pr?`<div class="prices">${pr}</div>`:''}
-  ${o.styles?`<div class="note"><b>Styles:</b> ${esc(o.styles)}</div>`:''}${o.notes?`<div class="note">${esc(o.notes)}</div>`:''}
-  ${o.why?`<div class="note"><b>Note:</b> ${esc(o.why)}</div>`:''}${o.checked?`<div class="meta">Last checked ${esc(o.checked)}</div>`:''}
-  <div class="links">${ig?`<a href="${esc(ig)}" target="_blank" rel="noopener">${esc(o.ig||'Instagram')}</a>`:''}${bk?`<a class="alt" href="${esc(bk)}" target="_blank" rel="noopener">Book${o.plat?' ('+esc(o.plat)+')':''}</a>`:''}</div></article>`}).join('');
- $('msg').textContent=L.length?'':'No matches.';if(view==='map')drawMap(L);syncURL()}
-let GEO={},view='list',map=null,pins=null;fetch('geo.json').then(r=>r.ok?r.json():{}).then(g=>{GEO=g||{};if(map)drawMap(filtered())}).catch(()=>{});
+  ${o.addr?`<div class="meta">${maps?`<a href="${esc(maps)}" target="_blank" rel="noopener">${esc(o.addr)}</a>`:esc(o.addr)}</div>`:''}
+  ${o.phone?`<div class="meta"><a href="${esc(phoneLink(o))}">${esc(o.phone)}</a></div>`:''}
+  ${o.svc?`<div><b>Services:</b> ${esc(o.svc)}</div>`:''}${o.styles?`<div><b>Styles:</b> ${esc(o.styles)}</div>`:''}${o.notes?`<div>${esc(o.notes)}</div>`:''}
+  ${o.checked?`<div class="meta">Last checked ${esc(o.checked)}</div>`:''}
+  <div class="links">${bk?`<a class="go" href="${esc(bk)}" target="_blank" rel="noopener">Book${o.plat?' on '+esc(o.plat):''}</a>`:''}${ig?`<a href="${esc(ig)}" target="_blank" rel="noopener">Instagram</a>`:''}</div>
+ </div></details></article>`}
+function renderKnown(L){const counts=KNOWN.map(([k])=>[k,L.filter(o=>o.known.includes(k)).length]).filter(x=>x[1]);
+ $('known').innerHTML=counts.length?`<div class="known-head"><h2>Known for</h2><span>From your style notes. Tap one to move those places to the top. Nothing gets hidden.</span></div><div class="known-row">${counts.map(([k,n])=>`<button type="button" class="kchip${HL===k?' on':''}" data-known="${esc(k)}" aria-pressed="${HL===k}">${esc(k)}<span>${n}</span></button>`).join('')}</div>`:''}
+function render(){const L=filtered();
+ $('count').textContent=`${L.length} of ${data.length} places`;
+ renderKnown(L);
+ const split=!isNaN(parseFloat($('max').value))||sortMode()==='total';
+ if(split){const known=L.filter(o=>totalFor(o)!=null),unk=L.filter(o=>totalFor(o)==null);
+  $('list').innerHTML=(known.length?`<div class="feed">${known.map(cardHTML).join('')}</div>`:'')
+   +(unk.length?`<h2 class="sec">Total unknown · ${unk.length}</h2><p class="secnote">No price for this set in the sheet, so these aren't ranked by price. Ask them, or check their price list.</p><div class="feed">${unk.map(cardHTML).join('')}</div>`:'')}
+ else $('list').innerHTML=`<div class="feed">${L.map(cardHTML).join('')}</div>`;
+ $('msg').textContent=L.length?'':'No places match this search.';
+ $('savedCount').textContent=SAVED.size;renderSaved();if(view==='map')drawMap(L);syncURL()}
+function savedList(){return data.filter(o=>SAVED.has(o.name))}
+function renderSaved(){if(view!=='saved')return;const all=savedList();
+ const note=`<div class="saved-note"><p>Saved in this browser only, so no account is needed. Clearing this site's data removes them.</p>${all.length?'<button type="button" class="soft" id="copySaved">Copy link to this list</button>':''}</div>`;
+ if(!all.length){$('saved').innerHTML=note+'<p class="empty">Tap the heart on any place to save it here.</p>';return}
+ const fit=all.filter(o=>!fails(o).length),no=all.filter(o=>fails(o).length);
+ $('saved').innerHTML=note+`<h2 class="sec">Fits this search · ${fit.length}</h2>`
+  +(fit.length?`<p class="secnote">Checked against the sentence above, so this list changes with your search.</p><button type="button" class="primary" id="checkSaved">Check ${fit.length===1?'it':'these '+fit.length} for openings</button><div class="feed">${fit.map(cardHTML).join('')}</div>`:'<p class="empty">None of your saved places fit this search. Change the sentence above.</p>')
+  +(no.length?`<h2 class="sec">Saved, not a fit right now · ${no.length}</h2><ul class="nofit">${no.map(o=>`<li><div><b>${esc(o.name)}</b><span>${esc(fails(o).join(' · '))}</span></div><button type="button" class="soft" ${heartAttrs(o)}>Remove</button></li>`).join('')}</ul>`:'')}
+function toggleSave(name){SAVED.has(name)?SAVED.delete(name):SAVED.add(name);store.set('nail.saved',[...SAVED]);
+ document.querySelectorAll('.heart[data-save]').forEach(b=>{if(b.dataset.save!==name)return;const o=data.find(x=>x.name===name);if(!o)return;const on=SAVED.has(name);b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?`Saved: ${name}. Remove from saved`:`Save ${name}`)});
+ $('savedCount').textContent=SAVED.size;renderSaved()}
+let GEO={},map=null,pins=null;fetch('geo.json').then(r=>r.ok?r.json():{}).then(g=>{GEO=g||{};if(data.length)render()}).catch(()=>{});
 const HOODS={flatiron:[40.7411,-73.9897],nomad:[40.7448,-73.988],chelsea:[40.7465,-74.0014],koreatown:[40.7477,-73.9867],ktown:[40.7477,-73.9867],'midtown east':[40.754,-73.97],midtown:[40.7549,-73.984],"hell's kitchen":[40.7638,-73.9918],'upper east side':[40.7736,-73.9566],ues:[40.7736,-73.9566],'upper west side':[40.787,-73.9754],uws:[40.787,-73.9754],'east village':[40.7265,-73.9815],'west village':[40.7358,-74.0036],'greenwich village':[40.7336,-73.999],'lower east side':[40.715,-73.9843],les:[40.715,-73.9843],nolita:[40.723,-73.9955],soho:[40.7233,-74.003],tribeca:[40.7163,-74.0086],'financial district':[40.7075,-74.0113],fidi:[40.7075,-74.0113],'murray hill':[40.7479,-73.9757],gramercy:[40.7368,-73.9845],'union square':[40.7359,-73.9911],'long island city':[40.7447,-73.9485],lic:[40.7447,-73.9485],williamsburg:[40.7081,-73.9571],brooklyn:[40.6782,-73.9442],queens:[40.7282,-73.7949],manhattan:[40.758,-73.9855]};
 function where(o){if(GEO[o.name])return{ll:GEO[o.name],approx:false};const s=(o.hood+' '+o.addr).toLowerCase();let best=null;
  for(const k in HOODS){const m=s.match(new RegExp('\\b'+k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b'));if(m&&(!best||m.index<best.i||(m.index===best.i&&k.length>best.k.length)))best={i:m.index,k}}
@@ -227,21 +323,29 @@ function loadLeaflet(){if(window.L)return Promise.resolve();const B='https://unp
  const c=document.createElement('link');c.rel='stylesheet';c.href=B+'css';c.integrity='sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H';c.crossOrigin='';document.head.appendChild(c);
  const j=document.createElement('script');j.src=B+'js';j.integrity='sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH';j.crossOrigin='';j.onload=ok;j.onerror=no;document.head.appendChild(j)})}
 function drawMap(L){if(!window.L)return;if(!map){map=window.L.map('map');window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);pins=window.L.layerGroup().addTo(map)}
- pins.clearLayers();const pts=[],exact=[];
- for(const o of L){const w=where(o);pts.push(w.ll);if(!w.approx)exact.push(w.ll);const hd=o.ig.trim().replace(/^@/,'').toLowerCase(),img=PHOTOS[hd];
-  const loc=w.approx?`Approximate — estimated from ${w.area?esc(w.area.replace(/\b\w/g,c=>c.toUpperCase())):'Manhattan'}`:esc(o.addr);
-  window.L.circleMarker(w.ll,{radius:w.approx?7:8,color:'#c2577a',weight:2,fillColor:w.approx?'#fff':'#c2577a',fillOpacity:.95,dashArray:w.approx?'3 3':null})
-   .bindTooltip(esc(o.name)).bindPopup(`<div class="pop">${img?`<img src="${img}" alt="">`:''}<div><b>${esc(o.name)}</b>${o.price!=null?`<span class="meta">from $${o.price} · </span>`:''}<span class="meta">${loc}</span><br><button type="button" data-goto="${o.i}">See photos &amp; details</button></div></div>`).addTo(pins)}
+ pins.clearLayers();const pts=[],exact=[],acc='#5b3df5',s=startLL();
+ if(s){pts.push(s);window.L.circleMarker(s,{radius:7,color:'#fff',weight:3,fillColor:'#211922',fillOpacity:1}).bindTooltip('Your start').addTo(pins)}
+ for(const o of L){const w=where(o);pts.push(w.ll);if(!w.approx)exact.push(w.ll);const hd=o.ig.trim().replace(/^@/,'').toLowerCase(),img=PHOTOS[hd],tot=totalFor(o),wk=walkInfo(o);
+  const loc=w.approx?`Approximate, estimated from ${w.area?esc(w.area.replace(/\b\w/g,c=>c.toUpperCase())):'Manhattan'}`:esc(o.addr);
+  window.L.circleMarker(w.ll,{radius:w.approx?7:8,color:acc,weight:2,fillColor:w.approx?'#fff':acc,fillOpacity:.95,dashArray:w.approx?'3 3':null})
+   .bindTooltip(esc(o.name)).bindPopup(`<div class="pop">${img?`<img src="${img}" alt="">`:''}<div><b>${esc(o.name)}</b><span class="meta">${tot!=null?`from $${tot} · `:'Total unknown · '}${wk?`~${wk.min} min walk · `:''}${loc}</span><br><button type="button" data-goto="${o.i}">See photos and details</button></div></div>`).addTo(pins)}
  const fit=exact.length>1?exact:pts;if(fit.length)map.fitBounds(fit,{padding:[30,30],maxZoom:15})}
-function setView(v){view=v;const m=v==='map';$('mapwrap').hidden=!m;$('list').hidden=m;
- [['viewList',!m],['viewMap',m]].forEach(([id,on])=>{$(id).classList.toggle('on',on);$(id).setAttribute('aria-pressed',on)});
- if(m)loadLeaflet().then(()=>{drawMap(filtered());map.invalidateSize()}).catch(()=>{$('msg').textContent='Could not load the map.'});syncURL()}
-document.addEventListener('click',e=>{const b=e.target.closest('[data-goto]');if(!b)return;setView('list');const c=$('card-'+b.dataset.goto);if(c){c.scrollIntoView({behavior:'smooth',block:'center'});c.classList.add('flash');setTimeout(()=>c.classList.remove('flash'),1600)}});
+function setTab(v){view=v;$('list').hidden=v!=='feed';$('known').hidden=v!=='feed';$('saved').hidden=v!=='saved';$('mapwrap').hidden=v!=='map';
+ [['tabFeed','feed'],['tabSaved','saved'],['tabMap','map']].forEach(([id,k])=>{$(id).classList.toggle('on',k===v);$(id).setAttribute('aria-pressed',k===v)});
+ if(v==='saved')renderSaved();
+ if(v==='map')loadLeaflet().then(()=>{drawMap(filtered());map.invalidateSize()}).catch(()=>{$('msg').textContent='Could not load the map.'});syncURL()}
+document.addEventListener('click',e=>{
+ const g=e.target.closest('[data-goto]');if(g){setTab('feed');const c=$('card-'+g.dataset.goto);if(c){c.scrollIntoView({behavior:'smooth',block:'center'});c.classList.add('flash');setTimeout(()=>c.classList.remove('flash'),1600)}return}
+ const h=e.target.closest('[data-save]');if(h){toggleSave(h.dataset.save);return}
+ const k=e.target.closest('[data-known]');if(k){HL=HL===k.dataset.known?'':k.dataset.known;render();return}
+ if(e.target.closest('#checkSaved')){checkAvailability(savedList().filter(o=>!fails(o).length));return}
+ const cp=e.target.closest('#copySaved');if(cp){const p=new URLSearchParams();p.set('saved',[...SAVED].join('|'));const c=new URLSearchParams(location.search).get('csv');if(c)p.set('csv',c);
+  const link=location.origin+location.pathname+'?'+p.toString();(navigator.clipboard?navigator.clipboard.writeText(link):Promise.reject()).then(()=>{cp.textContent='Link copied'},()=>{window.prompt('Copy this link',link)})}});
 function availabilityRows(){const service=$('availabilityService').value;return filtered().filter(o=>!service||o.avservice===service)}
 function tomorrowNY(){const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).filter(x=>x.type!=='literal').map(x=>[x.type,x.value]));const d=new Date(Date.UTC(+p.year,+p.month-1,+p.day+1));return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`}
-function bookingLink(o){const value=(o.book||'').trim();if(!value||/^(none\b|n\/a\b|dm\b|instagram\b|phone\b|call\b)/i.test(value)||(/\s/.test(value)&&!value.includes('.')))return'';return url(value)}
-function instagramLink(o){return url(o.igurl)||(o.ig?'https://instagram.com/'+o.ig.replace(/^@/,''):'')}
-function phoneLink(o){const number=(o.phone||'').replace(/[^\d+]/g,'');return /\d/.test(number)?`tel:${number}`:''}
+function fillDays(){const d0=tomorrowNY(),sel=$('availabilityDate');
+ for(let n=-1;n<14;n++){const d=addDays(d0,n),label=n===-1?'today':n===0?'tomorrow':'on '+new Date(d+'T12:00:00Z').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',timeZone:'UTC'});sel.add(new Option(label,d))}
+ sel.value=d0}
 function manualContact(o){const bk=bookingLink(o);if(bk)return{state:'Check manually',action:bk};const phone=phoneLink(o);if(phone)return{state:'Call',action:phone};const ig=instagramLink(o);return ig?{state:'Check Instagram',action:ig}:{state:'No booking link in sheet',action:''}}
 function staleIDs(value){if(!/^\d{4}-\d{2}-\d{2}$/.test(value||''))return true;const parsed=Date.parse(value);if(!Number.isFinite(parsed)||new Date(parsed).toISOString().slice(0,10)!==value)return true;return (Date.now()-parsed)>30*24*60*60*1000}
 function availabilityState(error){return ({timeout:'Timed out',blocked:'Blocked — check manually',upstream:'Error — check manually',manual:'Check manually'})[error]||'Error — check manually'}
@@ -274,33 +378,48 @@ function gridHTML(auto,dates){const week=dates.length>1,all=auto.flatMap(x=>x.sl
    const lab=week?`${ss.length}<small>from ${esc(t[0])}</small>`:`${esc(t[0].replace(/ [AP]M$/,''))}${ss.length>1?`<small>+${ss.length-1} more</small>`:''}`;
    return `<td><${tag} class="cell"${href?` href="${esc(href)}" target="_blank" rel="noopener"`:''} title="${esc(t.join(', '))}">${lab}</${tag}></td>`}).join('')}</tr>`}).join('');
  return `<div class="gridwrap"><table class="agrid"><thead><tr><th>${week?'Openings per day':'Openings by hour'}</th>${cols.map(c=>`<th>${esc(c.label)}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`}
-async function checkAvailability(){if(checking)return;checking=true;const button=$('checkAvailability');button.disabled=true;button.textContent='Checking…';
- const places=availabilityRows(),start=$('availabilityDate').value,from=$('availabilityFrom').value,to=$('availabilityTo').value;
+async function checkAvailability(list){if(checking)return;checking=true;const button=$('checkAvailability');button.disabled=true;button.textContent='Checking…';
+ const places=Array.isArray(list)?list:availabilityRows(),start=$('availabilityDate').value,from=$('availabilityFrom').value,to=$('availabilityTo').value;
  const dates=$('availabilityRange').value==='week'?[0,1,2,3,4,5,6].map(n=>addDays(start,n)):[start];
  const items=places.map(o=>({o,state:'',slots:[],action:'',warning:onlineCheck(o)&&staleIDs(o.verified)?'IDs may be stale':''}));paintAvailability(items.map(x=>({...x,state:'Loading…'})),dates);
+ if(Array.isArray(list))$('availabilityResults').scrollIntoView({behavior:'smooth',block:'start'});
  await Promise.all(items.map(async item=>{const o=item.o,bk=bookingLink(o);if(!onlineCheck(o)){Object.assign(item,manualContact(o));return}
   let ids;try{ids=JSON.parse(o.ids)}catch{item.state='IDs invalid';return}
   if(!ids||typeof ids!=='object'||Array.isArray(ids)){item.state='IDs invalid';return}
   const res=await Promise.all(dates.map(d=>fetchDay(o,ids,d,from,to)));item.slots=res.flatMap(r=>r.slots||[]);
   const err=res.find(r=>r.error);if(err&&!item.slots.length){item.state=availabilityState(err.error);if(item.state.includes('check manually'))item.action=bk;return}
   item.state=item.slots.length?`${item.slots.length} opening${item.slots.length>1?'s':''}`:dates.length>1?'No openings in these 7 days':'No openings that day'}));
- paintAvailability(items,dates);checking=false;button.disabled=false;button.textContent='Check availability'}
+ for(const item of items)if(onlineCheck(item.o))AV[item.o.name]={state:item.state,next:item.slots.map(s=>s.start).sort()[0]||null};
+ paintAvailability(items,dates);checking=false;button.disabled=false;button.textContent='Check openings';render()}
+const THEMES=[['system','Auto','follows your device'],['light','Light','light'],['dark','Dark','dark']];
+function applyTheme(t){const i=THEMES.findIndex(x=>x[0]===t),[k,label,desc]=THEMES[i<0?0:i];if(k==='system')delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme=k;
+ $('theme').textContent=label;$('theme').setAttribute('aria-label','Colour theme: '+desc+'. Tap to change');store.set('nail.theme',k)}
+applyTheme(store.get('nail.theme','system'));
+$('theme').onclick=()=>{const cur=store.get('nail.theme','system'),i=THEMES.findIndex(x=>x[0]===cur);applyTheme(THEMES[(i+1)%THEMES.length][0]);if(map&&view==='map')drawMap(filtered())};
+Object.entries(STARTS).forEach(([k,[label]])=>$('from').add(new Option(label,k)));
 fetch(CSV_URL).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}).then(async t=>{
  if(/^\s*</.test(t))throw new Error('sheet is not public');data=toRows(parseCSV(t));BOOKING=await bookingPromise;attachBooking();
  fill('hood',data.flatMap(o=>o.hoods));fill('type',data.map(o=>o.type));fill('plat',data.map(o=>o.plat));fill('availabilityService',data.map(o=>o.avservice));
- const chips=$('svcchips');
- SVC_DEFS.forEach(([label])=>{const c=document.createElement('button');c.type='button';c.className='chip';c.textContent=label;c.setAttribute('aria-pressed','false');
-  c.onclick=()=>{activeSvcs.has(label)?activeSvcs.delete(label):activeSvcs.add(label);setChip(c,activeSvcs.has(label));render()};chips.appendChild(c)});
+ SVC_DEFS.forEach(([label])=>$('tech').add(new Option(label,label)));
  const qp=new URLSearchParams(location.search);
- ['q','hood','type','plat','max','minr','sort'].forEach(id=>{if(qp.get(id))$(id).value=qp.get(id)});
+ ['q','hood','type','plat','max','minr','walk'].forEach(id=>{if(qp.get(id))$(id).value=qp.get(id)});
+ const so=qp.get('sort');if(so)$('sort').value=({asc:'total',desc:'total',value:'total'})[so]||so;
+ if(qp.get('art')==='simple')$('art').value='simple';
+ const fr=qp.get('from')||store.get('nail.from','');if(STARTS[fr])$('from').value=fr;
  if(qp.get('hideout')==='1')$('hideout').checked=true;
  const svcAliases=new Map([['japanese gel','Structured / hard gel'],['hard gel / biab','Structured / hard gel']]);
- (qp.get('svc')||'').split(',').forEach(s=>{const key=s.toLowerCase(),lbl=svcAliases.get(key)||SVC_DEFS.map(d=>d[0]).find(l=>l.toLowerCase()===key);
-  if(lbl){activeSvcs.add(lbl);const c=[...chips.children].find(c=>c.textContent===lbl);if(c)setChip(c,true)}});
- ['q','hood','type','plat','max','minr','sort','hideout','availabilityService'].forEach(id=>$(id).addEventListener('input',render));
- $('reset').onclick=()=>{['q','hood','type','plat','max','minr','sort','availabilityService'].forEach(id=>$(id).value='');$('hideout').checked=false;activeSvcs.clear();[...chips.children].forEach(c=>setChip(c,false));render()};
- $('ftoggle').onclick=()=>{const open=$('controls').classList.toggle('open');$('ftoggle').setAttribute('aria-expanded',open)};
- $('viewList').onclick=()=>setView('list');$('viewMap').onclick=()=>setView('map');
- $('availabilityDate').value=tomorrowNY();$('checkAvailability').onclick=checkAvailability;render();if(qp.get('view')==='map')setView('map')
+ (qp.get('svc')||'').split(',').forEach(s=>{const key=s.toLowerCase(),lbl=svcAliases.get(key)||SVC_DEFS.map(d=>d[0]).find(l=>l.toLowerCase()===key);if(lbl)activeSvcs.add(lbl)});
+ if(activeSvcs.size)$('tech').value=[...activeSvcs][0];
+ const shared=(qp.get('saved')||'').split('|').map(s=>s.trim()).filter(Boolean);if(shared.length){shared.forEach(n=>SAVED.add(n));store.set('nail.saved',[...SAVED])}
+ ['q','hood','type','plat','max','minr','sort','hideout','availabilityService','art','walk'].forEach(id=>$(id).addEventListener('input',render));
+ $('tech').addEventListener('input',()=>{activeSvcs=new Set($('tech').value?[$('tech').value]:[]);render()});
+ $('from').addEventListener('input',()=>{const f=$('from').value;store.set('nail.from',f==='here'?'':f);
+  if(f!=='here'){render();return}
+  if(!navigator.geolocation){$('from').value='';$('msg').textContent='Location is not available in this browser.';render();return}
+  navigator.geolocation.getCurrentPosition(p=>{HERE=[p.coords.latitude,p.coords.longitude];render()},()=>{$('from').value='';HERE=null;render();$('msg').textContent="Couldn't get your location, so distances are off. Pick a starting point instead."},{maximumAge:300000,timeout:10000})});
+ $('reset').onclick=()=>{['q','hood','type','plat','max','minr','sort','availabilityService','walk','tech'].forEach(id=>$(id).value='');$('art').value='none';$('hideout').checked=false;activeSvcs.clear();HL='';render()};
+ $('tabFeed').onclick=()=>setTab('feed');$('tabSaved').onclick=()=>setTab('saved');$('tabMap').onclick=()=>setTab('map');
+ fillDays();$('checkAvailability').onclick=()=>checkAvailability();render();
+ const v=qp.get('view');if(v==='map'||v==='saved')setTab(v)
 }).catch(e=>{$('msg').textContent='Could not load the sheet ('+e.message+'). Make sure it is shared as "Anyone with the link can view".'});
 </script></body></html>
