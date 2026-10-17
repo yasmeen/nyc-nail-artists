@@ -1,0 +1,139 @@
+{
+  "Artonus Nailsroom": {
+    "checked": "2026-10-16",
+    "handle": "artonus.nailsroom",
+    "note": "",
+    "photos": [
+      {
+        "desc": "burgundy and floral cozy autumn set",
+        "file": "photos/artonus.nailsroom/1.jpg",
+        "post": "https://www.instagram.com/p/DdonEOLEhxB/",
+        "posted": "2026-09-23"
+      },
+      {
+        "desc": "forest green and gold fall art",
+        "file": "photos/artonus.nailsroom/2.jpg",
+        "post": "https://www.instagram.com/p/DcuhbH9klkY/",
+        "posted": "2026-08-31"
+      },
+      {
+        "desc": "tortie chrome and olive star art",
+        "file": "photos/artonus.nailsroom/4.jpg",
+        "post": "https://www.instagram.com/p/DbnoUcklZgt/",
+        "posted": "2026-08-04"
+      }
+    ]
+  },
+  "Emi Aoki": {
+    "checked": "2026-10-16",
+    "handle": "emi_aoki_nails",
+    "note": "",
+    "photos": [
+      {
+        "desc": "nightmare before christmas halloween art",
+        "file": "photos/emi_aoki_nails/1.jpg",
+        "post": "https://www.instagram.com/p/DeXTKVDFEkx/",
+        "posted": "2026-10-11"
+      },
+      {
+        "desc": "dark chrome cat eye nails",
+        "file": "photos/emi_aoki_nails/2.jpg",
+        "post": "https://www.instagram.com/p/DeIUV4syKRJ/",
+        "posted": "2026-10-05"
+      },
+      {
+        "desc": "stained glass floral wedding nails",
+        "file": "photos/emi_aoki_nails/3.jpg",
+        "post": "https://www.instagram.com/p/Dd7UxYtlAJq/",
+        "posted": "2026-09-30"
+      },
+      {
+        "desc": "black aura airbrush concert nails",
+        "file": "photos/emi_aoki_nails/4.jpg",
+        "post": "https://www.instagram.com/p/DdctI87FE-Q/",
+        "posted": "2026-09-18"
+      }
+    ]
+  },
+  "Gold Room Nails": {
+    "checked": "2026-10-16",
+    "handle": "goldroomnails",
+    "note": "",
+    "photos": [
+      {
+        "desc": "tropical multicolor stiletto nail art",
+        "file": "photos/goldroomnails/1.jpg",
+        "post": "https://www.instagram.com/p/DcZa8jfoguu/",
+        "posted": "2026-08-23"
+      },
+      {
+        "desc": "knicks basketball themed nail art",
+        "file": "photos/goldroomnails/2.jpg",
+        "post": "https://www.instagram.com/p/DZsGLucIYB9/",
+        "posted": "2026-06-17"
+      },
+      {
+        "desc": "pink cat eye shimmer nails",
+        "file": "photos/goldroomnails/3.jpg",
+        "post": "https://www.instagram.com/p/DXTgx_oCF3S/",
+        "posted": "2026-04-19"
+      },
+      {
+        "desc": "hot pink drip french tips",
+        "file": "photos/goldroomnails/4.jpg",
+        "post": "https://www.instagram.com/p/DX2mb3oiCUW/",
+        "posted": "2026-05-02"
+      }
+    ]
+  },
+  "Kayleigh Nail Studio": {
+    "checked": "2026-10-16",
+    "handle": "kayleigh_nailstudio",
+    "note": "",
+    "photos": [
+      {
+        "desc": "fall retro swirl french tips",
+        "file": "photos/kayleigh_nailstudio/1.jpg",
+        "post": "https://www.instagram.com/p/DeBPM2UONGg/",
+        "posted": "2026-10-02"
+      },
+      {
+        "desc": "glossy tortoiseshell almond nails",
+        "file": "photos/kayleigh_nailstudio/2.jpg",
+        "post": "https://www.instagram.com/p/DdfTmXmhLxG/",
+        "posted": "2026-09-19"
+      },
+      {
+        "desc": "milky white hard gel overlay",
+        "file": "photos/kayleigh_nailstudio/4.jpg",
+        "post": "https://www.instagram.com/p/DX2fXE2AMEs/",
+        "posted": "2026-05-02"
+      }
+    ]
+  },
+  "The Shade NYC": {
+    "checked": "2026-10-16",
+    "handle": "theshadenyc",
+    "note": "Feed is mostly product, process and editorial shots; only 3 clear finished-nail photos found in the last 6 months.",
+    "photos": [
+      {
+        "desc": "pale pink almond manicure editorial",
+        "file": "photos/theshadenyc/1.jpg",
+        "post": "https://www.instagram.com/p/DcwJfrlm_qu/",
+        "posted": "2026-09-01"
+      },
+      {
+        "desc": "silver chrome stiletto nails",
+        "file": "photos/theshadenyc/2.jpg",
+        "post": "https://www.instagram.com/p/Dalo4cACfPX/",
+        "posted": "2026-07-09"
+      },
+      {
+        "desc": "milky white nails holding balm",
+        "file": "photos/theshadenyc/3.jpg",
+        "post": "https://www.instagram.com/p/DZ8cKrvGTdP/",
+        "posted": "2026-06-23"
+      }
+    ]
+  }
+}
