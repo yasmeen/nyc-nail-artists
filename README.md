@@ -4,10 +4,14 @@ Searchable, filterable directory of NYC nail artists, read live from a Google Sh
 
 - Data: Google Sheet `1yorNY5SrbFzbGx295afxff2bSLH23DHwdH58eMOI1vw`, fetched via `gviz/tq?tqx=out:csv`. The sheet must be shared "Anyone with the link can view".
 - The sheet contains directory data only. Read-only booking IDs and services live in root `booking.json`; see [the place onboarding guide](docs/adding-a-place.md).
-- Instagram photos on every card (profile embed, or curated `Photo posts` URLs).
-- Filters: text search, service chips (Russian, Structured / hard gel, Gel-X, acrylic, nail art), neighborhood, type, booking platform, max price (lowest of base/hard gel price), min rating, optional hide ruled-out toggle (off by default). Sort by price, rating, or name.
+- Photo-first feed: every card leads with Instagram photos (profile embed, or curated `Photo posts` URLs) in a Pinterest-style column layout, with the total, walk time, next opening and technique in plain words underneath.
+- Search reads as one editable sentence: technique, art (none or simple), total budget, day and earliest time, walking distance, and starting point (a preset or your location). Places whose total is unknown stay visible, marked "Total unknown", and are never ranked as cheap. More filters (neighborhood, type, booking platform, min rating, sort, hide ruled-out) sit under **More filters**.
+- **Known for** chips come from the `Styles` column (tortoiseshell, French, hand-painted art, minimal, chrome, cat eye, gems, ombré). Tapping one moves those places to the top; it never hides anyone.
+- **Saved**: the heart on each card saves a place in this browser (`localStorage`, no account). The Saved tab splits saved places into those that fit the current search and those that don't (with the reason), and can check openings for the ones that fit. **Copy link** shares the list via `?saved=`.
+- Walk times are estimates: the street-grid distance from the chosen start to the `geo.json` pin, at about 3 mph. Places without an address use an approximate neighborhood pin and are labelled "approx."
+- Light and dark mode follow the device; the header button switches between Auto, Light and Dark (saved in this browser).
 - Terminology: the Structured / hard gel chip and search synonyms cover hard gel, Japanese gel, builder/BIAB, structured, and overlay terms; see the in-page glossary.
-- Filters sync to the URL, so filtered views are shareable (e.g. `?svc=russian&hood=Chelsea`).
+- The search sentence and filters sync to the URL, so filtered views are shareable (e.g. `?svc=russian&max=120&from=usq`).
 - Star ratings read from the "Google rating" column (falls back to "Rating"); cards show service tags, Maps link, availability notes, and booking buttons.
 - Test with a local CSV: `index.html?csv=test.csv`.
 - Profile photos: cards show Instagram avatars from `photos.json` (data URIs), falling back to the name's initial. Regenerate with `python3 tools/fetch_photos.py --csv <sheet.csv> --account-id <your user_fbid>` then `python3 tools/build_photos_json.py` (the GitHub push path is text-only, so JPEGs live in `photos/` locally and ship via `photos.json`).
