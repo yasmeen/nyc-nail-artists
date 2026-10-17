@@ -49,11 +49,16 @@ details.more[open]{flex-basis:100%}
 .tabs button.on{color:var(--ink);font-weight:800;box-shadow:inset 0 2px 0 var(--ink)}
 .badge{min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--ink);color:var(--bg);font-size:12px;font-weight:800;display:inline-grid;place-items:center}
 @media(min-width:720px){body{padding-bottom:0}.tabs{position:sticky;top:0;bottom:auto;display:flex;justify-content:center;gap:8px;border-top:0;border-bottom:1px solid var(--line);padding:0}.tabs button{padding:0 18px}.tabs button.on{box-shadow:inset 0 -2px 0 var(--ink)}}
+.layout{display:flex;justify-content:flex-end;padding:10px 0 0}.layout[hidden]{display:none}
+.layout-switch{display:inline-flex;gap:2px;padding:3px;border-radius:22px;background:var(--surface)}
+.layout-switch button{min-height:36px;padding:0 14px;border:0;border-radius:18px;background:transparent;color:var(--mute);font-size:13px;font-weight:600}
+.layout-switch button[aria-pressed=true]{background:var(--bg);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.15)}
 #msg{color:var(--mute);padding-top:16px}#msg:empty{display:none}
 .sec{margin:24px 0 2px;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
 .secnote{margin:0 0 12px;font-size:13px;color:var(--mute)}
 .feed{column-width:300px;column-gap:20px;padding-top:16px}
 .card{break-inside:avoid;display:flex;flex-direction:column;gap:6px;margin:0 0 26px}
+.cardbody{display:flex;flex-direction:column;gap:6px;min-width:0}
 .card.flash .media{outline:3px solid var(--acc);outline-offset:3px}
 .media{position:relative;border-radius:16px;overflow:hidden;background:var(--surface);container-type:inline-size}
 .crop{height:66.7cqw;overflow:hidden}.crop iframe{display:block;width:100%;height:calc(190px + 66.7cqw);margin-top:-147px;border:0}
@@ -77,8 +82,9 @@ details.more[open]{flex-basis:100%}
 .card h2{margin:4px 0 0;font-size:17px;font-weight:800;letter-spacing:-.01em}
 .total{margin:0;font-size:17px}.total b{font-weight:800}.total span{font-size:13px;color:var(--mute)}
 .unknown{display:inline-block;padding:1px 8px;border:1px dashed var(--dash);border-radius:6px;color:var(--mute);font-size:13px;font-weight:700}
-.how,.line{font-size:13px;color:var(--mute)}.line b{color:var(--ink)}
-.tech{font-size:13px}.tags{display:flex;flex-wrap:wrap;gap:6px}
+.line{font-size:13px;color:var(--mute)}.line b{color:var(--ink)}
+.meta-line{font-size:13px;color:var(--mute)}.meta-line .star{color:var(--star)}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
 .tag{font-size:12px;font-weight:600;padding:3px 9px;border-radius:8px;background:var(--chip)}.tag.hl{background:var(--ink);color:var(--bg)}
 details.info>summary{cursor:pointer;font-size:13px;font-weight:700;padding:6px 0;color:var(--ink)}
 .infobody{display:grid;gap:6px;font-size:13px;padding:4px 0}
@@ -109,6 +115,53 @@ details.info>summary{cursor:pointer;font-size:13px;font-weight:700;padding:6px 0
 .availability-name{font-weight:700}.availability-service{font-size:13px;color:var(--mute)}.availability-state{font-size:13px}.availability-state a{color:var(--acc-ink);text-decoration:none}.stale{font-size:12px;color:var(--warn);margin-left:6px}
 .slots{display:flex;flex-wrap:wrap;gap:6px}.slot{font-size:13px;text-decoration:none;padding:4px 8px;border-radius:999px;background:var(--chip);color:var(--acc-ink)}
 .availability-empty{color:var(--mute);font-size:13px;padding:6px}
+.lhead,.lrow{display:grid;grid-template-columns:56px minmax(180px,2fr) 110px minmax(130px,1.3fr) 100px minmax(150px,1.5fr) 64px 44px;align-items:center}
+.lhead{min-height:32px;border-bottom:1px solid var(--line);color:var(--mute);font-size:12px}
+.lhead button{border:0;padding:4px 0;background:none;color:inherit;font:inherit;text-align:left;white-space:nowrap}
+.lhead button:hover,.lhead button[aria-sort]{color:var(--ink)}
+.lview{display:grid;grid-template-columns:minmax(0,1fr)}
+.lview>.sec,.lview>.secnote{grid-column:1/-1}
+.lrow{min-height:64px;padding:4px 0;border-bottom:1px solid var(--line);transition:background .15s}
+.lrow:hover{background:var(--surface)}
+.lrow.flash{background:var(--chip);outline:2px solid var(--acc);outline-offset:-2px}
+.lopen{grid-column:1/8;display:grid;grid-template-columns:56px minmax(180px,2fr) 110px minmax(130px,1.3fr) 100px minmax(150px,1.5fr) 64px;align-items:center;gap:0;min-width:0;padding:0;border:0;background:none;color:inherit;text-align:left}
+.lcontent{display:contents}
+.lthumb{width:56px;height:56px;border-radius:10px;overflow:hidden;background:var(--surface);display:grid;place-items:center;font-size:21px;font-weight:700}
+.lthumb img{display:block;width:100%;height:100%;object-fit:cover}
+.lplace,.lprice,.ltech,.lwalk,.lwhen,.lrating{min-width:0;padding:0 8px}
+.lplace{display:grid;gap:1px}
+.lname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px;font-weight:700}
+.lsub,.lprice small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--mute);font-weight:400}
+.lprice{display:grid;align-content:center;gap:1px}
+.lprice b{font-size:14px;white-space:nowrap}
+.lprice-from{font-size:11px;color:var(--mute)}
+.ltech,.lwalk,.lwhen,.lrating{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
+.lmuted{color:var(--mute)}
+.lrating .star,.lmeta .star{color:var(--star)}
+.lheart{position:static;grid-column:8;justify-self:center;flex:0 0 44px}
+.lmeta{display:none}
+.ldetail{grid-column:1/-1;grid-row:2;padding:16px;background:var(--surface);border-top:1px solid var(--line)}
+.ldetail .card{margin:0}
+.ldetail .media{width:100%;max-width:360px}
+@media(min-width:720px){.ldetail .card{display:grid;grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:18px;align-items:start}.ldetail .media{grid-column:1;grid-row:1}.ldetail .cardbody{grid-column:2;grid-row:1}}
+@media(max-width:719px){
+ .lhead{display:none}
+ .lrow{grid-template-columns:56px minmax(0,1fr) 44px;gap:8px}
+ .lopen{grid-column:1/3;grid-template-columns:56px minmax(0,1fr)}
+ .lheart{grid-column:3}
+ .lthumb{grid-column:1;grid-row:1/4}
+ .lcontent{grid-column:2;grid-row:1;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:18px 18px 18px;align-content:center;gap:1px 8px;min-width:0}
+ .lplace{grid-column:1;grid-row:1;padding:0}
+ .lsub{display:none}
+ .lprice{grid-column:2;grid-row:1;display:block;padding:0;text-align:right}
+ .lprice small{display:none}.lprice-from{margin-right:3px}
+ .ltech,.lwalk,.lrating{display:none}
+ .lmeta{display:block;grid-column:1/-1;grid-row:2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0;font-size:13px;color:var(--mute)}
+ .lwhen{grid-column:1/-1;grid-row:3;padding:0;font-size:13px}
+ .ldetail{padding:12px}
+ .ldetail .card{display:flex;flex-direction:column;gap:6px}
+ .ldetail .media{max-width:none}
+}
 .spinner{display:inline-block;width:12px;height:12px;border:2px solid var(--line);border-top-color:var(--acc-ink);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px;margin-right:5px}
 @keyframes spin{to{transform:rotate(360deg)}}
 footer{color:var(--mute);font-size:13px;padding:8px 0 32px}
@@ -136,7 +189,7 @@ footer{color:var(--mute);font-size:13px;padding:8px 0 32px}
    <select id="type" aria-label="Type"><option value="">All types</option></select>
    <select id="plat" aria-label="Booking platform"><option value="">Any booking platform</option></select>
    <label>Min rating<input id="minr" type="number" min="0" max="5" step="0.1" placeholder="any"></label>
-   <select id="sort" aria-label="Sort"><option value="">Sort: closest first (sheet order with no start)</option><option value="total">Total: low → high</option><option value="rate">Rating: high → low</option><option value="name">Name A–Z</option><option value="sheet">Sheet order</option></select>
+   <select id="sort" aria-label="Sort"><option value="">Sort: closest first (most details first with no start)</option><option value="near">Walk: closest first</option><option value="complete">Most details first</option><option value="total">Total: low → high</option><option value="rate">Rating: high → low</option><option value="name">Name A–Z</option><option value="sheet">Sheet order</option></select>
    <select id="availabilityRange" aria-label="Openings range"><option value="day">Openings: that day</option><option value="week">Openings: next 7 days</option></select>
    <label>Until <input id="availabilityTo" type="time"></label>
    <select id="availabilityService" aria-label="Service to check"><option value="">Check any service</option></select>
@@ -165,6 +218,9 @@ footer{color:var(--mute);font-size:13px;padding:8px 0 32px}
  <button id="tabMap" type="button" aria-pressed="false">Map</button>
 </nav>
 <div class="in">
+ <div class="layout" id="layout" role="group" aria-label="Feed layout">
+  <div class="layout-switch"><button type="button" data-layout="list" aria-pressed="true">List</button><button type="button" data-layout="cards" aria-pressed="false">Photo cards</button></div>
+ </div>
  <section class="known" id="known" aria-label="Known for"></section>
  <div id="msg">Loading…</div>
  <main id="list"></main>
@@ -190,11 +246,10 @@ const url=u=>{u=(u||'').trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='htt
 const num=s=>{const m=String(s||'').match(/\$?\s*(\d+(?:\.\d+)?)/);return m?+m[1]:null};
 const ratingNum=s=>{const m=String(s||'').match(/(\d(?:\.\d+)?)/);return m?+m[1]:null};
 const SVC_DEFS=[['Russian','russian'],['Structured / hard gel','hard[ -]?gel|builder|biab|structur|japanese|overlay'],['Gel-X','gel-?x'],['Acrylic','acrylic'],['Nail art','nail art|design|hand-paint']];
-const TECH_PLAIN={'Structured / hard gel':'a strong, shaped gel layer over your own nail','Russian':'a dry e-file clean very close to the cuticle','Gel-X':'soft-gel extensions that soak off','Acrylic':'hard extensions, filed off'};
 const KNOWN=[['Tortoiseshell',/tortoise/i],['French',/french/i],['Hand-painted art',/hand[- ]?paint/i],['Minimal',/minimal|clean/i],['Chrome',/chrome/i],['Cat eye',/cat[- ]?eye/i],['Gems',/\bgems?\b|rhinestone|crystal/i],['Ombré',/ombr/i]];
 const STARTS={usq:['Union Sq',[40.7359,-73.9906]],herald:['Herald Sq',[40.7497,-73.9877]],gct:['Grand Central',[40.7527,-73.9772]],tsq:['Times Sq',[40.758,-73.9855]],colc:['Columbus Circle',[40.7681,-73.9819]],fulton:['Fulton St',[40.7102,-74.0076]]};
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
-let data=[],activeSvcs=new Set(),checking=false,view='feed',HL='',HERE=null,AV={};const $=id=>document.getElementById(id);
+let data=[],activeSvcs=new Set(),checking=false,view='feed',HL='',HERE=null,AV={},LAYOUT=store.get('nail.layout','list')==='cards'?'cards':'list',OPEN=new Set();const $=id=>document.getElementById(id);
 let SAVED=new Set(store.get('nail.saved',[]));
 let PHOTO_MANIFEST={},BOOKING={},BLOCKED_HANDLES=[];const PHOTO_MANIFEST_URL=new URLSearchParams(location.search).get('photos')||'photos/manifest.json';
 fetch(PHOTO_MANIFEST_URL).then(r=>r.ok?r.json():{}).then(p=>{PHOTO_MANIFEST=p&&typeof p==='object'&&!Array.isArray(p)?p:{};if(data.length)render()}).catch(()=>{});
@@ -237,11 +292,17 @@ function fill(id,vals){const s=$(id);[...new Set(vals)].filter(Boolean).sort().f
 function stars(r){if(r==null)return'';const f=Math.round(r);return `<span class="stars" aria-hidden="true">${'★'.repeat(f)}${'☆'.repeat(5-f)}</span> <span class="meta">${esc(String(r).slice(0,3))}</span>`}
 const ART=()=>$('art').value;
 function totalFor(o){return ART()==='simple'?o.val.total:o.price}
-function breakdown(o){if(ART()!=='simple')return o.price!=null?`Manicure from $${o.price}, no art`:'No manicure price in the sheet';
- if(o.val.total!=null)return o.val.how;return o.price!=null?`Manicure from $${o.price} · art add-on not listed`:'No prices in the sheet yet'}
 function startLL(){const f=$('from').value;if(f==='here')return HERE;return STARTS[f]?STARTS[f][1]:null}
 function walkInfo(o){const s=startLL();if(!s)return null;const w=where(o),dn=(w.ll[0]-s[0])*69,de=(w.ll[1]-s[1])*69*Math.cos(s[0]*Math.PI/180),a=29*Math.PI/180;
  const miles=Math.abs(de*Math.sin(a)+dn*Math.cos(a))+Math.abs(de*Math.cos(a)-dn*Math.sin(a));return{min:Math.max(1,Math.round(miles*20)),approx:w.approx}}
+function techniqueList(o){return o.svcs.filter(s=>s!=='Nail art').slice(0,2).join(' · ')}
+function areaWalk(o,w=walkInfo(o),withWalk=false){return w?`~${w.min} min${w.approx?' · approx.':''}${withWalk?' walk':''}`:(o.hood||'')}
+function listPrice(o){const v=o.val;
+ if(ART()==='simple'){
+  if(v.total!=null){if(v.incl&&v.mani!=null&&v.total===v.mani)return'<b>Art incl.</b>';return `<b>$${v.total}</b>${v.add>0?`<small>$${v.mani} + $${v.add} art</small>`:''}`}
+  if(o.price!=null)return `<b>$${o.price}</b><small>art not listed</small>`;
+ }else if(o.price!=null)return `<span class="lprice-from">from</span><b>$${o.price}</b>`;
+ return'<span class="lmuted">Not listed</span>'}
 function syncURL(){const p=new URLSearchParams();
  const v={q:$('q').value,hood:$('hood').value,type:$('type').value,plat:$('plat').value,max:$('max').value,minr:$('minr').value,sort:$('sort').value,walk:$('walk').value};
  for(const[k,val]of Object.entries(v))if(val)p.set(k,val);
@@ -251,6 +312,7 @@ function syncURL(){const p=new URLSearchParams();
  if(view!=='feed')p.set('view',view);
  const current=new URLSearchParams(location.search);
  for(const key of ['csv','api','photos'])if(current.get(key))p.set(key,current.get(key));
+ if(LAYOUT==='cards')p.set('layout','cards');
  history.replaceState(null,'',location.pathname+(p.toString()?'?'+p.toString():'')+location.hash)}
 const SYN=[['hard gel','hard-gel','japanese gel','japanese','builder gel','builder','biab','structured','structure','gel overlay','overlay']];
 function queryMatches(o,q){if(!q)return true;if(q.split(/\s+/).every(w=>o.blob.includes(w)))return true;
@@ -268,14 +330,18 @@ function fails(o){const r=[],q=$('q').value.toLowerCase().trim(),h=$('hood').val
  if(!isNaN(mr)&&!(o.rate!=null&&o.rate>=mr))r.push(o.rate==null?'no rating yet':`rated ${o.rate}`);
  const w=walkInfo(o);if(!isNaN(wl)&&w&&!w.approx&&w.min>wl)r.push(`~${w.min} min walk, over your ${wl}`);
  return r}
-function sortMode(){const s=$('sort').value;return s||(startLL()?'near':'sheet')}
+function sortMode(){const s=$('sort').value;return s||(startLL()?'near':'complete')}
 function filtered(){let L=data.filter(o=>!fails(o).length);const so=sortMode(),last=x=>x==null?Infinity:x;
- if(so==='near')L.sort((a,b)=>{const x=walkInfo(a),y=walkInfo(b);return (x.approx-y.approx)||(x.min-y.min)||a.i-b.i});
+ if(so==='near')L.sort((a,b)=>{const x=walkInfo(a),y=walkInfo(b);if(!x||!y)return x?-1:y?1:a.i-b.i;return (x.approx-y.approx)||(x.min-y.min)||a.i-b.i});
  else if(so==='total')L.sort((a,b)=>last(totalFor(a))-last(totalFor(b))||a.i-b.i);
  else if(so==='rate')L.sort((a,b)=>(b.rate??-1)-(a.rate??-1)||a.i-b.i);
  else if(so==='name')L.sort((a,b)=>a.name.localeCompare(b.name));
+ else if(so==='complete')L.sort((a,b)=>completenessScore(b)-completenessScore(a)||a.i-b.i);
  if(HL)L=[...L.filter(o=>o.known.includes(HL)),...L.filter(o=>!o.known.includes(HL))];
  return L}
+function completenessScore(o){let score=o.price!=null?3:0;const photos=Array.isArray(PHOTO_MANIFEST[o.name]?.photos)&&PHOTO_MANIFEST[o.name].photos.some(validSavedPhoto);
+ if(photos)score+=2;else{const handle=igHandle(o);if(handle&&!BLOCKED_HANDLES.includes(handle.toLowerCase()))score++}
+ if(o.rate!=null)score++;if(bookingLink(o)||o.bk)score++;if((o.addr||'').trim())score++;return score}
 function bookingLink(o){const value=(o.book||'').trim();if(!value||/^(none\b|n\/a\b|dm\b|instagram\b|phone\b|call\b)/i.test(value)||(/\s/.test(value)&&!value.includes('.')))return'';return url(value)}
 function instagramLink(o){return url(o.igurl)||(o.ig?'https://instagram.com/'+o.ig.replace(/^@/,''):'')}
 function phoneLink(o){const number=(o.phone||'').replace(/[^\d+]/g,'');return /\d/.test(number)?`tel:${number}`:''}
@@ -286,38 +352,66 @@ function whenText(o){const av=AV[o.name];if(av)return av.next?`<b>Next opening: 
  if(bookingLink(o))return `Book on ${esc(o.plat||'their site')}`;if(phoneLink(o))return 'Call to book';if(instagramLink(o))return 'Ask by Instagram DM';return 'No booking info yet'}
 const HEART='<svg width="22" height="22" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg>';
 const heartAttrs=o=>{const on=SAVED.has(o.name);return `data-save="${esc(o.name)}" aria-pressed="${on}" aria-label="${on?'Saved: '+esc(o.name)+'. Remove from saved':'Save '+esc(o.name)}"`};
-function cardHTML(o){const tot=totalFor(o),w=walkInfo(o),v=o.val,ig=instagramLink(o),bk=bookingLink(o),simple=ART()==='simple';
+function cardHTML(o,opts={}){const w=walkInfo(o),v=o.val,ig=instagramLink(o),bk=bookingLink(o),simple=ART()==='simple';
  const maps=url(o.maps)||(o.addr?'https://maps.google.com/?q='+encodeURIComponent(o.name+' '+o.addr):'');
  const media=photosHTML(o)||`<div class="nophoto" aria-hidden="true"><b>${esc(o.name.trim()[0].toUpperCase())}</b><small>No Instagram account listed yet</small></div>`;
- const total=tot!=null?`<p class="total"><b>${tot===0?'Art included':'from $'+tot}</b> <span>${simple?'with simple art':'no art'}</span></p>`:`<p class="total"><span class="unknown">Total unknown</span></p>`;
- const loc=w?`~${w.min} min walk${w.approx?' · approx. location':''}${o.hood?' · '+esc(o.hood):''}`:esc(o.hood||'');
- const tech=o.svcs.filter(s=>TECH_PLAIN[s]).slice(0,2).map(s=>`<b>${esc(s)}:</b> ${TECH_PLAIN[s]}`).join('<br>');
+ let total;
+ if(simple&&v.total!=null){const included=v.incl&&v.mani!=null&&v.total===v.mani,detail=included?'art included':`with simple art${v.add>0?` · $${v.mani} + $${v.add} art`:''}`;
+  total=`<p class="total"><b>$${v.total}</b> <span>${detail}</span></p>`}
+ else if(simple&&o.price!=null)total=`<p class="total"><b>from $${o.price}</b> <span>art price not listed</span></p>`;
+ else if(!simple&&o.price!=null)total=`<p class="total"><b>from $${o.price}</b> <span>no art</span></p>`;
+ else total='<p class="total"><span class="unknown">Price not listed</span></p>';
+ const summaryParts=[],location=areaWalk(o,w,true),tech=techniqueList(o);
+ if(location)summaryParts.push(esc(location));if(tech)summaryParts.push(esc(tech));
+ if(o.rate!=null)summaryParts.push(`<span class="star">★</span> ${esc(String(o.rate).slice(0,3))}`);
+ const summary=summaryParts.length?`<div class="meta-line">${summaryParts.join(' · ')}</div>`:'';
  const pr=[['Base gel',o.base],['Hard gel',o.hard],['Art',o.art],['Other',o.other]].filter(x=>x[1]).map(x=>`<b>${x[0]}</b><span>${esc(x[1])}</span>`).join('');
  const pbox=o.price!=null||o.art?`<div class="price"><div class="pline"><span>Manicure</span><b>${o.price!=null?'$'+o.price:'not listed'}</b></div><div class="pline"><span>Nail art</span><b>${v.incl?'<span class="incl">included</span>':v.add!=null?'+$'+v.add:o.art?'see list':'not listed'}</b></div>${v.total!=null?`<div class="pline tot"><span>Set with art</span><b>$${v.total}</b></div>`:''}</div>`:'';
- return `<article class="card" id="card-${o.i}"><div class="media">${media}<button type="button" class="heart" ${heartAttrs(o)}>${HEART}</button></div>
- <h2>${esc(o.name)}</h2>${total}<div class="how">${esc(breakdown(o))}</div>
- ${loc?`<div class="line">${loc}</div>`:''}<div class="line">${whenText(o)}</div>
- ${tech?`<div class="tech">${tech}</div>`:''}
- ${o.known.length?`<div class="tags">${o.known.map(k=>`<span class="tag${k===HL?' hl':''}">Known for ${esc(k.toLowerCase())}</span>`).join('')}</div>`:''}
- <details class="info"><summary>Prices, address and booking</summary><div class="infobody">${pbox}${pr?`<div class="prices">${pr}</div>`:''}${priceFreshness(o)}
+ return `<article class="card" id="card-${o.i}"><div class="media">${media}<button type="button" class="heart" ${heartAttrs(o)}>${HEART}</button></div><div class="cardbody">
+ <h2>${esc(o.name)}</h2>${total}${summary}<div class="line">${whenText(o)}</div>
+ ${o.known.length?`<div class="tags">${o.known.slice(0,3).map(k=>`<span class="tag${k===HL?' hl':''}">Known for ${esc(k.toLowerCase())}</span>`).join('')}</div>`:''}
+ <details class="info"${opts.open?' open':''}><summary>Prices, address and booking</summary><div class="infobody">${pbox}${pr?`<div class="prices">${pr}</div>`:''}${priceFreshness(o)}
   <div>${o.rate!=null?stars(o.rate)+(o.grate?' <span class="meta">Google</span>':''):'<span class="meta">No rating yet</span>'}</div>
   <div class="meta">${esc([o.type,o.hood].filter(Boolean).join(' · '))}</div>
   ${o.addr?`<div class="meta">${maps?`<a href="${esc(maps)}" target="_blank" rel="noopener">${esc(o.addr)}</a>`:esc(o.addr)}</div>`:''}
   ${o.phone?`<div class="meta"><a href="${esc(phoneLink(o))}">${esc(o.phone)}</a></div>`:''}
   ${o.svc?`<div><b>Services:</b> ${esc(o.svc)}</div>`:''}${o.styles?`<div><b>Styles:</b> ${esc(o.styles)}</div>`:''}${o.notes?`<div>${esc(o.notes)}</div>`:''}
-  ${o.checked?`<div class="meta">Last checked ${esc(o.checked)}</div>`:''}
   <div class="links">${bk?`<a class="go" href="${esc(bk)}" target="_blank" rel="noopener">Book${o.plat?' on '+esc(o.plat):''}</a>`:''}${ig?`<a href="${esc(ig)}" target="_blank" rel="noopener">Instagram</a>`:''}</div>
- </div></details></article>`}
+ </div></details></div></article>`}
 function renderKnown(L){const counts=KNOWN.map(([k])=>[k,L.filter(o=>o.known.includes(k)).length]).filter(x=>x[1]);
  $('known').innerHTML=counts.length?`<div class="known-head"><h2>Known for</h2><span>From your style notes. Tap one to move those places to the top. Nothing gets hidden.</span></div><div class="known-row">${counts.map(([k,n])=>`<button type="button" class="kchip${HL===k?' on':''}" data-known="${esc(k)}" aria-pressed="${HL===k}">${esc(k)}<span>${n}</span></button>`).join('')}</div>`:''}
+function sortHeader(label,key){const active=sortMode()===key,order=key==='rate'?'descending':'ascending';return `<button type="button" data-sort="${key}"${active?` aria-sort="${order}"`:''}>${label}${active?' ↓':''}</button>`}
+function listHeader(){return `<div class="lhead"><span></span>${sortHeader('Place','name')}${sortHeader('Price','total')}<span>Technique</span>${startLL()?sortHeader('Walk','near'):'<span>Area</span>'}<span>When</span>${sortHeader('Rating','rate')}<span></span></div>`}
+function listRowHTML(o){const photos=Array.isArray(PHOTO_MANIFEST[o.name]?.photos)?PHOTO_MANIFEST[o.name].photos:[],photo=photos.find(validSavedPhoto),w=walkInfo(o),tech=techniqueList(o),walk=areaWalk(o,w)||'—',walkMeta=w?`~${w.min} min${w.approx?' approx.':''}`:walk,rating=o.rate!=null?String(o.rate).slice(0,3):'',sub=[o.type,o.hood].filter(Boolean).join(' · '),expanded=OPEN.has(o.name);
+ const thumb=photo?`<img src="${esc(photo.file)}" loading="lazy" decoding="async" alt="${esc(o.name)}">`:`<span aria-hidden="true">${esc((o.name.trim()[0]||'?').toUpperCase())}</span>`;
+ const ratingCell=rating?`<span class="star">★</span> ${esc(rating)}`:'<span class="lmuted">—</span>';
+ const walkCell=w?`~${w.min} min${w.approx?' <small class="lmuted">approx.</small>':''}`:esc(walk);
+ const meta=`${esc(tech||'—')} · ${esc(walkMeta)} · ${rating?`<span class="star">★</span> ${esc(rating)}`:'—'}`;
+ return `<div class="lrow" id="row-${o.i}"><button class="lopen" type="button" aria-expanded="${expanded}" data-open="${o.i}"><span class="lthumb">${thumb}</span><span class="lcontent">
+  <span class="lplace"><b class="lname">${esc(o.name)}</b><small class="lsub">${esc(sub)}</small></span>
+  <span class="lprice">${listPrice(o)}</span><span class="ltech">${tech?esc(tech):'<span class="lmuted">—</span>'}</span>
+  <span class="lwalk">${walkCell}</span><span class="lwhen">${whenText(o)}</span><span class="lrating">${ratingCell}</span>
+  <span class="lmeta">${meta}</span></span></button><button type="button" class="heart lheart" ${heartAttrs(o)}>${HEART}</button>
+  ${expanded?`<div class="ldetail">${cardHTML(o,{open:true})}</div>`:''}</div>`}
+function renderGroups(groups){
+ const section=g=>g.heading?`<h2 class="sec">${g.heading}</h2><p class="secnote">${g.note}</p>`:'';
+ if(LAYOUT==='cards')return groups.map(g=>`${section(g)}<div class="feed">${g.items.map(o=>cardHTML(o)).join('')}</div>`).join('');
+ if(!groups.length)return'';
+ return `<div class="lview">${listHeader()}${groups.map(g=>`${section(g)}${g.items.map(listRowHTML).join('')}`).join('')}</div>`}
+function syncLayoutButtons(){document.querySelectorAll('#layout [data-layout]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.layout===LAYOUT))}
 function render(){const L=filtered();
  $('count').textContent=`${L.length} of ${data.length} places`;
  renderKnown(L);
  const split=!isNaN(parseFloat($('max').value))||sortMode()==='total';
- if(split){const known=L.filter(o=>totalFor(o)!=null),unk=L.filter(o=>totalFor(o)==null);
-  $('list').innerHTML=(known.length?`<div class="feed">${known.map(cardHTML).join('')}</div>`:'')
-   +(unk.length?`<h2 class="sec">Total unknown · ${unk.length}</h2><p class="secnote">No price for this set in the sheet, so these aren't ranked by price. Ask them, or check their price list.</p><div class="feed">${unk.map(cardHTML).join('')}</div>`:'')}
- else $('list').innerHTML=`<div class="feed">${L.map(cardHTML).join('')}</div>`;
+ let groups;
+ if(split){const known=L.filter(o=>totalFor(o)!=null),unk=L.filter(o=>totalFor(o)==null);groups=[];
+  if(known.length)groups.push({items:known});
+  if(unk.length)groups.push({items:unk,heading:`Total unknown · ${unk.length}`,note:"No price for this set in the sheet, so these aren't ranked by price. Ask them, or check their price list."})}
+ else if(sortMode()==='complete'){const detailed=L.filter(o=>o.price!=null||o.rate!=null),few=L.filter(o=>o.price==null&&o.rate==null);groups=[];
+  if(detailed.length)groups.push({items:detailed});
+  if(few.length)groups.push({items:few,heading:`Fewer details yet · ${few.length}`,note:"No price or rating in the sheet yet. They're still listed so you can check them yourself."})}
+ else groups=L.length?[{items:L}]:[];
+ $('list').innerHTML=renderGroups(groups);syncLayoutButtons();
  observeEmbeds($('list'));
  $('msg').textContent=L.length?'':'No places match this search.';
  $('savedCount').textContent=SAVED.size;renderSaved();if(view==='map')drawMap(L);syncURL()}
@@ -350,12 +444,16 @@ function drawMap(L){if(!window.L)return;if(!map){map=window.L.map('map');window.
   window.L.circleMarker(w.ll,{radius:w.approx?7:8,color:acc,weight:2,fillColor:w.approx?'#fff':acc,fillOpacity:.95,dashArray:w.approx?'3 3':null})
    .bindTooltip(esc(o.name)).bindPopup(`<div class="pop">${img?`<img src="${esc(img)}" alt="">`:''}<div><b>${esc(o.name)}</b><span class="meta">${tot!=null?`from $${tot} · `:'Total unknown · '}${wk?`~${wk.min} min walk · `:''}${loc}</span><br><button type="button" data-goto="${o.i}">See photos and details</button></div></div>`).addTo(pins)}
  const fit=exact.length>1?exact:pts;if(fit.length)map.fitBounds(fit,{padding:[30,30],maxZoom:15})}
-function setTab(v){view=v;$('list').hidden=v!=='feed';$('known').hidden=v!=='feed';$('saved').hidden=v!=='saved';$('mapwrap').hidden=v!=='map';
+function setTab(v){view=v;$('layout').hidden=v!=='feed';$('list').hidden=v!=='feed';$('known').hidden=v!=='feed';$('saved').hidden=v!=='saved';$('mapwrap').hidden=v!=='map';
  [['tabFeed','feed'],['tabSaved','saved'],['tabMap','map']].forEach(([id,k])=>{$(id).classList.toggle('on',k===v);$(id).setAttribute('aria-pressed',k===v)});
  if(v==='saved')renderSaved();
  if(v==='map')loadLeaflet().then(()=>{drawMap(filtered());map.invalidateSize()}).catch(e=>{console.error('Could not load the map.',e);$('msg').textContent='Could not load the map.'});syncURL()}
 document.addEventListener('click',e=>{
- const g=e.target.closest('[data-goto]');if(g){setTab('feed');const c=$('card-'+g.dataset.goto);if(c){c.scrollIntoView({behavior:'smooth',block:'center'});c.classList.add('flash');setTimeout(()=>c.classList.remove('flash'),1600)}return}
+ const g=e.target.closest('[data-goto]');if(g){const o=data.find(x=>x.i===+g.dataset.goto);setTab('feed');if(LAYOUT==='list'&&o){OPEN.add(o.name);render()}
+  const c=$(LAYOUT==='list'?'row-'+g.dataset.goto:'card-'+g.dataset.goto);if(c){c.scrollIntoView({behavior:'smooth',block:'center'});c.classList.add('flash');setTimeout(()=>c.classList.remove('flash'),1600)}return}
+ const sort=e.target.closest('[data-sort]');if(sort){$('sort').value=sort.dataset.sort;render();return}
+ const layout=e.target.closest('[data-layout]');if(layout){LAYOUT=layout.dataset.layout==='cards'?'cards':'list';store.set('nail.layout',LAYOUT);render();return}
+ const row=e.target.closest('[data-open]');if(row){const o=data.find(x=>x.i===+row.dataset.open);if(!o)return;OPEN.has(o.name)?OPEN.delete(o.name):OPEN.add(o.name);render();return}
  const h=e.target.closest('[data-save]');if(h){toggleSave(h.dataset.save);return}
  const k=e.target.closest('[data-known]');if(k){HL=HL===k.dataset.known?'':k.dataset.known;render();return}
  if(e.target.closest('#checkSaved')){checkAvailability(savedList().filter(o=>!fails(o).length));return}
@@ -422,6 +520,7 @@ fetch(CSV_URL).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text
  fill('hood',data.flatMap(o=>o.hoods));fill('type',data.map(o=>o.type));fill('plat',data.map(o=>o.plat));fill('availabilityService',data.map(o=>o.avservice));
  SVC_DEFS.forEach(([label])=>$('tech').add(new Option(label,label)));
  const qp=new URLSearchParams(location.search);
+ const layoutParam=qp.get('layout');if(layoutParam==='list'||layoutParam==='cards'){LAYOUT=layoutParam;store.set('nail.layout',LAYOUT)}
  ['q','hood','type','plat','max','minr','walk'].forEach(id=>{if(qp.get(id))$(id).value=qp.get(id)});
  const so=qp.get('sort');if(so)$('sort').value=({asc:'total',desc:'total',value:'total'})[so]||so;
  if(qp.get('art')==='simple')$('art').value='simple';
