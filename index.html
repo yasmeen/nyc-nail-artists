@@ -65,6 +65,11 @@ details.more[open]{flex-basis:100%}
 .photos.saved[data-count="4"]{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr))}
 .photos.saved a{display:block;min-width:0;min-height:0;overflow:hidden}
 .photos.saved img{display:block;width:100%;height:100%;object-fit:cover}
+.photos.blocked{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;aspect-ratio:3/2;padding:16px;text-align:center;color:var(--mute);background:var(--surface)}
+.ig-mark{font-size:30px;line-height:1;color:var(--acc-ink)}
+.blocked-copy{max-width:26ch;font-size:13px}
+.blocked-link{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:6px 14px;border-radius:20px;background:var(--chip);color:var(--ink);font-size:12px;font-weight:700;line-height:1.3;text-align:center;text-decoration:none}
+.blocked-link:hover{background:var(--border)}
 .posts{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px}.posts iframe{flex:0 0 260px;width:260px;height:470px;border:0;scroll-snap-align:start}
 .nophoto{height:150px;display:grid;place-items:center;align-content:center;gap:4px;color:var(--mute)}.nophoto b{font-size:44px;line-height:1}.nophoto small{font-size:12px}
 .heart{position:absolute;top:10px;right:10px;z-index:2;width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.95);color:#211922;display:grid;place-items:center;box-shadow:0 1px 6px rgba(0,0,0,.22)}
@@ -193,8 +198,9 @@ const STARTS={usq:['Union Sq',[40.7359,-73.9906]],herald:['Herald Sq',[40.7497,-
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
 let data=[],activeSvcs=new Set(),checking=false,view='feed',HL='',HERE=null,AV={};const $=id=>document.getElementById(id);
 let SAVED=new Set(store.get('nail.saved',[]));
-let PHOTO_MANIFEST={},BOOKING={};const PHOTO_MANIFEST_URL=new URLSearchParams(location.search).get('photos')||'photos/manifest.json';
+let PHOTO_MANIFEST={},BOOKING={},BLOCKED_HANDLES=[];const PHOTO_MANIFEST_URL=new URLSearchParams(location.search).get('photos')||'photos/manifest.json';
 fetch(PHOTO_MANIFEST_URL).then(r=>r.ok?r.json():{}).then(p=>{PHOTO_MANIFEST=p&&typeof p==='object'&&!Array.isArray(p)?p:{};if(data.length)render()}).catch(()=>{});
+fetch('photos/embed-blocked.json').then(r=>r.ok?r.json():[]).then(p=>{BLOCKED_HANDLES=Array.isArray(p)?p:[];if(data.length)render()}).catch(()=>{});
 const embedObserver=window.IntersectionObserver?new IntersectionObserver(entries=>{for(const entry of entries){if(!entry.isIntersecting)continue;const frame=entry.target;frame.src=frame.dataset.src;frame.removeAttribute('data-src');embedObserver.unobserve(frame)}},{rootMargin:'800px 0px'}):null;
 function observeEmbeds(root=document){root.querySelectorAll('iframe[data-src]').forEach(frame=>{if(embedObserver)embedObserver.observe(frame);else{frame.src=frame.dataset.src;frame.removeAttribute('data-src')}})}
 const bookingPromise=fetch('booking.json').then(r=>r.ok?r.json():{}).catch(()=>({}));
@@ -227,7 +233,8 @@ function photosHTML(o){const saved=(Array.isArray(PHOTO_MANIFEST[o.name]?.photos
  if(saved.length)return `<div class="photos saved" data-count="${saved.length}">${saved.map(photo=>`<a href="${esc(photo.post)}" target="_blank" rel="noopener"><img src="${esc(photo.file)}" loading="lazy" decoding="async" width="600" height="600" alt="${esc(o.name)}: ${esc(photo.desc)}"></a>`).join('')}</div>`;
  const posts=[...new Set([...(o.photos||'').matchAll(/instagram\.com\/(?:[^/\s]+\/)?(?:p|reel)\/([A-Za-z0-9_-]+)/gi)].map(m=>m[1]))];
  if(posts.length)return `<div class="photos posts">${posts.map(c=>`<iframe data-src="https://www.instagram.com/p/${c}/embed/" loading="lazy" scrolling="no" title="${esc(o.name)} Instagram post"></iframe>`).join('')}</div>`;
- const h=igHandle(o);return h?`<div class="photos"><div class="crop"><iframe data-src="https://www.instagram.com/${h}/embed/" loading="lazy" scrolling="no" title="${esc(o.name)} Instagram photos"></iframe></div></div>`:''}
+ const h=igHandle(o);if(h&&BLOCKED_HANDLES.includes(h.toLowerCase()))return `<div class="photos blocked"><span class="ig-mark" aria-hidden="true">◎</span><span class="blocked-copy">Instagram doesn't allow a preview of this account</span><a class="blocked-link" href="https://www.instagram.com/${esc(h)}/" target="_blank" rel="noopener">See @${esc(h)}'s nail photos on Instagram</a></div>`;
+ return h?`<div class="photos"><div class="crop"><iframe data-src="https://www.instagram.com/${h}/embed/" loading="lazy" scrolling="no" title="${esc(o.name)} Instagram photos"></iframe></div></div>`:''}
 function fill(id,vals){const s=$(id);[...new Set(vals)].filter(Boolean).sort().forEach(v=>s.add(new Option(v,v)))}
 function stars(r){if(r==null)return'';const f=Math.round(r);return `<span class="stars" aria-hidden="true">${'★'.repeat(f)}${'☆'.repeat(5-f)}</span> <span class="meta">${esc(String(r).slice(0,3))}</span>`}
 const ART=()=>$('art').value;
@@ -285,7 +292,7 @@ const HEART='<svg width="22" height="22" viewBox="0 0 24 24" stroke="currentColo
 const heartAttrs=o=>{const on=SAVED.has(o.name);return `data-save="${esc(o.name)}" aria-pressed="${on}" aria-label="${on?'Saved: '+esc(o.name)+'. Remove from saved':'Save '+esc(o.name)}"`};
 function cardHTML(o){const tot=totalFor(o),w=walkInfo(o),v=o.val,ig=instagramLink(o),bk=bookingLink(o),simple=ART()==='simple';
  const maps=url(o.maps)||(o.addr?'https://maps.google.com/?q='+encodeURIComponent(o.name+' '+o.addr):'');
- const media=photosHTML(o)||`<div class="nophoto" aria-hidden="true"><b>${esc(o.name.trim()[0].toUpperCase())}</b><small>No Instagram photos yet</small></div>`;
+ const media=photosHTML(o)||`<div class="nophoto" aria-hidden="true"><b>${esc(o.name.trim()[0].toUpperCase())}</b><small>No Instagram account listed yet</small></div>`;
  const total=tot!=null?`<p class="total"><b>${tot===0?'Art included':'from $'+tot}</b> <span>${simple?'with simple art':'no art'}</span></p>`:`<p class="total"><span class="unknown">Total unknown</span></p>`;
  const loc=w?`~${w.min} min walk${w.approx?' · approx. location':''}${o.hood?' · '+esc(o.hood):''}`:esc(o.hood||'');
  const tech=o.svcs.filter(s=>TECH_PLAIN[s]).slice(0,2).map(s=>`<b>${esc(s)}:</b> ${TECH_PLAIN[s]}`).join('<br>');
