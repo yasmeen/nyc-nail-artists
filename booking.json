@@ -55,5 +55,91 @@
     },
     "service": "Hard Gel Overlay | 1 Color",
     "verified": "2026-10-16"
+  },
+  "RESET": {
+    "platform": "glossgenius",
+    "ids": {
+      "slug": "resetstudio",
+      "business": "10016-65720dea-30f2-49b9-a6e0-fb754ed6dd10",
+      "service": "1000f-8cc8b2b2-d8fa-427c-b636-01c2114effc9",
+      "location": "1003d-4f393c75-ad5b-4b69-9582-70ea095bb45d",
+      "space": "1001a-3e41277f-0bee-4219-be2d-18ce70c7f0e7",
+      "staffNames": {
+        "1001b-13fed61d-eac3-4143-8f6b-28e5d59c1c1c": "Reset Studio",
+        "1001b-61788b54-489c-4b7b-95d4-87f517909e1b": "Ashley Liz",
+        "1001b-3e5b0363-b7a2-43f3-a598-6378f4c15afe": "Jennifer Guanume",
+        "1001b-99e66315-d009-4cab-a7fb-f085abbe7749": "Savina Bylaj"
+      }
+    },
+    "service": "Tinted Structure Manicure",
+    "verified": "2026-10-16"
+  },
+  "Ying's Nails": {
+    "platform": "glossgenius",
+    "ids": {
+      "slug": "yingsnails",
+      "business": "10016-e177dfed-7ee9-4b42-8181-3408c4adb08f",
+      "service": "1000f-829abd5c-2f6f-4f72-9476-8d6025dcd05c",
+      "location": "1003d-a244b5b5-ba87-4fa0-b9d8-a861a5a08891",
+      "space": "1001a-5ad1d470-c119-45f6-9fe9-2472d904d196",
+      "staffNames": {
+        "1001b-0e9e74a7-9c73-4e99-84ed-da5e6bc9cde7": "Vincent Lee",
+        "1001b-e9287abf-0398-4953-ace3-fbd78d7619fd": "Ying Zhang"
+      }
+    },
+    "service": "Structure Gel Overlay: XS-S Length | One Color",
+    "verified": "2026-10-16"
+  },
+  "Bondgrl (Yessi)": {
+    "platform": "acuity",
+    "ids": {
+      "subdomain": "bndgrlnails",
+      "owner": "a65ef1b3",
+      "appointmentTypeId": 87197556,
+      "calendarId": 9786429
+    },
+    "service": "Soap Special",
+    "verified": "2026-10-16"
+  },
+  "Nail Setters": {
+    "platform": "glossgenius",
+    "ids": {
+      "slug": "nailsetters",
+      "business": "10016-543cdc27-f81c-4e71-88f9-cc7bcea0e128",
+      "service": "1000f-3442bb5a-9c5e-4777-ac4e-c3c6521a1ac7",
+      "location": "1003d-e1c700c1-a81a-4714-ab64-a1301c4a9490",
+      "space": "1001a-be9b4da7-d8aa-4987-9aef-19b52ad8ed55",
+      "staffNames": {
+        "1001b-2788575b-fc78-4226-928b-0f8c0c6e3a73": "Deanne C",
+        "1001b-af3a72c2-2ec0-4827-a852-97fac6d3019c": "Amy BigAppleMani"
+      }
+    },
+    "service": "Japanese Structured Gel (Soft/Hard) | Solid Color",
+    "verified": "2026-10-16"
+  },
+  "Kani": {
+    "platform": "glossgenius",
+    "ids": {
+      "slug": "kanykeikatirova",
+      "business": "10016-21e98bd9-82a6-4148-8152-2362b564caf1",
+      "service": "1000f-0f58d3a0-fd54-4e7e-9119-c603a65a3668",
+      "location": "1003d-db20d4e9-20a8-423e-a107-042a68a6275f",
+      "space": "1001a-892b7c1a-ff43-42c0-abc5-3e2e64335233",
+      "staffNames": {
+        "1001b-422ee697-0080-4e35-aaf3-971a04f73005": "Kanykei Katirova"
+      }
+    },
+    "service": "Russian Manicure+ Hard Gel",
+    "verified": "2026-10-16"
+  },
+  "sugar plum": {
+    "platform": "chronos",
+    "ids": {
+      "location": "new-york-10007-sugar-plum-806682",
+      "service_id": 119831,
+      "duration": 60
+    },
+    "service": "Structured Hard Gel Mani",
+    "verified": "2026-10-16"
   }
 }
