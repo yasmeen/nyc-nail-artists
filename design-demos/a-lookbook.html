@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Direction A · Lookbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f5f7;--paper:#fff;--ink:#16141a;--mute:#6b6670;--line:#e4e1e7;--chip:#ecebee;--cherry:#b5122e;
+  --chrome:linear-gradient(115deg,#d9d9de 0%,#ffffff 22%,#a9aab2 46%,#f4f4f7 62%,#8d8f98 82%,#e6e6ea 100%)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 'Archivo',system-ui,sans-serif;font-variation-settings:'wdth' 100}
+button{font:inherit;color:inherit;cursor:pointer}
+.wide{font-variation-settings:'wdth' 125}
+.in{max-width:1320px;margin:0 auto;padding:0 24px}
+header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top{display:flex;align-items:center;gap:16px;height:68px}
+.mark{font-weight:800;font-size:19px;letter-spacing:-.01em;white-space:nowrap}
+.mark span{font-weight:400;color:var(--mute)}
+.search{flex:1;display:flex;align-items:center;gap:10px;height:46px;padding:0 18px;border-radius:23px;background:var(--paper);border:1px solid var(--line);color:var(--mute);max-width:560px}
+.search svg{flex:none}
+.nav{display:flex;gap:6px;margin-left:auto}
+.nav button{height:42px;padding:0 16px;border:0;border-radius:21px;background:none;font-weight:600}
+.nav .count{display:inline-grid;place-items:center;min-width:20px;height:20px;margin-left:6px;border-radius:10px;background:var(--ink);color:var(--paper);font-size:12px}
+.filters{display:flex;gap:8px;padding:0 0 14px;overflow-x:auto;scrollbar-width:none}
+.f{flex:none;display:flex;align-items:center;gap:6px;height:38px;padding:0 14px;border:1px solid var(--line);border-radius:19px;background:var(--paper);font-size:14px;white-space:nowrap}
+.f b{font-weight:700}.f i{font-style:normal;color:var(--mute)}
+.f.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.f svg{opacity:.55}
+h1{margin:40px 0 6px;font-size:44px;line-height:1.02;font-weight:750;letter-spacing:-.025em;max-width:16ch}
+.lede{margin:0 0 24px;color:var(--mute);max-width:56ch}
+.looks{display:flex;gap:12px;overflow-x:auto;padding:4px 0 8px;scrollbar-width:none}
+.look{flex:none;display:flex;align-items:center;gap:10px;height:52px;padding:0 18px 0 6px;border-radius:26px;background:var(--paper);border:1px solid var(--line);font-weight:600}
+.look .sw{width:40px;height:40px;border-radius:50%;background-size:cover;background-position:center}
+.look small{color:var(--mute);font-weight:500}
+.look.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}.look.on small{color:#bdb8c2}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:32px;align-items:start;margin-top:28px}
+.wall{columns:3 240px;column-gap:16px}
+.tile{break-inside:avoid;margin:0 0 22px;cursor:pointer}
+.tile .ph{position:relative;border-radius:14px;overflow:hidden;background:var(--chip)}
+.tile img{display:block;width:100%;height:auto;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.tile:hover img{transform:scale(1.03)}
+.tile.sel .ph{outline:3px solid var(--ink);outline-offset:3px}
+.heart{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.92);display:grid;place-items:center}
+.heart.on svg{fill:var(--cherry);stroke:var(--cherry)}
+.cap{display:flex;justify-content:space-between;gap:10px;margin-top:9px;font-size:14px}
+.cap b{font-weight:700}.cap .m{color:var(--mute);white-space:nowrap}
+.cap .d{display:block;color:var(--mute);font-size:13px;margin-top:1px}
+.price{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+.nophotos{margin:28px 0 60px;border-top:1px solid var(--line)}
+.nophotos h2{font-size:18px;margin:22px 0 4px;font-weight:700}
+.nophotos p{margin:0 0 12px;color:var(--mute);font-size:14px}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:16px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--line);font-size:14px}
+.row b{font-weight:700}.row .m{color:var(--mute)}
+.row a{color:var(--ink);font-weight:600;text-underline-offset:3px}
+/* detail sheet */
+.sheet{position:sticky;top:132px;background:var(--paper);border-radius:20px;border:1px solid var(--line);overflow:hidden;box-shadow:0 30px 60px -30px rgba(22,20,26,.25)}
+.strip{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:repeat(2,minmax(0,1fr));gap:3px;height:260px;overflow:hidden}
+.strip img{width:100%;height:100%;min-height:0;object-fit:cover;display:block}.strip img:first-child{grid-row:span 2}
+.sb{padding:20px 22px 22px}
+.sb h3{margin:0;font-size:26px;letter-spacing:-.02em;font-weight:750;line-height:1.1}
+.sb .sub{color:var(--mute);margin:6px 0 18px;font-size:14px}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sum div{padding:12px 0}.sum div+div{padding-left:14px;border-left:1px solid var(--line)}
+.sum small{display:block;color:var(--mute);font-size:12px}.sum strong{font-size:19px;font-variant-numeric:tabular-nums}
+.lines{margin:16px 0;font-size:14px}.lines div{display:flex;justify-content:space-between;padding:5px 0}
+.lines .t{border-top:1px dashed var(--line);margin-top:4px;padding-top:9px;font-weight:700}
+.lines span:last-child{font-variant-numeric:tabular-nums}
+.what{font-size:14px;color:var(--mute);margin:0 0 18px}.what b{color:var(--ink)}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn{height:48px;border-radius:24px;border:1px solid var(--line);background:var(--paper);font-weight:700}
+.btn.chrome{border:0;background:var(--chrome);color:#16141a;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12),0 1px 0 rgba(255,255,255,.8) inset}
+.fine{font-size:12px;color:var(--mute);margin:12px 0 0}
+.mock{display:inline-block;font-size:12px;color:var(--mute);border:1px dashed var(--line);border-radius:6px;padding:1px 6px}
+@media(max-width:1000px){.layout{grid-template-columns:1fr}.sheet{display:none}}
+@media(max-width:640px){
+  .in{padding:0 16px}.top{height:60px;gap:10px}.mark span{display:none}.nav{display:none}
+  .search{height:42px;padding:0 14px;font-size:14px}
+  h1{font-size:32px;margin-top:24px}.lede{font-size:14px;margin-bottom:16px}
+  .wall{columns:2;column-gap:10px}.tile{margin-bottom:16px}.cap{flex-direction:column;gap:2px;font-size:13px}.cap .d{font-size:12px}
+  .heart{width:32px;height:32px;top:8px;right:8px}
+  .look{height:46px;padding-right:14px}.look .sw{width:34px;height:34px}
+  .row{grid-template-columns:minmax(0,1fr) auto;font-size:14px}.row .m:last-child{display:none}
+  .tabbar{display:grid}
+  body{padding-bottom:72px}
+}
+.tabbar{display:none;position:fixed;bottom:0;left:0;right:0;grid-template-columns:repeat(3,1fr);height:64px;background:var(--paper);border-top:1px solid var(--line);z-index:6}
+.tabbar button{border:0;background:none;font-size:13px;font-weight:600;color:var(--mute);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.tabbar .on{color:var(--ink)}
+</style></head>
+<body>
+<header><div class="in">
+  <div class="top">
+    <div class="mark">NYC Nail Artists <span>· 21 places</span></div>
+    <div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Search looks or names</div>
+    <nav class="nav"><button>Saved<span class="count">2</span></button><button>Map</button></nav>
+  </div>
+  <div class="filters">
+    <button class="f on"><i>Technique</i><b>Hard gel</b><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
+    <button class="f on"><i>Total</i><b>under $120</b><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
+    <button class="f on"><i>Art</i><b>Simple</b><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
+    <button class="f"><i>Walk from</i><b>Union Sq</b><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
+    <button class="f"><i>When</i><b>Any day</b><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
+    <button class="f">More filters</button>
+  </div>
+</div></header>
+
+<main class="in">
+  <h1 class="wide">Find the set first. Then the place.</h1>
+  <p class="lede">Every photo is a finished set from a place's own Instagram. Tap one to see what it costs with art, how far it is, and when they can fit you in.</p>
+  <div class="looks" id="looks"></div>
+  <div class="layout">
+    <div>
+      <div class="wall" id="wall"></div>
+      <section class="nophotos">
+        <h2 id="nph"></h2>
+        <p>Same filters apply. Their Instagram is linked so you can look before you choose.</p>
+        <div id="rows"></div>
+      </section>
+    </div>
+    <aside class="sheet" id="sheet"></aside>
+  </div>
+</main>
+<nav class="tabbar"><button class="on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="3" y="15" width="7" height="6" rx="2"/><rect x="14" y="11" width="7" height="10" rx="2"/></svg>Looks</button><button><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>Saved · 2</button><button><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg>Map</button></nav>
+
+<script src="data.js"></script>
+<script>
+const P = window.PLACES, $ = s => document.querySelector(s);
+const heart = on => `<button class="heart${on?' on':''}" aria-label="Save"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16141a" stroke-width="2"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></button>`;
+const total = p => p.mani == null ? 'Price not listed' : p.artFrom != null ? `$${p.mani + p.artFrom}` : `$${p.mani}`;
+const totalNote = p => p.mani == null ? '' : p.artFrom != null ? ' with art' : ' no art';
+const walk = p => p.walk != null ? `${p.walk} min walk` : 'no address yet';
+// Looks: style swatches cut from real saved photos
+const looks = [['All sets', 17, 'kayleigh_nailstudio/4'], ['Tortoiseshell', 2, 'kayleigh_nailstudio/2'], ['Chrome', 3, 'theshadenyc/2'], ['Cat eye', 2, 'goldroomnails/3'], ['French', 2, 'goldroomnails/4'], ['Milky white', 2, 'theshadenyc/3'], ['Hand-painted', 6, 'artonus.nailsroom/1']];
+$('#looks').innerHTML = looks.map(([n, c, f], i) => `<button class="look${i==0?' on':''}"><span class="sw" style="background-image:url(../photos/${f}.jpg)"></span>${n} <small>${c}</small></button>`).join('');
+// Photo wall: interleave places so one studio doesn't own a column
+const withPh = P.filter(p => p.photos.length), tiles = [];
+for (let i = 0; i < 4; i++) withPh.forEach(p => p.photos[i] && tiles.push([p, p.photos[i]]));
+$('#wall').innerHTML = tiles.map(([p, ph], i) => `<figure class="tile${p.name=='Gold Room Nails'&&i<5?' sel':''}" style="margin:0 0 22px"><div class="ph"><img src="${ph.src}" alt="${ph.desc}">${heart(p.name=='Gold Room Nails'||p.name=='Kayleigh Nail Studio')}</div>
+  <figcaption class="cap"><span><b>${p.name}</b><span class="d">${ph.desc}</span></span><span class="m"><span class="price">${total(p)}</span>${p.walk!=null?' · '+p.walk+' min':''}</span></figcaption></figure>`).join('');
+const rest = P.filter(p => !p.photos.length).sort((a, b) => (a.walk ?? 99) - (b.walk ?? 99));
+$('#nph').textContent = `${rest.length} more places, no photos saved yet`;
+$('#rows').innerHTML = rest.map(p => `<div class="row"><span><b>${p.name}</b> <span class="m">${p.hood||''}</span></span><span class="price">${total(p)}</span><span class="m">${p.ig?`<a href="#">${p.ig}</a>`:walk(p)}</span></div>`).join('');
+// Detail sheet for the selected place
+const g = P.find(p => p.name == 'Gold Room Nails');
+$('#sheet').innerHTML = `<div class="strip">${g.photos.slice(0,3).map(ph=>`<img src="${ph.src}" alt="${ph.desc}">`).join('')}</div>
+<div class="sb"><h3>${g.name}</h3><p class="sub">${g.type} · ${g.hood} · ${g.addr} · ★ ${g.rating} (${g.reviews}) · walk-ins</p>
+<div class="sum"><div><small>Set with simple art</small><strong>$${g.mani+g.artFrom}</strong></div><div><small>Walk from Union Sq</small><strong>${g.walk} min</strong></div><div><small>Next opening</small><strong>2:15 PM</strong><small>tomorrow</small></div></div>
+<div class="lines"><div><span>Hard gel / BIAB, one color</span><span>$95</span></div><div><span>Simple art add-on</span><span>from $15</span></div><div class="t"><span>Total before tip</span><span>$110</span></div></div>
+<p class="what"><b>Hard gel / BIAB:</b> a strong, shaped gel layer built over your own nail. Also offers French $45, complex art $60+, removal $15–25.</p>
+<div class="btns"><button class="btn">See all openings</button><button class="btn chrome">Book on Square</button></div>
+<p class="fine">Prices from the sheet, checked 2026-10-16. <span class="mock">Opening time is mock data</span></p></div>`;
+</script>
+</body></html>

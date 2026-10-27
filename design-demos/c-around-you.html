@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Direction C · Around you</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--ink:#1b1d22;--mute:#646873;--line:#e7e8ec;--soft:#f3f4f6;--pink:#e23c78;--pink-bg:#fdeaf1;
+  --land:#eceeea;--street:#fff;--park:#d3e5cb;--water:#c6d9e4;--far:#e2e4df}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 'Figtree',system-ui,sans-serif;overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+.app{display:grid;grid-template-columns:460px minmax(0,1fr);height:100vh}
+.side{display:flex;flex-direction:column;min-height:0;border-right:1px solid var(--line);background:var(--bg);z-index:2}
+.head{padding:18px 22px 14px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.brand b{font-weight:800;font-size:18px;letter-spacing:-.01em}
+.brand .tabs{margin-left:auto;display:flex;gap:4px;background:var(--soft);border-radius:10px;padding:3px}
+.brand .tabs button{border:0;background:none;padding:5px 11px;border-radius:8px;font-size:14px;font-weight:600;color:var(--mute)}
+.brand .tabs .on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.from{display:flex;align-items:center;gap:10px;height:48px;padding:0 14px;border-radius:12px;background:var(--soft);font-weight:600}
+.from .pin{width:22px;height:22px;border-radius:50%;background:var(--ink);display:grid;place-items:center}
+.from .pin i{width:8px;height:8px;border-radius:50%;background:#fff}
+.from small{font-weight:500;color:var(--mute);margin-left:auto;font-size:13px}
+.pills{display:flex;gap:6px;margin-top:10px;overflow-x:auto;scrollbar-width:none}
+.pill{flex:none;height:36px;padding:0 13px;border-radius:18px;border:1px solid var(--line);background:#fff;font-size:14px;font-weight:600;white-space:nowrap}
+.pill.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.list{flex:1;overflow:auto;padding:6px 14px 30px}
+.meta{display:flex;justify-content:space-between;align-items:baseline;padding:12px 8px 6px;font-size:13px;color:var(--mute)}
+.meta b{color:var(--ink);font-size:15px}
+.card{display:grid;grid-template-columns:88px minmax(0,1fr) auto;gap:14px;padding:12px 8px;border-radius:14px;align-items:center}
+.card+.card{border-top:1px solid var(--line)}
+.card.sel{background:var(--pink-bg);border-color:transparent}.card.sel+.card{border-color:transparent}
+.ph{width:88px;height:88px;border-radius:12px;overflow:hidden;background:var(--soft);display:grid;place-items:center;color:var(--mute);font-weight:700;font-size:20px}
+.ph img{width:100%;height:100%;object-fit:cover}
+.card h3{margin:0;font-size:16px;font-weight:700;line-height:1.25}
+.card .l{font-size:13px;color:var(--mute);margin-top:2px}
+.card .p{margin-top:6px;font-size:14px}.card .p b{font-weight:800}
+.card .o{font-size:13px;color:var(--ink);margin-top:2px}.card .o.none{color:var(--mute)}
+.ring-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:1px}
+.card .walk{text-align:right;font-weight:800;font-size:20px;line-height:1}
+.card .walk small{display:block;font-size:12px;font-weight:500;color:var(--mute);margin-top:3px}
+.nopin{margin:18px 8px 0;padding:14px;border-radius:12px;background:var(--soft);font-size:14px;color:var(--mute)}
+.nopin b{color:var(--ink)}
+.mapwrap{position:relative;min-width:0;overflow:hidden;background:var(--water)}
+svg.map{position:absolute;inset:0;width:100%;height:100%;display:block}
+.float{position:absolute;top:18px;right:18px;display:flex;gap:8px}
+.float button{height:40px;padding:0 14px;border-radius:20px;border:0;background:#fff;font-weight:600;font-size:14px;box-shadow:0 2px 10px rgba(0,0,0,.12)}
+.key{position:absolute;left:18px;bottom:18px;background:#fff;border-radius:12px;padding:10px 14px;font-size:13px;box-shadow:0 2px 10px rgba(0,0,0,.1);color:var(--mute);max-width:300px}
+.key b{color:var(--ink)}
+.pop{position:absolute;right:18px;bottom:18px;width:320px;background:#fff;border-radius:16px;box-shadow:0 18px 40px -12px rgba(0,0,0,.35);overflow:hidden}
+.pop .strip{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;height:110px}
+.pop .strip img{width:100%;height:100%;object-fit:cover}
+.pop .b{padding:12px 14px 14px}
+.pop h4{margin:0;font-size:17px;font-weight:800}
+.pop .l{font-size:13px;color:var(--mute)}
+.pop .row{display:flex;justify-content:space-between;margin:10px 0 12px;font-size:14px}
+.pop .row b{font-weight:800}
+.pop .go{display:flex;gap:6px}
+.pop .go button{flex:1;height:40px;border-radius:20px;border:1px solid var(--line);background:#fff;font-weight:700;font-size:14px}
+.pop .go .pri{background:var(--pink);border-color:var(--pink);color:#fff}
+.mock{display:inline-block;margin-top:8px;font-size:12px;color:var(--mute);border:1px dashed var(--line);border-radius:6px;padding:1px 6px}
+.handle{display:none}
+#over{position:absolute;inset:0;pointer-events:none}
+.rl{position:absolute;transform:translate(-50%,-50%);background:#fff;border-radius:12px;padding:2px 9px;font-size:12px;font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.pn{position:absolute;transform:translate(-50%,calc(-100% - 6px));background:#fff;color:var(--ink);border:1.5px solid var(--ink);border-radius:14px;padding:3px 10px;font-size:14px;font-weight:800;box-shadow:0 2px 6px rgba(0,0,0,.18);white-space:nowrap}
+.pn::after{content:'';position:absolute;left:50%;bottom:-7px;margin-left:-5px;border:5px solid transparent;border-top-color:inherit;border-bottom:0}
+.pn.fit{background:var(--ink);color:#fff}
+.pn.sel{background:var(--pink);border-color:var(--pink);color:#fff;font-size:15px;padding:5px 12px;z-index:2}
+@media(max-width:820px){.pn{font-size:13px;padding:2px 8px}}
+@media(max-width:820px){
+  body{overflow:auto}
+  .app{display:block;height:auto}
+  .mapwrap{position:fixed;inset:0 0 auto 0;height:58vh}
+  .side{position:relative;margin-top:calc(58vh - 120px);border-radius:22px 22px 0 0;border:0;box-shadow:0 -8px 24px rgba(0,0,0,.12);min-height:70vh}
+  .handle{display:block;width:40px;height:5px;border-radius:3px;background:#d0d2d7;margin:8px auto 0}
+  .head{padding:10px 16px 12px}.brand{display:none}
+  .list{padding:2px 8px 30px;overflow:visible}
+  .card{grid-template-columns:72px minmax(0,1fr) auto;gap:12px}.ph{width:72px;height:72px}
+  .pop,.key{display:none}
+  .float{top:auto;bottom:calc(42vh + 132px);right:12px;display:none}
+  .phone-top{display:flex}
+}
+.phone-top{display:none;position:fixed;top:12px;left:12px;right:12px;z-index:3;gap:8px}
+.phone-top div{flex:1;height:44px;border-radius:22px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.14);display:flex;align-items:center;padding:0 16px;font-weight:700;font-size:15px}
+.phone-top button{width:44px;height:44px;border-radius:22px;border:0;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.14);display:grid;place-items:center}
+</style></head>
+<body>
+<div class="phone-top"><div>NYC Nail Artists</div><button aria-label="Saved"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></button></div>
+<div class="app">
+  <aside class="side">
+    <div class="handle"></div>
+    <div class="head">
+      <div class="brand"><b>NYC Nail Artists</b><div class="tabs"><button class="on">Nearby</button><button>Photos</button><button>Saved 2</button></div></div>
+      <div class="from"><span class="pin"><i></i></span>From Union Square<small>Change</small></div>
+      <div class="pills"><button class="pill on">Hard gel</button><button class="pill on">Under $120</button><button class="pill">Any art</button><button class="pill on">Tomorrow</button><button class="pill">Known for</button><button class="pill">More</button></div>
+    </div>
+    <div class="list" id="list"></div>
+  </aside>
+  <section class="mapwrap">
+    <svg class="map" id="map" preserveAspectRatio="xMidYMid slice"></svg>
+    <div class="float"><button>Check openings tomorrow</button><button>Use my location</button></div>
+    <div class="key"><b>Rings are walking time</b> along the street grid at about 3 mph. Pins show the manicure price. Map is drawn, not tiles.</div>
+    <div id="over"></div>
+    <div class="pop" id="pop"></div>
+  </section>
+</div>
+<script src="data.js"></script>
+<script>
+const P = window.PLACES, O = [40.7392, -73.9905], K = Math.cos(O[0] * Math.PI / 180);
+const xy = ([la, ln]) => [(ln - O[1]) * 111320 * K, -(la - O[0]) * 111320];
+const A = 29 * Math.PI / 180, USQ = [40.7359, -73.9906];
+// grid frame: u across avenues, v along them (north-ish)
+const fromUV = (u, v, c) => [c[0] + u * Math.cos(A) + v * Math.sin(A), c[1] - (-u * Math.sin(A) + v * Math.cos(A))];
+const path = pts => 'M' + pts.map(p => xy(p).map(n => n.toFixed(1)).join(' ')).join('L') + 'Z';
+const W = innerWidth < 820 ? 2300 : 3000, H = W;
+const svg = document.getElementById('map');
+svg.setAttribute('viewBox', innerWidth < 820 ? `${-W / 2 - 150} ${-H / 2 - 200} ${W} ${H}` : `${-W / 2 + 250} ${-H / 2 + 80} ${W} ${H}`);
+const manhattan = [[40.7006,-74.0165],[40.7060,-74.0190],[40.7135,-74.0160],[40.7230,-74.0125],[40.7330,-74.0110],[40.7420,-74.0095],[40.7520,-74.0085],[40.7600,-74.0025],[40.7700,-73.9945],[40.7800,-73.9880],[40.7800,-73.9440],[40.7700,-73.9500],[40.7600,-73.9580],[40.7500,-73.9660],[40.7420,-73.9715],[40.7340,-73.9735],[40.7270,-73.9715],[40.7200,-73.9740],[40.7120,-73.9780],[40.7090,-73.9950],[40.7050,-74.0010],[40.7010,-74.0110]];
+const brooklyn = [[40.6900,-74.0000],[40.7020,-73.9900],[40.7070,-73.9700],[40.7230,-73.9620],[40.7380,-73.9600],[40.7460,-73.9560],[40.7560,-73.9450],[40.7700,-73.9350],[40.7800,-73.9300],[40.7800,-73.9000],[40.6900,-73.9000]];
+const jersey = [[40.6900,-74.0350],[40.7150,-74.0330],[40.7300,-74.0280],[40.7450,-74.0270],[40.7600,-74.0220],[40.7800,-74.0100],[40.7800,-74.0600],[40.6900,-74.0600]];
+let g = `<defs><clipPath id="mh"><path d="${path(manhattan)}"/></clipPath></defs>
+<path d="${path(brooklyn)}" fill="var(--far)"/><path d="${path(jersey)}" fill="var(--far)"/>
+<path d="${path(manhattan)}" fill="var(--land)"/><g clip-path="url(#mh)">`;
+// streets every ~80 m, avenues every ~260 m, anchored on Union Square
+const c = xy(USQ), seg = (u1, v1, u2, v2) => { const a = fromUV(u1, v1, c), b = fromUV(u2, v2, c); return `M${a[0].toFixed(1)} ${a[1].toFixed(1)}L${b[0].toFixed(1)} ${b[1].toFixed(1)}`; };
+let st = '', av = '';
+for (let v = -4000; v <= 4000; v += 80) st += seg(-4000, v, 4000, v);
+for (let u = -4000; u <= 4000; u += 262) av += seg(u, -4000, u, 4000);
+g += `<path d="${st}" stroke="var(--street)" stroke-width="9" fill="none"/><path d="${av}" stroke="var(--street)" stroke-width="20" fill="none"/>`;
+const bway = [[40.7050,-74.0128],[40.7130,-74.0072],[40.7200,-74.0016],[40.7290,-73.9926],[40.7359,-73.9906],[40.7411,-73.9897],[40.7497,-73.9877],[40.7580,-73.9855],[40.7681,-73.9819]];
+g += `<path d="M${bway.map(p => xy(p).join(' ')).join('L')}" stroke="var(--street)" stroke-width="22" fill="none"/>`;
+// parks as grid-aligned rectangles: [lat,lng, half-width u, half-length v]
+const parks = [[40.7359,-73.9906,90,110],[40.7420,-73.9880,110,170],[40.7308,-73.9973,150,130],[40.7536,-73.9832,120,90],[40.7745,-73.9700,420,700]];
+parks.forEach(([la, ln, hu, hv]) => { const cc = xy([la, ln]); g += `<path d="M${[[-hu,-hv],[hu,-hv],[hu,hv],[-hu,hv]].map(([u, v]) => fromUV(u, v, cc).join(' ')).join('L')}Z" fill="var(--park)"/>`; });
+g += `</g>`;
+// walking rings: the street-grid (L1) distance makes a diamond in grid space
+const labels = [];
+[[805, '10 min'], [1610, '20 min'], [2415, '30 min']].forEach(([r, t], i) => {
+  const pts = [[r, 0], [0, r], [-r, 0], [0, -r]].map(([u, v]) => fromUV(u, v, c));
+  g += `<path d="M${pts.map(p => p.join(' ')).join('L')}Z" fill="${i == 0 ? 'rgba(226,60,120,.07)' : 'none'}" stroke="#1b1d22" stroke-opacity=".4" stroke-width="5" stroke-dasharray="${i == 0 ? '0' : '22 16'}"/>`;
+  labels.push([fromUV(0, r, c), t]);
+});
+// start point
+g += `<circle cx="${c[0]}" cy="${c[1]}" r="38" fill="#1b1d22"/><circle cx="${c[0]}" cy="${c[1]}" r="14" fill="#fff"/>`;
+const pinned = P.filter(p => p.ll), SEL = 'Gold Room Nails';
+svg.innerHTML = g;
+// list sorted by walk time
+const OPEN = {'Kayleigh Nail Studio': 'Tomorrow 5:45 PM', 'Gold Room Nails': 'Tomorrow 2:15 PM', 'Panda Nails': 'Next: Thu 11:00 AM', 'The Paint Nail (Aurora, Cristina)': 'Tomorrow 7:00 PM', 'Bondgrl (Yessi)': 'Tomorrow 5:15 PM'};
+const ini = n => n.replace(/[^A-Za-z ]/g, '').split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('');
+const ring = m => m <= 10 ? 'rgba(226,60,120,.55)' : m <= 20 ? '#1b1d22' : '#9a9da5';
+document.getElementById('list').innerHTML = `<div class="meta"><span><b>${pinned.length} on the map</b> · nearest first</span><span>${P.length - pinned.length} without an address</span></div>` +
+  pinned.sort((a, b) => a.walk - b.walk).map(p => `<div class="card${p.name == SEL ? ' sel' : ''}"><div class="ph">${p.photos[0] ? `<img src="${p.photos[0].src}" alt="${p.photos[0].desc}">` : ini(p.name)}</div>
+  <div><h3>${p.name}</h3><div class="l">${[p.hood, p.type, p.rating ? '★ ' + p.rating : ''].filter(Boolean).join(' · ') || 'Details not in the sample sheet'}</div>
+  <div class="p">${p.mani != null ? `<b>$${p.mani}</b> manicure${p.artFrom ? ` · art from $${p.artFrom}` : ''}` : '<span style="color:var(--mute)">No price listed</span>'}</div>
+  ${OPEN[p.name] ? `<div class="o${/Next/.test(OPEN[p.name]) ? ' none' : ''}">${OPEN[p.name]}</div>` : ''}</div>
+  <div class="walk">${p.walk}<small>min walk</small></div></div>`).join('') +
+  `<div class="nopin"><b>${P.length - pinned.length} places have no address yet</b> (DM or phone only). See them in Photos, or <u>show their neighborhood</u> as approximate pins.</div>
+  <div style="padding:0 8px"><span class="mock">Opening times are mock data</span></div>`;
+// popup next to the selected pin, positioned from the SVG's screen transform
+const gr = P.find(p => p.name == SEL), pop = document.getElementById('pop');
+pop.innerHTML = `<div class="strip">${gr.photos.slice(0, 3).map(ph => `<img src="${ph.src}" alt="${ph.desc}">`).join('')}</div><div class="b"><h4>${gr.name}</h4><div class="l">${gr.addr} · ${gr.hood} · walk-ins</div>
+<div class="row"><span><b>$95</b> hard gel · <b>+$15</b> art</span><span><b>${gr.walk} min</b></span></div><div class="go"><button>Openings</button><button class="pri">Book on Square</button></div></div>`;
+const over = document.getElementById('over');
+function scr([x, y]) { const pt = svg.createSVGPoint(); pt.x = x; pt.y = y; const s = pt.matrixTransform(svg.getScreenCTM()), r = svg.parentNode.getBoundingClientRect(); return [s.x - r.left, s.y - r.top]; }
+function place() {
+  over.innerHTML = labels.map(([p, t]) => { const [x, y] = scr(p); return `<span class="rl" style="left:${x}px;top:${y}px">${t}</span>`; }).join('') +
+    pinned.slice().sort((a, b) => (a.name == SEL) - (b.name == SEL)).map(p => { const [x, y] = scr(xy(p.ll)), fit = p.mani != null && p.mani <= 120;
+      return `<span class="pn${p.name == SEL ? ' sel' : fit ? ' fit' : ''}" style="left:${x}px;top:${y}px">${p.mani != null ? '$' + p.mani : '?'}</span>`; }).join('');
+}
+place(); addEventListener('resize', place);
+</script>
+</body></html>

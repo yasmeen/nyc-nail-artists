@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Direction B · Shortlist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--panel:#f4f5f6;--ink:#0f1215;--mute:#5d646c;--faint:#8a9097;--line:#e3e6e9;--fit:#0b7a6b;--fit-bg:#e5f3f0;--over:#b3261e;--hatch:#9aa1a8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 'IBM Plex Sans',system-ui,sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+.num,.mono{font-family:'IBM Plex Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.in{max-width:1360px;margin:0 auto;padding:0 28px}
+header{border-bottom:1px solid var(--line)}
+.top{display:flex;align-items:center;height:60px;gap:28px}
+.mark{font-weight:700;font-size:17px}
+.tabs{display:flex;gap:4px;height:100%}
+.tabs button{border:0;background:none;padding:0 12px;color:var(--mute);font-weight:500;box-shadow:inset 0 -2px 0 transparent}
+.tabs .on{color:var(--ink);font-weight:600;box-shadow:inset 0 -2px 0 var(--ink)}
+.tabs .n{font-family:'IBM Plex Mono';font-size:12px;margin-left:5px;color:var(--mute)}
+.top .theme{margin-left:auto;color:var(--mute);font-size:14px}
+/* query bar */
+.query{display:grid;grid-template-columns:repeat(6,minmax(0,1fr)) auto;margin:22px 0 0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.q{padding:10px 16px 11px;border-right:1px solid var(--line);min-width:0}
+.q small{display:block;font-size:12px;color:var(--mute)}
+.q b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.go{border:0;background:var(--ink);color:#fff;font-weight:600;padding:0 26px;min-height:58px}
+.go span{display:block;font-weight:400;font-size:12px;opacity:.75}
+.status{display:flex;gap:18px;align-items:center;margin:12px 0 0;font-size:13px;color:var(--mute)}
+.status .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--fit);margin-right:6px}
+.mock{border:1px dashed var(--line);border-radius:5px;padding:1px 6px;font-size:12px}
+.body{display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px;margin-top:28px}
+/* facets */
+.facets h3{font-size:13px;font-weight:600;margin:0 0 8px}
+.facets section{padding:0 0 18px;margin:0 0 18px;border-bottom:1px solid var(--line)}
+.facets label{display:flex;align-items:center;gap:9px;padding:4px 0;font-size:14px}
+.facets label span{margin-left:auto;color:var(--faint);font-family:'IBM Plex Mono';font-size:12px}
+.box{width:16px;height:16px;border:1.5px solid #b9bfc5;border-radius:4px;flex:none}
+.box.on{background:var(--ink);border-color:var(--ink);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E")}
+.facets p{font-size:12px;color:var(--mute);margin:6px 0 0}
+/* results */
+.rhead{display:flex;align-items:end;gap:16px;margin-bottom:6px}
+.rhead h2{margin:0;font-size:22px;font-weight:600;letter-spacing:-.01em}
+.seg{margin-left:auto;display:flex;background:var(--panel);border-radius:9px;padding:3px}
+.seg button{border:0;background:none;padding:6px 12px;border-radius:7px;font-size:14px;color:var(--mute)}
+.seg .on{background:#fff;color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.cols,.r{display:grid;grid-template-columns:132px minmax(180px,1.3fr) minmax(220px,1.4fr) 72px minmax(130px,1fr) 104px;gap:20px;align-items:center}
+.cols{font-size:12px;color:var(--mute);padding:14px 0 8px;border-bottom:1px solid var(--ink)}
+.group{display:flex;align-items:baseline;gap:10px;margin:26px 0 0;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.group h4{margin:0;font-size:15px;font-weight:600}
+.group span{color:var(--mute);font-size:13px}
+.r{padding:14px 0;border-bottom:1px solid var(--line)}
+.r.sel{background:linear-gradient(90deg,var(--fit-bg),transparent 70%);margin:0 -12px;padding:14px 12px}
+.th{display:grid;grid-template-columns:repeat(3,40px);gap:4px}
+.th img,.th i{width:40px;height:40px;border-radius:6px;object-fit:cover;display:block}
+.th i{background:var(--panel);display:grid;place-items:center;font-style:normal;color:var(--faint);font-size:12px;font-family:'IBM Plex Mono'}
+.th .ig{font-family:'IBM Plex Sans';grid-column:span 3;width:auto;font-size:12px;justify-content:start;padding:0 10px;display:flex;align-items:center;gap:6px;color:var(--mute)}
+.nm b{display:block;font-weight:600}
+.nm small{display:block;color:var(--mute);font-size:13px}
+.tag{display:inline-block;margin-top:4px;font-size:12px;padding:1px 7px;border-radius:5px;background:var(--panel);color:var(--mute)}
+.bar{position:relative;height:26px}
+.bar .track{position:absolute;left:0;right:0;top:12px;height:2px;background:var(--line)}
+.bar .seg1{position:absolute;left:0;top:8px;height:10px;background:var(--ink);border-radius:2px}
+.bar .seg2{position:absolute;top:7px;height:12px;border-radius:0 2px 2px 0;background:repeating-linear-gradient(135deg,var(--hatch) 0 2px,transparent 2px 5px);box-shadow:inset 0 0 0 1px var(--hatch)}
+.bar .budget{position:absolute;top:0;bottom:0;width:0;border-left:1.5px dashed var(--fit)}
+.bar.over .seg1{background:var(--over)}
+.bl{display:flex;justify-content:space-between;font-size:13px;margin-top:2px}
+.bl .num{font-weight:600}.bl .why{color:var(--over)}.bl .ok{color:var(--fit)}
+.wk{font-family:'IBM Plex Mono';font-size:14px}.wk small{display:block;font-family:'IBM Plex Sans';font-size:12px;color:var(--mute)}
+.op b{display:block;font-weight:600;font-size:14px}.op small{color:var(--mute);font-size:12px}
+.op .no{color:var(--over)}
+.act{display:flex;gap:6px;justify-content:end}
+.act .bk{height:36px;padding:0 14px;border-radius:8px;border:1px solid var(--ink);background:var(--ink);color:#fff;font-weight:600;font-size:14px}
+.act .bk.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+.act .hz{width:36px;height:36px;border-radius:8px;border:1px solid var(--line);background:#fff;display:grid;place-items:center}
+.act .hz.on svg{fill:var(--ink)}
+.unk{margin:6px 0 60px;font-size:14px;color:var(--mute)}
+.unk b{color:var(--ink);font-weight:600}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--mute);margin-left:auto}
+.legend i{display:inline-block;width:14px;height:8px;margin-right:5px;vertical-align:middle}
+.phone-q{display:none}
+@media(max-width:900px){
+  .in{padding:0 16px}.top{height:54px;gap:14px}.top .theme{display:none}.tabs button{padding:0 8px}
+  .query,.facets,.cols,.legend{display:none}
+  .phone-q{display:flex;align-items:center;gap:10px;margin:14px 0 0;padding:12px 14px;border:1px solid var(--line);border-radius:12px}
+  .phone-q div{flex:1;min-width:0;font-size:14px}.phone-q b{display:block}
+  .phone-q small{color:var(--mute);font-size:13px}
+  .phone-q button{height:40px;padding:0 14px;border-radius:9px;border:0;background:var(--ink);color:#fff;font-weight:600;font-size:14px}
+  .status{flex-wrap:wrap;gap:6px 12px}
+  .body{display:block;margin-top:18px}
+  .rhead{flex-wrap:wrap}.rhead h2{font-size:19px}.seg{margin-left:0;width:100%}.seg button{flex:1}
+  .r{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"th nm act" "bar bar bar" "wk op op";gap:10px 12px}
+  .r.sel{margin:0 -16px;padding:14px 16px}
+  .th{grid-area:th;grid-template-columns:52px}.th img:not(:first-child),.th i:not(:first-child){display:none}.th img,.th i{width:52px;height:52px}.th .ig{display:none}
+  .nm{grid-area:nm}.bars{grid-area:bar}.wk{grid-area:wk;display:flex;gap:6px;align-items:baseline}.wk small{display:inline}.op{grid-area:op;text-align:right}.op b{display:inline}.op small{margin-left:6px}
+  .act{grid-area:act;align-self:start}.act .bk{display:none}
+}
+</style></head>
+<body>
+<header><div class="in top">
+  <div class="mark">NYC Nail Artists</div>
+  <nav class="tabs"><button class="on">Compare</button><button>Saved<span class="n">2</span></button><button>Map</button></nav>
+  <span class="theme">Auto theme</span>
+</div></header>
+<main class="in">
+  <div class="query">
+    <div class="q"><small>Technique</small><b>Hard gel</b></div>
+    <div class="q"><small>Art</small><b>None</b></div>
+    <div class="q"><small>Total budget</small><b class="num">≤ $120</b></div>
+    <div class="q"><small>Starting from</small><b>Union Square</b></div>
+    <div class="q"><small>Walk</small><b class="num">≤ 25 min</b></div>
+    <div class="q"><small>When</small><b>Tomorrow, after 5 PM</b></div>
+    <button class="go">Check openings<span>at 6 places that show them</span></button>
+  </div>
+  <div class="phone-q"><div><b>Hard gel, no art, ≤ $120</b><small>Union Sq · ≤ 25 min · tomorrow after 5 PM</small></div><button>Edit</button></div>
+  <div class="status"><span><span class="dot"></span>Openings checked 6:42 PM</span><span class="mock">Openings are mock data</span></div>
+
+  <div class="body">
+    <aside class="facets">
+      <section><h3>Known for</h3>
+        <label><i class="box"></i>Tortoiseshell<span>3</span></label>
+        <label><i class="box"></i>Hand-painted art<span>2</span></label>
+        <label><i class="box"></i>Minimal<span>2</span></label>
+        <label><i class="box"></i>French<span>1</span></label>
+        <label><i class="box"></i>Gems<span>1</span></label>
+        <p>Moves these places up. Nobody is hidden.</p></section>
+      <section><h3>Neighborhood</h3>
+        <label><i class="box"></i>Flatiron<span>7</span></label><label><i class="box"></i>Chelsea<span>4</span></label><label><i class="box"></i>Midtown<span>3</span></label><label><i class="box"></i>NoMad<span>2</span></label><label><i class="box"></i>Koreatown<span>1</span></label></section>
+      <section><h3>Type</h3><label><i class="box"></i>Solo artist<span>5</span></label><label><i class="box"></i>Studio<span>8</span></label><label><i class="box"></i>Salon<span>3</span></label></section>
+      <section><h3>Booking</h3><label><i class="box"></i>Online, openings shown<span>9</span></label><label><i class="box"></i>Instagram DM or phone<span>3</span></label></section>
+    </aside>
+
+    <section>
+      <div class="rhead"><h2 id="h"></h2>
+        <div class="legend"><span><i style="background:#0f1215"></i>Manicure</span><span><i style="background:repeating-linear-gradient(135deg,#9aa1a8 0 2px,transparent 2px 5px);box-shadow:inset 0 0 0 1px #9aa1a8"></i>Art add-on</span><span><i style="border-left:1.5px dashed #0b7a6b;width:2px;height:12px"></i>Your budget</span></div>
+        <div class="seg"><button class="on">Best value</button><button>Soonest</button><button>Closest</button></div></div>
+      <div class="cols"><span>Their work</span><span>Place</span><span>Total vs. budget ($0–200)</span><span>Walk</span><span>Next opening</span><span></span></div>
+      <div id="list"></div>
+    </section>
+  </div>
+</main>
+<script src="data.js"></script>
+<script>
+const P = window.PLACES, BUD = 120, MAXW = 25, SCALE = 200;
+// Mock openings for places with a supported booking.json entry
+const OPEN = {'Kayleigh Nail Studio': ['5:45 PM', 'tomorrow · 2 more'], 'Gold Room Nails': ['6:30 PM', 'tomorrow · 4 more'], 'The Paint Nail (Aurora, Cristina)': ['7:00 PM', 'tomorrow · last one'], 'Panda Nails': [null, 'Next: Thu 11:00 AM'], 'Bondgrl (Yessi)': ['5:15 PM', 'tomorrow'], "Ying's Nails": [null, 'Next: Fri 6:00 PM']};
+const why = p => p.mani > BUD ? `$${p.mani - BUD} over` : p.walk == null ? 'No address yet' : p.walk > MAXW ? `${p.walk - MAXW} min farther` : OPEN[p.name] && !OPEN[p.name][0] ? 'Not tomorrow evening' : '';
+const known = P.filter(p => p.mani != null), fits = known.filter(p => !why(p)).sort((a, b) => a.mani - b.mani), close = known.filter(p => why(p)).sort((a, b) => a.mani - b.mani);
+const unknown = P.filter(p => p.mani == null);
+const ini = n => n.replace(/[^A-Za-z ]/g, '').split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('');
+const thumbs = p => p.photos.length ? p.photos.slice(0, 3).map(ph => `<img src="${ph.src}" alt="${ph.desc}">`).join('') : `<i>${ini(p.name)}</i><i class="ig" style="grid-column:span 2;width:auto">${p.ig ? 'See on Instagram' : 'No Instagram'}</i>`;
+const row = (p, sel) => {
+  const w = Math.min(p.mani, SCALE) / SCALE * 100, a = p.artFrom && 0 ? p.artFrom / SCALE * 100 : 0, o = OPEN[p.name], r = why(p);
+  return `<div class="r${sel ? ' sel' : ''}"><div class="th">${thumbs(p)}</div>
+  <div class="nm"><b>${p.name}</b><small>${[p.hood, p.type, p.platform].filter(Boolean).join(' · ')}${p.rating ? ` · ★ ${p.rating}` : ''}</small><span class="tag">${/japan/i.test(p.tech) ? 'Japanese gel' : /russian/i.test(p.tech) ? (/hard/i.test(p.tech) ? 'Russian + hard gel' : 'Russian') : 'Hard gel'}</span></div>
+  <div class="bars"><div class="bar${p.mani > BUD ? ' over' : ''}"><div class="track"></div><div class="seg1" style="width:${w}%"></div><div class="budget" style="left:${BUD / SCALE * 100}%"></div></div>
+   <div class="bl"><span class="num">$${p.mani}${p.mani >= SCALE ? '+' : ''}</span>${r ? `<span class="why">${r}</span>` : `<span class="ok">$${BUD - p.mani} under</span>`}</div></div>
+  <div class="wk">${p.walk != null ? p.walk + ' min' : '–'}<small>${p.walk != null ? 'on foot' : 'no pin'}</small></div>
+  <div class="op">${o ? (o[0] ? `<b>${o[0]}</b><small>${o[1]}</small>` : `<b class="no">None</b><small>${o[1]}</small>`) : `<b style="font-weight:500;color:var(--mute)">Not checked</b><small>${p.platform ? 'Book on ' + p.platform : 'Ask by DM'}</small>`}</div>
+  <div class="act"><button class="hz${p.name == 'Gold Room Nails' || p.name == 'Mani Muse' ? ' on' : ''}" aria-label="Save"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></button><button class="bk${o && o[0] ? '' : ' ghost'}">${o && o[0] ? 'Book' : 'Open'}</button></div></div>`;
+};
+document.getElementById('h').innerHTML = `${fits.length} places fit`;
+document.getElementById('list').innerHTML =
+  `<div class="group"><h4>Fits everything</h4><span>cheapest first</span></div>` + fits.map(p => row(p)).join('') +
+  `<div class="group"><h4>Close</h4><span>misses one thing, shown in red</span></div>` + close.map(p => row(p)).join('') +
+  `<div class="group"><h4>Can't compare yet</h4><span>no manicure price in the sheet</span></div><p class="unk">${unknown.map(p => `<b>${p.name}</b>`).join(', ')}. Open any of them to see their Instagram and booking link.</p>`;
+</script>
+</body></html>
