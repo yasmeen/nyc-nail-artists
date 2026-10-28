@@ -1,0 +1,39 @@
+:root {
+  color-scheme: dark;
+  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
+  --text-xs: 0.75rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.2rem; --text-xl: 1.44rem; --text-2xl: 1.728rem; --text-3xl: 2.074rem;
+  --text-display-s: 1.44rem; --text-display: 1.728rem; --text-section: 1.2rem; --text-title: 1rem; --text-lead: 1rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
+  --color-error: oklch(72% 0.15 27); --color-success: oklch(76% 0.13 150);
+  --container: 1440px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 120px; --section-gap: 144px; --section-gap-l: 176px;
+  --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
+  --color-paper: oklch(25% 0.06 320); --color-paper-2: oklch(20.5% 0.05 320); --color-paper-3: oklch(30.5% 0.06 320);
+  --color-ink: oklch(94% 0.02 80); --color-ink-2: oklch(84% 0.03 330); --color-muted: oklch(73% 0.04 330);
+  --color-rule: oklch(37% 0.06 320); --color-rule-strong: oklch(73% 0.04 330);
+  --color-accent: oklch(88% 0.15 95); --color-accent-2: oklch(93% 0.1 95); --color-accent-deep: oklch(50% 0.11 85); --color-accent-ink: oklch(23% 0.06 320); --color-focus: oklch(93% 0.1 95);
+  --color-heart-bg: oklch(25% 0.06 320 / 0.82);
+  --font-display: "Prata", Georgia, serif; --font-body: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-outlier: "IBM Plex Mono", ui-monospace, monospace;
+  --radius-card: 0; --radius-pill: 999px; --rule-hair: 1px;
+  --shadow-card: none;
+  --tracking-display: -0.005em; --display-weight: 400;
+}
+
+/* hedgerow: sloe is the default (dark). Light is the theme's cream band used as the page: cream ground, plum ink, plum controls. */
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
+  color-scheme: light;
+  --color-paper: oklch(95% 0.018 80); --color-paper-2: oklch(91.5% 0.024 78); --color-paper-3: oklch(88% 0.03 76);
+  --color-ink: oklch(25% 0.06 320); --color-ink-2: oklch(32% 0.05 320); --color-muted: oklch(45% 0.045 320);
+  --color-rule: oklch(84% 0.025 60); --color-rule-strong: oklch(45% 0.045 320);
+  --color-accent: oklch(32% 0.08 320); --color-accent-2: oklch(40% 0.09 320); --color-accent-deep: oklch(45% 0.11 85); --color-accent-ink: oklch(95% 0.018 80); --color-focus: oklch(40% 0.09 320);
+  --color-heart-bg: oklch(95% 0.018 80 / 0.88);
+} }
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-paper: oklch(95% 0.018 80); --color-paper-2: oklch(91.5% 0.024 78); --color-paper-3: oklch(88% 0.03 76);
+  --color-ink: oklch(25% 0.06 320); --color-ink-2: oklch(32% 0.05 320); --color-muted: oklch(45% 0.045 320);
+  --color-rule: oklch(84% 0.025 60); --color-rule-strong: oklch(45% 0.045 320);
+  --color-accent: oklch(32% 0.08 320); --color-accent-2: oklch(40% 0.09 320); --color-accent-deep: oklch(45% 0.11 85); --color-accent-ink: oklch(95% 0.018 80); --color-focus: oklch(40% 0.09 320);
+  --color-heart-bg: oklch(95% 0.018 80 / 0.88);
+}
